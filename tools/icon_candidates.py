@@ -731,39 +731,11 @@ def still_seal(top_hue, bottom_hue, sat=0.5, light=1.0):
     return c07_beta((t, b, STILL_SILVER), glyph_tint=STILL_SILVER, shadow=shadow)
 
 
-# More Faithful's seal (the user's pick, 2026-11-10, of Claude Fable 5.2's round): a deep pine green with the rim and the
-# beta in gold, where the editions' are silver or white, so the packs built on Still Faithful read as a tier of their own.
-# The gold is shaded as beta's own gold is (the user's ask and pick the same day, "Ingot"): near-white through yellow
-# into orange, and the ingot's red-brown only in the deepest shade. The beta runs it top to bottom; the rim is lit from
-# the upper left, as the beta's shadow falls, so its warm end is the lower right. Each stop: (how far along, colour).
-INGOT_BETA = [(0, (255, 255, 250)), (.3, (252, 232, 128)), (.58, (238, 196, 70)), (.8, (224, 140, 36)),
-              (1, (196, 100, 22))]
-INGOT_RIM = [(0, (255, 244, 170)), (.35, (240, 204, 92)), (.65, (228, 160, 48)), (.85, (212, 118, 26)),
-             (1, (183, 97, 16))]
-
-
-def along(stops, t):
-    t = max(0.0, min(1.0, t))
-    for (a, ca), (b, cb) in zip(stops, stops[1:]):
-        if t <= b:
-            return lerp(ca, cb, (t - a) / (b - a))
-    return stops[-1][1]
-
-
-def gilded(top, bottom, shadow, glyph=INGOT_BETA, rim=INGOT_RIM):
-    c = Canvas()
-    c.paint(lambda x, y: lerp(top, bottom, y / 32) if disc(16, 16, 15.5)(x, y) else None)
-    c.paint(lambda x, y: along(rim, 0.5 + ((x - 16) * 0.6 + (y - 16) * 0.8) / 31)
-            if 14.4 <= math.hypot(x - 16, y - 16) <= 15.5 else None)
-    c.bitmap(BETA, 9 + 1, 6 + 1, lambda x, y, _: shadow)
-    c.bitmap(BETA, 9, 6, lambda x, y, _: along(glyph, (y - 6) / 19))
-    return c
-
-
-def gold_hue_seal(hue, sat, light):
-    top, bottom, _ = BETA_PURE
-    shadow = tuple(round(v * 255) for v in colorsys.hls_to_rgb(hue / 360, 0.07, 0.5))
-    return gilded(matched(hue, sat, top, light), matched(hue, sat * 1.05, bottom, light), shadow)
+# More Faithful's seal (the user's pick, 2026-11-10, of Claude Fable 5.2's rounds): crimson, with the silver rim and beta
+# of Old and Still Faithful. The first warm seal, where the ladder goes from beta itself to beta with more in it. It sits
+# a little deeper than the first three: a red as light as Pure's blue is salmon.
+def more_seal():
+    return still_seal(355, 355, 0.6, 0.68)
 
 
 def stills_section():
@@ -933,8 +905,8 @@ def main(argv=None):
     still = still_seal(*next((t, b) for key, _, t, b, _ in STILLS if key == "a")).image()
     for size in (32, 64, 128, 256, 512):
         still.resize((size, size), Image.NEAREST).save(final / f"stillfaithful-{size}.png", optimize=True)
-    # More Faithful's: pine and gold, the gold shaded as beta's ingot (above).
-    more = gold_hue_seal(150, 0.5, 0.55).image()
+    # More Faithful's: crimson (above).
+    more = more_seal().image()
     for size in (32, 64, 128, 256, 512):
         more.resize((size, size), Image.NEAREST).save(final / f"morefaithful-{size}.png", optimize=True)
     current = next((p for p in (ROOT / "prism" / "release" / n for n in ("purefaithful.png", "oldfaithful.png"))

@@ -913,6 +913,48 @@ if (findProject(':library:tower-check') != null) {
                         "-Doldfaithful.selftest.sceneSeed=${providers.gradleProperty('sceneSeed').getOrElse('31337')}".toString()]
         if (gameJava.isPresent()) javaExecutable = gameJava
     }
+    // Pictures with everything More Faithful carries (Still Faithful's mods and the pack's library mods), for its site card:
+    // -PsceneViews, -PsceneSurvey, -PsceneSeed and -PsceneRun as sceneShotStill's, into local/run/scene-shot-more/shots/.
+    // -PsceneViewTicks=N holds each view that long (900 unless given, for the far land), -PsceneSettle=true shoots once it's built near the camera,
+    // -PsceneTowers=complex makes the world's towers Complex.
+    def morePack = (rootProject.findProperty('contentPacks') ?: [:]).more
+    if (morePack != null && !stillMods.isEmpty()) {
+        tasks.register('sceneShotMore', oldfaithful.gradle.ClientStartupTask) {
+            group = 'oldfaithful'
+            description = 'Takes pictures of given views of a new world, unseen, with More Faithful\'s mods.'
+            dependsOn extractLwjgl3Natives
+            gameJar = mc.clientJar
+            intermediaryMappings = mc.intermediaryMappings
+            loaderClasspath.from(configurations.loaderRuntime, bakedLwjgl.flatMap { it.output })
+            mods.from(testedMods, project(':oldfaithful-display').tasks.named('remapJar'), speedMod, fixedMods, stillMods,
+                    project(':oldfaithful-core').tasks.named('remapJar'), morePack.mods.collect { project(":library:${it}").tasks.named('remapJar') })
+            natives = lwjgl3NativesDir
+            soundsGameDir = rootProject.layout.projectDirectory.dir('local/cache/selftest-sounds')
+            privateDesktop = rootProject.layout.projectDirectory.file('tools/private_desktop.py')
+            def runDirectory = rootProject.layout.projectDirectory.dir(providers.gradleProperty('sceneRun').getOrElse('local/run/scene-shot-more'))
+            runDir = runDirectory
+            oldFaithful = findProject(':oldfaithful-options') != null
+            windowRuns = false
+            def views = providers.gradleProperty('sceneViews').getOrElse('')
+            // -PsceneTowers=complex for a world of Complex towers, as sceneShotTowers takes it.
+            configs = ['faithful-rules.properties': "rule.buried-towers.style=${providers.gradleProperty('sceneTowers').getOrElse('simple')}\n".toString()]
+            def viewTicks = providers.gradleProperty('sceneViewTicks').getOrElse('900') as int
+            def seconds = 300 + (viewTicks.intdiv(20) + 15) * Math.max(1, views.split(';').length)
+            timeoutSeconds = seconds
+            // A heap of 2 GB (the last -Xmx wins): a survey a thousand blocks across ran out of the tests' 1 GB with the towers' mod in.
+            extraJvmArgs = ['-Xmx2g', '-Dorg.prismlauncher.window.dimensions=1440x900', '-Doldfaithful.selftest.expectSize=1440x900',
+                            "-Doldfaithful.selftest.stallMs=${(seconds - 30) * 1000}".toString(),
+                            "-Doldfaithful.selftest.edition=${project(':oldfaithful-polish').property('still_release_name')}:stillfaithful-polish".toString(),
+                            "-Doldfaithful.selftest.scene=${runDirectory.dir('shots').asFile.absolutePath}".toString(),
+                            "-Doldfaithful.selftest.sceneViews=${views}".toString(),
+                            "-Doldfaithful.selftest.sceneViewTicks=${viewTicks}".toString(),
+                            "-Doldfaithful.selftest.sceneSettle=${providers.gradleProperty('sceneSettle').getOrElse('false')}".toString(),
+                            "-Doldfaithful.selftest.sceneSettleRadius=${providers.gradleProperty('sceneSettleRadius').getOrElse('64')}".toString(),
+                            "-Doldfaithful.selftest.sceneSurvey=${providers.gradleProperty('sceneSurvey').getOrElse('')}".toString(),
+                            "-Doldfaithful.selftest.sceneSeed=${providers.gradleProperty('sceneSeed').getOrElse('31337')}".toString()]
+            if (gameJava.isPresent()) javaExecutable = gameJava
+        }
+    }
     tasks.register('buriedTowersTest', oldfaithful.gradle.BuriedTowersTestTask) {
         group = 'verification'
         description = "Buried Towers on really generated worlds, on the real server."

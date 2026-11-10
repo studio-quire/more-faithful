@@ -40,7 +40,8 @@ import org.studioquire.oldfaithful.selftest.mixin.WorldRendererAccessor;
  * {@code view-<n>.png}, with the view in {@code view-<n>.txt}. Optionally after the time: the render distance (0 Far,
  * the default, to 3 Tiny), then {@code rain} for weather. A view {@code use x y z} instead uses the block there as a
  * player's click would (a lever, a door) and shoots nothing, so the views after it show what it did; {@code dig x y z} takes
- * the block out, {@code put x y z id} puts one in, both telling its neighbours, and {@code probe x y z r} writes the
+ * the block out, {@code put x y z id} puts one in, both telling its neighbours, {@code mob x y z Name [yaw [tame|sit]]} stands one of
+ * beta's mobs in a cell where the world is loaded (a wolf the player's own, standing or sitting, with the last word), and {@code probe x y z r} writes the
  * blocks within r of a place into {@code probe-<n>.txt}. Scheduled block ticks don't run here, so sand left over air
  * stays. With {@code -Doldfaithful.selftest.sceneSettle=true} a view is
  * shot as soon as it's built near the camera ({@link #unbuilt}), after at least {@link #SETTLE_MIN} ticks, with
@@ -195,6 +196,26 @@ public final class SceneShot {
 			int put = v[0].equals("put") ? Integer.parseInt(v[4]) : 0, meta = v.length > 5 ? Integer.parseInt(v[5]) : 0;
 			mc.world.setBlock(dx, dy, dz, put, meta);
 			results.pass("scene: view-" + view + (put == 0 ? " dug out block " + id : " put block " + put) + " at " + dx + " " + dy + " " + dz);
+			view++;
+			return false;
+		}
+		if (v[0].equals("mob")) {
+			// A mob by beta's name (Wolf, Sheep) standing in a cell, facing a yaw if given; it goes about its business from there.
+			int mx = Integer.parseInt(v[1]), my = Integer.parseInt(v[2]), mz = Integer.parseInt(v[3]);
+			net.minecraft.entity.Entity mob = net.minecraft.entity.EntityRegistry.create(v[4], mc.world);
+			boolean spawned = false;
+			if (mob != null) {
+				mob.setPositionAndAngles(mx + 0.5, my, mz + 0.5, v.length > 5 ? Float.parseFloat(v[5]) : 0, 0);
+				if (v.length > 6 && mob instanceof net.minecraft.entity.passive.WolfEntity) {
+					// "tame" or "sit" after the yaw: the player's own wolf, standing or sitting.
+					net.minecraft.entity.passive.WolfEntity wolf = (net.minecraft.entity.passive.WolfEntity) mob;
+					wolf.setTamed(true);
+					wolf.setOwnerName(mc.player.name);
+					wolf.setSitting(v[6].equals("sit"));
+				}
+				spawned = mc.world.spawnEntity(mob);
+			}
+			results.check("scene: view-" + view + " put a " + v[4] + " at " + mx + " " + my + " " + mz, spawned);
 			view++;
 			return false;
 		}

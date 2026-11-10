@@ -1,7 +1,9 @@
-"""The site's cards for the Faithful Library and More Faithful: seals over a frame, pixel-sharp. More Faithful's has its own
-seal alone in a smooth gold glow (--seals morefaithful); the library's has two seals side by side, drawn plain (--plain).
-The glow belongs to the card and the link preview; the packs' icons are the plain seals. A seal is a name in
-prism/release/icons/final/ or the path of a PNG.
+"""The site's cards for the Faithful Library and More Faithful: seals over a frame, pixel-sharp, drawn plain (--plain). More
+Faithful's has its own seal alone (148,148 --seals morefaithful --plain) until it has a picture of its own, which
+tools/cover_card.py makes as the editions' are; the library's has the two packs' seals side by side. Without --plain each
+seal sits in a smooth glow of its own hue, as the library's card had its editions' seals through 0.4.0; nothing uses it now
+(More Faithful's had a gold one for an hour; the user: no glow, 2026-11-10). A seal is a name in prism/release/icons/final/
+or the path of a PNG.
 
     python tools/library_card.py <frame.png> <out.png> [x1,y1,x2,y2] [--seals a,b] [--plain]   at those centres, or CENTRES
     python tools/library_card.py colours [seal ...]                                             the glows' colours, for the link preview's CSS
@@ -24,9 +26,7 @@ GLOW = [(14, 1.6), (52, 1.4)]  # blur radius and strength: a close bright edge i
 # Violet sits close to the card's periwinkle sky, so its glow is deeper and stronger than green's to show as much. A seal not
 # named here gets green's.
 LIGHTNESS = {"stillfaithful": 0.72, "oldfaithful": 0.8}
-BOOST = {"stillfaithful": 1.3, "oldfaithful": 1.0, "morefaithful": 1.2}
-# Set by hand: More Faithful's pine, lightened, came out a pale mint like Old's and fought its gold rim, so its glow is the gold.
-GLOWS = {"morefaithful": (246, 214, 130)}
+BOOST = {"stillfaithful": 1.3, "oldfaithful": 1.0}
 
 
 def seal(edition):
@@ -35,9 +35,7 @@ def seal(edition):
 
 
 def glow_colour(edition):
-    """The seal's own hue, lightened: the mean of its saturated pixels (or GLOWS')."""
-    if edition in GLOWS:
-        return GLOWS[edition]
+    """The seal's own hue, lightened: the mean of its saturated pixels."""
     pixels = [(r, g, b) for r, g, b, a in seal(edition).getdata() if a > 200 and max(r, g, b) - min(r, g, b) > 50]
     mean = [sum(p[i] for p in pixels) / len(pixels) / 255 for i in range(3)]
     h, _, _ = colorsys.rgb_to_hls(*mean)
