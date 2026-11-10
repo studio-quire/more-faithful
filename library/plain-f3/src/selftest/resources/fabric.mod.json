@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "plain-f3-selftest",
+  "version": "1",
+  "name": "Plain F3 self-test (test harness only, not shipped)",
+  "environment": "client",
+  "entrypoints": {
+    "faithful:test-client": ["org.studioquire.faithful.plainf3.selftest.client.PlainF3Test"]
+  },
+  "depends": {
+    "plain-f3": "*"
+  }
+}

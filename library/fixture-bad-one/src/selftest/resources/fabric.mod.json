@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-bad-one-selftest",
+  "version": "1",
+  "name": "A selftest for the harness to catch (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.fixturebadone.selftest.PlantedTest"]
+  },
+  "depends": {
+    "fixture-bad-one": "*"
+  }
+}

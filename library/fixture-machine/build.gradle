@@ -1,0 +1,7 @@
+plugins { id 'oldfaithful.mod' }
+
+dependencies {
+    compileOnly project(':oldfaithful-core')
+    compileOnly project(':oldfaithful-settings')
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+}

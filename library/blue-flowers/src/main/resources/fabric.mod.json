@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "blue-flowers",
+  "version": "${version}",
+  "name": "Blue Flowers",
+  "description": "Bluebells in patches across Taiga and Tundra, as dandelions grow in warmer land. Placed and picked like the rose and dandelion; a bluebell makes light blue dye, and bonemeal on grass in those biomes can grow one. It also calls beta's yellow flower Dandelion, where beta said Flower, with a switch in its settings to keep Flower.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.blueflowers.BlueFlowers"],
+    "faithful:client": ["org.studioquire.faithful.blueflowers.client.BlueFlowersClient"],
+    "oldfaithful-options:settings": ["org.studioquire.faithful.blueflowers.client.BlueFlowersSettings"]
+  },
+  "mixins": ["blue-flowers.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-bad-one",
+  "version": "${version}",
+  "name": "Planted mistakes, one (test harness only, not shipped)",
+  "description": "Planted mistakes for :harness:libraryBadTest.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.fixturebadone.BadOne"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

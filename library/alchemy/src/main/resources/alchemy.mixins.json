@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.alchemy.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["BlockMixin", "FoodItemMixin", "LivingEntityMixin", "PlayerEntityMixin"],
+  "client": ["InGameHudMixin", "InventoryScreenMixin"],
+  "injectors": {"defaultRequire": 1}
+}

@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.wolfpacks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["CreeperEntityAccessor", "MonsterEntityMixin", "PlayerEntityAccessor", "PlayerEntityMixin", "SkeletonEntityMixin", "WolfEntityMixin"],
+  "injectors": {"defaultRequire": 1}
+}

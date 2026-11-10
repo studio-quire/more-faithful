@@ -1,0 +1,7 @@
+plugins { id 'oldfaithful.mod' }
+
+dependencies {
+    compileOnly project(':oldfaithful-core')
+    // Only touched when Hearty Food is loaded (HeartyWolves), never required.
+    compileOnly project(':library:hearty-food')
+}

@@ -1,0 +1,10 @@
+plugins { id 'oldfaithful.mod' }
+
+// Faithful Core (docs/library-authoring.md): what the Faithful Library's mods build on. No edition's pack carries it.
+dependencies {
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+    compileOnly project(':oldfaithful-settings')
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+    testImplementation project(':oldfaithful-settings')
+    testImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+}

@@ -1,0 +1,119 @@
+plugins { id 'oldfaithful.mod' }
+
+// The Fixed edition's fixes of beta's own bugs (docs/fixes.md). The client-side fixes call GL11, Keyboard and Mouse,
+// which the game's launcher supplies at runtime (LWJGL 2 or our component).
+def mc = rootProject.oldfaithfulMinecraft
+
+// The scenario source set is a test-only server mod for `serverTicksTest` (#42): a repeater clock beside the spawn, and
+// every chunk's saved ticks counted (TickCensus, which asks this mod's PendingTicks).
+sourceSets { scenario }
+
+// The speed mod puts its own set in the world's field of pending ticks, the one this mod's PendingTicks wraps, and every
+// edition ships the two together: serverTicksTest's census of ticks runs with it.
+evaluationDependsOn(':oldfaithful-speed')
+
+dependencies {
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+    // FixesSettings, the switches on Old Faithful's settings screen: loaded only by the options mod, when present.
+    compileOnly project(':oldfaithful-settings')
+    testImplementation project(':oldfaithful-settings')
+    testImplementation "net.fabricmc:sponge-mixin:${mixin_version}"
+    testImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    // PendingTicksTest runs the grouping on the game's own BlockEvents.
+    testImplementation files(mc.namedJar)
+    scenarioCompileOnly files(mc.namedJar)
+    scenarioCompileOnly sourceSets.main.output
+    scenarioCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    scenarioCompileOnly "net.fabricmc:sponge-mixin:${mixin_version}"
+}
+
+tasks.named('compileScenarioJava') {
+    options.release = 8
+    options.encoding = 'UTF-8'
+}
+
+def scenarioJar = tasks.register('scenarioJar', Jar) {
+    from sourceSets.scenario.output
+    archiveClassifier = 'scenario-dev'
+}
+def scenarioRemap = tasks.register('scenarioRemapJar', oldfaithful.gradle.RemapJarTask) {
+    input = scenarioJar.flatMap { it.archiveFile }
+    namedMappings = mc.namedMappings
+    classpath.from(sourceSets.main.compileClasspath)
+    output = layout.buildDirectory.file('libs/oldfaithful-fixes-scenario.jar')
+}
+
+tasks.named('test') {
+    useJUnitPlatform { excludeTags 'server', 'squids' }
+}
+
+configurations {
+    // What a launcher puts on the classpath for Fabric (as harness/build.gradle).
+    loaderRuntime { transitive = false }
+}
+
+dependencies {
+    loaderRuntime "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    loaderRuntime "net.fabricmc:sponge-mixin:${mixin_version}"
+    ['asm', 'asm-analysis', 'asm-commons', 'asm-tree', 'asm-util'].each {
+        loaderRuntime "org.ow2.asm:${it}:${asm_version}"
+    }
+}
+
+tasks.register('serverTicksTest', Test) {
+    group = 'verification'
+    description = 'The real dedicated server: a repeater clock still running after a save and restart (#42); the world fixes from the piston hunt.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform { includeTags 'server' }
+    maxHeapSize = '256m'
+    def remapped = tasks.named('remapJar')
+    def speedMod = project(':oldfaithful-speed').tasks.named('remapJar')
+    dependsOn remapped, scenarioRemap, speedMod
+    def serverClasspath = files(configurations.loaderRuntime, mc.intermediaryMappings, mc.serverJar)
+    inputs.files(serverClasspath)
+    outputs.upToDateWhen { false }
+    testLogging { showStandardStreams = true; exceptionFormat = 'full' }
+    doFirst {
+        systemProperty 'oldfaithful.server.classpath', serverClasspath.asPath
+        // -Pfixes.jar=<a jar of this mod>: the tests on another build of it, a released one say, in place of this one.
+        systemProperty 'oldfaithful.fixes.mod', providers.gradleProperty('fixes.jar').map { rootProject.file(it).absolutePath }
+                .getOrElse(remapped.get().output.get().asFile.absolutePath)
+        systemProperty 'oldfaithful.fixes.scenario.mod', scenarioRemap.get().output.get().asFile.absolutePath
+        systemProperty 'oldfaithful.speed.mod', speedMod.get().output.get().asFile.absolutePath
+        systemProperty 'oldfaithful.run', rootProject.file('local/run/fixes-server-test').absolutePath
+        // The side of the square of chunks whose ticks are counted through a save and a restart (-Pticks.square=48 for a long queue).
+        systemProperty 'oldfaithful.fixes.bulk', providers.gradleProperty('ticks.square').getOrElse('24')
+        systemProperty 'oldfaithful.fixes.seed', providers.gradleProperty('fixes.seed').getOrElse('')
+    }
+}
+
+// #76 and #77 measured on the real server, with this mod and without it: -Psquids.ticks (20 a second), local/run/squid-watch/.
+// -Psquids.labels=fixed,beta by default; "polished" adds Still Faithful's polish mod to the fixes (its Squid Surfacing).
+def squidLabels = providers.gradleProperty('squids.labels').getOrElse('fixed,beta').split(',') as List
+tasks.register('squidWatch', Test) {
+    group = 'verification'
+    description = 'Squid in tanks on the real server, with the fix mod and without it: their height over time, near the surface above all.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform { includeTags 'squids' }
+    maxHeapSize = '256m'
+    def remapped = tasks.named('remapJar')
+    dependsOn remapped, scenarioRemap
+    if (squidLabels.contains('polished')) dependsOn ':oldfaithful-polish:remapJar'
+    def serverClasspath = files(configurations.loaderRuntime, mc.intermediaryMappings, mc.serverJar)
+    inputs.files(serverClasspath)
+    outputs.upToDateWhen { false }
+    testLogging { showStandardStreams = true; exceptionFormat = 'full' }
+    doFirst {
+        systemProperty 'oldfaithful.server.classpath', serverClasspath.asPath
+        systemProperty 'oldfaithful.fixes.mod', remapped.get().output.get().asFile.absolutePath
+        systemProperty 'oldfaithful.fixes.scenario.mod', scenarioRemap.get().output.get().asFile.absolutePath
+        systemProperty 'oldfaithful.run', rootProject.file('local/run/squid-watch').absolutePath
+        systemProperty 'oldfaithful.squids.ticks', providers.gradleProperty('squids.ticks').getOrElse('12000')
+        systemProperty 'oldfaithful.squids.labels', squidLabels.join(',')
+        if (squidLabels.contains('polished')) {
+            systemProperty 'oldfaithful.polish.mod', project(':oldfaithful-polish').tasks.named('remapJar').get().output.get().asFile.absolutePath
+        }
+    }
+}

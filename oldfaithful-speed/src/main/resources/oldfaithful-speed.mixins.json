@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.studioquire.oldfaithful.speed.mixin",
+  "plugin": "org.studioquire.oldfaithful.speed.SpeedMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "ChunkBuilderMixin",
+    "ChunkCacheMixin",
+    "DoubleSlabFacesMixin",
+    "FancyCloudsMixin",
+    "FrustumAccessor",
+    "GameRendererFrustumMixin",
+    "GameRendererPacingMixin",
+    "MinecraftPacingMixin",
+    "MultiplayerChunkCacheMixin",
+    "TessellatorAccessor",
+    "WorldAccessor",
+    "WorldRegionMixin",
+    "WorldRendererAccessor"
+  ],
+  "server": [
+    "ScheduledTicksMixin",
+    "ServerChunkCacheMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

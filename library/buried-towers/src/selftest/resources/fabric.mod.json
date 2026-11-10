@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "buried-towers-selftest",
+  "version": "1",
+  "name": "Buried Towers self-test",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.buriedtowers.selftest.WaysTest"]
+  },
+  "depends": {
+    "buried-towers": "*"
+  }
+}

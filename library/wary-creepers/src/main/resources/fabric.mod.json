@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "wary-creepers",
+  "version": "${version}",
+  "name": "Wary Creepers",
+  "description": "Creepers keep away from a jack-o'-lantern whose lit face they can see. A creeper within 8 blocks, on the side the face looks out on and with nothing in the way, turns and walks off, and comes back once it no longer sees one in reach. One behind the lantern isn't scared, nor one with a wall or glass between, and one already at your side still swells. It runs where the world runs, so a server can use it with any client.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design)", "Shoalstone (idea, design and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.warycreepers.WaryCreepers"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

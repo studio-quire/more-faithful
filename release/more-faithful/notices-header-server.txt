@@ -1,0 +1,14 @@
+More Faithful @VERSION@ server package: notices
+===========================================
+
+More Faithful is @EDITION_LINE@
+with the Faithful Library @LIBRARY_VERSION@'s mods. What we made in them is open source under the MIT licence
+(licenses/more-faithful/LICENSE.txt): the purefaithful-*, oldfaithful-* and stillfaithful-* mods,
+Faithful Core, Faithful Settings and the library's mods, all in mods/. Source code: https://github.com/@REPO@
+
+Minecraft is not included: you add Mojang's beta 1.7.3 server yourself. This is not an official Minecraft product, and
+is not approved by or associated with Mojang or Microsoft.
+
+The package also contains software by others, listed below: what each is, where it is in this folder, its licence,
+and where the licence text is. Where a licence asks for the source code to come with the program, it is in
+sources/ (see sources/README.txt).

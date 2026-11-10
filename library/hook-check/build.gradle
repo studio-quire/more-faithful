@@ -1,0 +1,45 @@
+plugins { id 'oldfaithful.mod' }
+
+// A test-only mod (gradle.properties: library_test_only): every hook listened to and asserted on the real server and the hidden
+// client, `:harness:libraryHooksTest`. The `second` source set is a second mod, so what's between two listeners can be seen.
+def mc = rootProject.oldfaithfulMinecraft
+// `staticBad` is a jar of planted mistakes for `:harness:libraryStaticBadTest`, only ever read.
+sourceSets { second; staticBad }
+
+dependencies {
+    compileOnly project(':oldfaithful-core')
+    compileOnly project(':oldfaithful-settings')
+    compileOnly project(':harness')
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+    secondCompileOnly files(mc.namedJar)
+    secondCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    secondCompileOnly project(':oldfaithful-core')
+    secondCompileOnly sourceSets.main.output
+    staticBadCompileOnly files(mc.namedJar)
+    staticBadCompileOnly "net.fabricmc:sponge-mixin:${mixin_version}"
+    staticBadCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    staticBadCompileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+}
+
+['compileSecondJava', 'compileStaticBadJava'].each {
+    tasks.named(it) {
+        options.release = 8
+        options.encoding = 'UTF-8'
+    }
+}
+
+tasks.register('staticBadJar', Jar) {
+    from sourceSets.staticBad.output
+    archiveClassifier = 'static-bad'
+}
+
+def secondJar = tasks.register('secondJar', Jar) {
+    from sourceSets.second.output
+    archiveClassifier = 'second-dev'
+}
+tasks.register('secondRemapJar', oldfaithful.gradle.RemapJarTask) {
+    input = secondJar.flatMap { it.archiveFile }
+    namedMappings = mc.namedMappings
+    classpath.from(sourceSets.second.compileClasspath)
+    output = layout.buildDirectory.file('libs/hook-check-second.jar')
+}

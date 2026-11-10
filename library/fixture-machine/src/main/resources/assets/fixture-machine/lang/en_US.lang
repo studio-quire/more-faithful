@@ -1,0 +1,4 @@
+tile.fixture-machine.lamp.name=Lamp
+tile.fixture-machine.lamp_lit.name=Lamp
+item.fixture-machine.stamp.name=Stamp
+key.fixture-machine.lamp=Lamp

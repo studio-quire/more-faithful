@@ -1,0 +1,2 @@
+rule.item-repair.repair_bonus.name=Repair Bonus
+rule.item-repair.repair_bonus.hint=Repairs in the crafting grid add a twentieth of a new item's durability, as later versions do.

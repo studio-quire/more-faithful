@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "wary-creepers-selftest",
+  "version": "1",
+  "name": "Wary Creepers self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.warycreepers.selftest.WaryTest"]
+  },
+  "depends": {
+    "wary-creepers": "*"
+  }
+}

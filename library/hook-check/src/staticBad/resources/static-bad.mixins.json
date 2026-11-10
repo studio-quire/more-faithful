@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.studioquire.faithful.staticbad",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["OverwritingMixin", "RedirectingMixin"]
+}

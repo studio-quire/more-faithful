@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "hook-check-second",
+  "version": "1",
+  "name": "Hook check's second mod (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.hookchecksecond.Second"]
+  },
+  "depends": {
+    "hook-check": "*"
+  }
+}

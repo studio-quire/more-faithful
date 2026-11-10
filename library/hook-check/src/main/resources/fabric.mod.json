@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "hook-check",
+  "version": "${version}",
+  "name": "Hook check (test harness only, not shipped)",
+  "description": "Listens on every Faithful Core hook, for :harness:libraryHooksTest.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.hookcheck.HookCheck"],
+    "faithful:client": ["org.studioquire.faithful.hookcheck.client.ClientHooks"],
+    "oldfaithful-selftest:world": ["org.studioquire.faithful.hookcheck.client.HookChecks"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

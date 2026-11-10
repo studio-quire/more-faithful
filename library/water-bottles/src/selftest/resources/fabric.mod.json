@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "water-bottles-selftest",
+  "version": "1",
+  "name": "Water Bottles self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.waterbottles.selftest.BottlesTest"],
+    "faithful:test-client": ["org.studioquire.faithful.waterbottles.selftest.client.BottlesClientTest"],
+    "faithful:test-without": ["org.studioquire.faithful.waterbottles.selftest.client.WithoutTest"]
+  },
+  "depends": {
+    "water-bottles": "*"
+  }
+}

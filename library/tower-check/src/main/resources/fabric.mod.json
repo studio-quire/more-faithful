@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "tower-check",
+  "version": "${version}",
+  "name": "Tower check (test harness only, not shipped)",
+  "description": "Drives real world generation for Buried Towers' test and pictures.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.towercheck.server.TowerCheck"]
+  },
+  "mixins": ["tower-check.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

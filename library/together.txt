@@ -1,0 +1,5 @@
+# Entries in vanilla's tables two of our mods change only together, by design, which the harness's salts stage would otherwise fail
+# as changes-together (docs/library-harness.md, stage 4). One a line, a tab between: the entry as tables.txt names it, the mods with commas,
+# its value with them together, and why. It holds only with every one of those mods present and only at that value.
+
+recipe.Shapeless.261x1:0.size2	item-repair,world-rules	1	Item Repair adds a mending recipe for each item that wears as the game starts, and World Rules gives the bow its most damage then (Bows Wear Out), so the bow's exists only with both; it mends only in a world where the rule is on

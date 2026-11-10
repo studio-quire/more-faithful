@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.harness.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["PlayerDeathMixin", "BlockEntityAccessor", "EntityAccessor", "EntityRegistryAccessor", "FireBlockAccessor", "ToolItemAccessor", "WorldFrozenMixin"],
+  "server": ["MinecraftServerTickRateMixin", "ServerLoginTickRateMixin", "ConnectionWriterTickRateMixin"],
+  "injectors": {"defaultRequire": 1}
+}

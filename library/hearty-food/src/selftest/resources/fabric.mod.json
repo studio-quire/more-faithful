@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "hearty-food-selftest",
+  "version": "1",
+  "name": "Hearty Food self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.heartyfood.selftest.HeartyTest"],
+    "faithful:test-client": ["org.studioquire.faithful.heartyfood.selftest.client.HeartyClientTest"],
+    "faithful:test-without": ["org.studioquire.faithful.heartyfood.selftest.client.WithoutTest"]
+  },
+  "depends": {
+    "hearty-food": "*"
+  }
+}

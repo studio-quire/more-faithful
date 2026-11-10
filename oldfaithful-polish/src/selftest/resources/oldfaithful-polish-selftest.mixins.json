@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.studioquire.oldfaithful.polish.selftest.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ChunkCacheStorage",
+    "FurnaceFuel",
+    "LivingEntityInvoker",
+    "SkeletonEntityInvoker"
+  ],
+  "client": [
+    "ChatMessages",
+    "DistanceEntityTiming",
+    "DistanceParticleTiming",
+    "DuskChunkBuilderMixin",
+    "DuskGameRendererMixin",
+    "DuskParticleManagerMixin",
+    "DuskTextureManagerMixin",
+    "DuskWorldRendererMixin",
+    "HandledScreenFrame",
+    "SkinDownloads",
+    "SkinHttpsMixin",
+    "SkinRendererMixin",
+    "SquidClipFrame"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

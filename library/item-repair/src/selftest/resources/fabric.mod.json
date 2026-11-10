@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "item-repair-selftest",
+  "version": "1",
+  "name": "Item Repair self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.itemrepair.selftest.RepairTest"],
+    "faithful:test-client": ["org.studioquire.faithful.itemrepair.selftest.client.RepairClientTest"]
+  },
+  "depends": {
+    "item-repair": "*"
+  }
+}

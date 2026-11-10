@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "buried-towers",
+  "version": "${version}",
+  "name": "Buried Towers",
+  "description": "Ruined towers stand on the land, and go a long way down: floors somebody built and time got to, and ways down worth finding. They replace beta's small dungeons in new chunks.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.buriedtowers.BuriedTowers"],
+    "stagehand:places": ["org.studioquire.faithful.buriedtowers.TowerPlaces"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": { "content": true, "network": 1 }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "static-bad",
+  "version": "1",
+  "name": "Mistakes the static stage must catch (never run)",
+  "environment": "*",
+  "mixins": ["static-bad.mixins.json"]
+}

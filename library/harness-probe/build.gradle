@@ -1,0 +1,10 @@
+plugins { id 'oldfaithful.mod' }
+
+// What the conflict harness runs inside the game (docs/library-harness.md): the registry's rules, the tables' snapshot,
+// the arena of one of everything, the monkey.
+dependencies {
+    compileOnly project(':oldfaithful-core')
+    compileOnly project(':oldfaithful-settings')
+    compileOnly project(':harness')
+    compileOnly("org.studioquire.oldfaithful.natives:lwjgl:${lwjgl_version}") { transitive = false }
+}

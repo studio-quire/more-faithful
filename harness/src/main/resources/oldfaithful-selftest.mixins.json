@@ -1,0 +1,55 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.studioquire.oldfaithful.selftest.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ConnectionAccessor",
+    "WorldFixedSpawnMixin"
+  ],
+  "client": ["TextureManagerStillMixin", "ParticleManagerStillMixin", 
+    "ChunkBuilderBenchMixin",
+    "ChunkCacheBenchMixin",
+    "GameRendererBenchMixin",
+    "GameRendererStartupMixin",
+    "GameRendererFovProbeMixin",
+    "MinecraftBenchMixin",
+    "MinecraftStartupMixin",
+    "MouseHandsOffMixin",
+    "WorldSpawnBenchMixin",
+    "TitleScreenStartupMixin",
+    "MultiplayerScreenAccessor",
+    "ScreenAccessor",
+    "WorldRendererAccessor",
+    "ChunkBuilderSceneAccessor",
+    "WorldLightQueueAccessor",
+    "MinecraftTimerAccessor",
+    "MinecraftTickRateMixin",
+    "ClientNetworkHandlerTickRateMixin",
+    "ClientNetworkHandlerHoldMixin",
+    "ClientNetworkHandlerFenceMixin",
+    "ConnectionWriterTickRateMixin",
+    "MinecraftPickInvoker",
+    "RedstoneTorchInvoker",
+    "FishingBobberAccessor",
+    "EntityWaterAccessor",
+    "LivingEntityLerpAccessor",
+    "MinecraftMouseDriveMixin",
+    "ButtonWidgetAccessor",
+    "GameRendererScreenCaptureMixin",
+    "GameRendererSceneMixin",
+    "GameRendererSeamMixin",
+    "TextRendererRecordMixin",
+    "LedgeHuntPlayerMixin",
+    "LedgeHuntEntityMixin",
+    "LedgeHuntEntityAccessor"
+  ],
+  "server": [
+    "PlayerManagerRideMixin",
+    "MultiplayerScenesMixin",
+    "ServerStopAtStartMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

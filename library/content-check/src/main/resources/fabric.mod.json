@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "content-check",
+  "version": "1",
+  "name": "Content check (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.contentcheck.ContentCheck"],
+    "oldfaithful-selftest:world": ["org.studioquire.faithful.contentcheck.ContentWorldCheck"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

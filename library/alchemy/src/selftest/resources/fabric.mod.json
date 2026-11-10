@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "alchemy-selftest",
+  "version": "1",
+  "name": "Alchemy self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.alchemy.selftest.AlchemyTest"],
+    "faithful:test-client": ["org.studioquire.faithful.alchemy.selftest.client.AlchemyClientTest"]
+  },
+  "depends": {
+    "alchemy": "*"
+  }
+}

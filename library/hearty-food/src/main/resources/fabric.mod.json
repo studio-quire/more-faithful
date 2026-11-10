@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "hearty-food",
+  "version": "${version}",
+  "name": "Hearty Food",
+  "description": "Food heals half as much again, over time, with pale hearts showing where you'll end up. Eating is still one click, and half a heart a second helps even mid-fight. It runs where the world runs, so a server can use it with any client; only a client with the mod too sees the pale hearts.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "mixins": ["hearty-food.mixins.json"],
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.heartyfood.HeartyFood"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

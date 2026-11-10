@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "wolf-packs-selftest",
+  "version": "1",
+  "name": "Wolf Packs self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.wolfpacks.selftest.PacksTest"],
+    "faithful:test-client": ["org.studioquire.faithful.wolfpacks.selftest.client.FeedingClientTest"]
+  },
+  "depends": {
+    "wolf-packs": "*"
+  }
+}

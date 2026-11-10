@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "blue-flowers-selftest",
+  "version": "1",
+  "name": "Blue Flowers self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.blueflowers.selftest.FlowersTest"],
+    "faithful:test-client": ["org.studioquire.faithful.blueflowers.selftest.client.FlowersClientTest"]
+  },
+  "depends": {
+    "blue-flowers": "*"
+  }
+}

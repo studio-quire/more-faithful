@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-ore",
+  "version": "${version}",
+  "name": "Ore fixture (test harness only, not shipped)",
+  "description": "An honest mod for the harness to pass: an ore, its ingot, a rule and a drop filter.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.fixtureore.FixtureOre"],
+    "harness:scenario": ["org.studioquire.faithful.fixtureore.OreScenario"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "no-toasts",
+  "version": "${version}",
+  "name": "No Toasts",
+  "description": "No achievement pop-ups and no tutorial pop-up. Achievements are still earned and kept.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "faithful:client": ["org.studioquire.faithful.notoasts.client.NoToasts"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "stagehand-selftest",
+  "version": "1",
+  "name": "Stagehand self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.stagehand.selftest.StagehandTest"],
+    "faithful:test-client": ["org.studioquire.faithful.stagehand.selftest.client.StagehandClientTest"],
+    "stagehand:places": ["org.studioquire.faithful.stagehand.selftest.TestPlaces"]
+  },
+  "depends": {
+    "stagehand": "*"
+  }
+}

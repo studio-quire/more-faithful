@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "water-bottles",
+  "version": "${version}",
+  "name": "Water Bottles",
+  "description": "Glass bottles you fill at any water and drink from for nothing. Three glass in a V at the bench makes three; drinking does nothing at all and gives the bottle back.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.waterbottles.WaterBottles"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

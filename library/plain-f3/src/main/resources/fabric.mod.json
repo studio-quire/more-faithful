@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "plain-f3",
+  "version": "${version}",
+  "name": "Plain F3",
+  "description": "The F3 screen keeps its frame rate and memory, and loses position, facing and entity counts. Mobs lose their numbers too, so you find your way without coordinates.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "mixins": ["plain-f3.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

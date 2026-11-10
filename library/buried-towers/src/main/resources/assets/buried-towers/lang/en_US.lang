@@ -1,0 +1,4 @@
+rule.buried-towers.style.name=Towers
+rule.buried-towers.style.hint=Simple: crude stumps of cobble and moss, like beta's dungeons. Complex: big towers of dressed stone.
+rule.buried-towers.style.simple=Simple
+rule.buried-towers.style.complex=Complex

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "api-check",
+  "version": "1",
+  "name": "Content API check (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.apicheck.ApiCheck"],
+    "faithful:client": ["org.studioquire.faithful.apicheck.client.ApiClient"],
+    "oldfaithful-selftest:world": ["org.studioquire.faithful.apicheck.client.ApiWorldCheck"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

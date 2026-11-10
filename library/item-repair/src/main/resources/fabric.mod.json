@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "item-repair",
+  "version": "${version}",
+  "name": "Item Repair",
+  "description": "Two worn tools, weapons or armour of the same kind in the crafting grid make one. It has what was left of both, up to as good as new, as in later versions. It runs where the world runs, so a server can use it with any client.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.itemrepair.ItemRepair"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

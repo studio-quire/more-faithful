@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-ore-selftest",
+  "version": "1",
+  "name": "Ore fixture's test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.fixtureore.selftest.OreTest"]
+  },
+  "depends": {
+    "fixture-ore": "*"
+  }
+}

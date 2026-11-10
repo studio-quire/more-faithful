@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "world-rules-selftest",
+  "version": "1",
+  "name": "World Rules self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.worldrules.selftest.Scenes"],
+    "faithful:test": ["org.studioquire.faithful.worldrules.selftest.RulesTest"],
+    "faithful:test-client": ["org.studioquire.faithful.worldrules.selftest.client.RulesClientTest"],
+    "oldfaithful-selftest:world": ["org.studioquire.faithful.worldrules.selftest.RulesCheck"]
+  },
+  "depends": {
+    "world-rules": "*"
+  }
+}

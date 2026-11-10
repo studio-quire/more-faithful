@@ -1,0 +1,5 @@
+tile.fixture-ore.copper_ore.name=Copper Ore
+tile.fixture-ore.copper_block.name=Block of Copper
+item.fixture-ore.copper_ingot.name=Copper Ingot
+rule.fixture-ore.rich_ore.name=Rich Ore
+rule.fixture-ore.rich_ore.hint=Copper ore drops a second ingot.

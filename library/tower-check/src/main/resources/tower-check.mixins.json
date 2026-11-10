@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.towercheck.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "server": ["MinecraftServerPaceMixin"],
+  "injectors": {"defaultRequire": 1}
+}

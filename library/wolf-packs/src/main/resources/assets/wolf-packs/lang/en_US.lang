@@ -1,0 +1,8 @@
+rule.wolf-packs.spread_out.name=Packs Spread Out
+rule.wolf-packs.spread_out.hint=Your wolves each take a different monster, and the next when theirs dies. Off: they all go for one, as in beta.
+rule.wolf-packs.fight_creepers.name=Wolves Fight Creepers
+rule.wolf-packs.fight_creepers.hint=Wolves go for creepers too, and a bitten creeper keeps coming for you. Off: they leave creepers be, as in beta.
+rule.wolf-packs.feeding.name=Wolves Eat Fish
+rule.wolf-packs.feeding.hint=Wolves eat fish too, and food heals a wolf as it heals you. Off: any pork heals 1.5 hearts, as in beta.
+rule.wolf-packs.guarding.name=Wolves Guard You
+rule.wolf-packs.guarding.hint=Wolves go for a monster after you within 4 blocks, or a skeleton shooting at you. Off: only after a hit, as in beta.

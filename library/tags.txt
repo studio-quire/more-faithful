@@ -1,0 +1,44 @@
+# The tag vocabulary (docs/library-authoring.md > Things that bite): every name a mod may give Tags.add or a recipe, so two mods don't
+# invent two spellings. Add a name here in the same commit as the first mod that uses it. Materials are shared through a tag, so a
+# path doesn't repeat under two namespaces. Plural folders, singular leaves: c:ingots/iron, not c:ingot/irons.
+
+# Vanilla's own, filled by the core.
+c:ingots/iron
+c:ingots/gold
+c:gems/diamond
+c:gems/lapis
+c:dusts/redstone
+c:dusts/glowstone
+c:ores/iron
+c:ores/gold
+c:ores/diamond
+c:ores/coal
+c:ores/redstone
+c:ores/lapis
+c:coal
+c:charcoal
+c:planks
+c:logs
+c:stone
+c:cobblestone
+c:sand
+c:gravel
+c:dirt
+c:glass
+c:wool
+c:sticks
+c:string
+c:leather
+c:feathers
+c:storage_blocks/iron
+c:storage_blocks/gold
+c:storage_blocks/diamond
+c:storage_blocks/lapis
+c:meats/raw
+c:meats/cooked
+c:seeds/wheat
+c:crops/wheat
+c:fruits/apple
+
+# api-check's own, standing for a material a mod would add.
+c:ingots/test

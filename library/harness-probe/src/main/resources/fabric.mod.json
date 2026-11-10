@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "harness-probe",
+  "version": "${version}",
+  "name": "Harness probe (test harness only, not shipped)",
+  "description": "What :harness:libraryTest runs inside the game.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.harness.Probe"],
+    "oldfaithful-selftest:world": ["org.studioquire.faithful.harness.client.ProbeWorldCheck"]
+  },
+  "mixins": ["harness-probe.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  }
+}

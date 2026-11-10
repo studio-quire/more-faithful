@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.plainf3.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": ["InGameHudMixin", "LivingEntityRendererMixin"],
+  "injectors": {"defaultRequire": 1}
+}

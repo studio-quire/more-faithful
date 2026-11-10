@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "explosive-arrows-selftest",
+  "version": "1",
+  "name": "Explosive Arrows self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.explosivearrows.selftest.ArrowsTest"],
+    "faithful:test-client": ["org.studioquire.faithful.explosivearrows.selftest.client.ArrowsClientTest"]
+  },
+  "depends": {
+    "explosive-arrows": "*"
+  }
+}

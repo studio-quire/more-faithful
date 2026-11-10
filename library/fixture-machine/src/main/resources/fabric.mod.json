@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-machine",
+  "version": "${version}",
+  "name": "Machine fixture (test harness only, not shipped)",
+  "description": "An honest mod for the harness to pass: a lamp with a lit variant, a stamped item, a channel, a command, an attachment, a key.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.fixturemachine.FixtureMachine"],
+    "faithful:client": ["org.studioquire.faithful.fixturemachine.FixtureMachineClient"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

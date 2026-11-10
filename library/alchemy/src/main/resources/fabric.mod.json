@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "alchemy",
+  "version": "${version}",
+  "name": "Alchemy",
+  "description": "Gild a flower or a feather, then brew it: potions of health, ward, haste and feather. Four gold ingots around a rose, dandelion, bluebell (from Blue Flowers) or feather at the bench gild it, and a water bottle with one, two or three of the golden thing makes a weak, plain or strong potion. Health heals 3, 6 or 10 hearts at once. Ward is a set of armour in a bottle: the whole armour bar turns blue over whatever you wear, and hits wear it away before your own armour takes any wear; the bigger the potion, the longer it lasts, and a golden apple gives a strong one's too. Haste (walking and mining 20% faster) and Feather (falls hurt a third as much) last 4, 8 or 12 minutes, their bottles draining beside your figure in the inventory.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (the ward, haste and feather potions' design; the golden things' art)", "Shoalstone (idea and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "mixins": ["alchemy.mixins.json"],
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.alchemy.Alchemy"]
+  },
+  "depends": {
+    "faithful-core": "*",
+    "water-bottles": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

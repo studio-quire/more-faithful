@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "fixture-bad-monkey",
+  "version": "${version}",
+  "name": "Planted bugs for the monkey (test harness only, not shipped)",
+  "description": "Logic on the wrong side, ghost blocks and a shift-click dupe.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.fixturebadmonkey.BadMonkey"],
+    "faithful:client": ["org.studioquire.faithful.fixturebadmonkey.BadMonkeyClient"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true}
+  }
+}

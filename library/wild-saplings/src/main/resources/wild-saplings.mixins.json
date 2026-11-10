@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.wildsaplings.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["SaplingBlockMixin"],
+  "injectors": {"defaultRequire": 1}
+}
