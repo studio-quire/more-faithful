@@ -11,16 +11,6 @@ player or server owner notices.
 
 On the Faithful Library 0.5.0 and Still Faithful 0.6.0, on Old Faithful 0.2.4 and Pure Faithful 0.1.5.
 
-**The pack was replaced twice on its release day, 2026-11-10, while its seal was being settled**: first to give its
-icon in Prism a gold shaded like beta's gold ingot in place of the paler gold it came out with, then for the crimson
-with a silver rim and β it has now. Nothing else changed either time: the mods, the README and everything else in the
-pack are the same, and the server package has been the same file throughout. A `MoreFaithful-0.5.0.zip` downloaded
-earlier has one of these SHA-256s, not the one on the release page, and plays exactly the same, so there's no need to
-download it again:
-
-- `c64bf5e5ca1814f65740c941e44002d29b50a4bf89259881308c1251103fd1f8`, the first upload (the paler gold)
-- `8c8be9bd169b2e69c9ec324da5ffa59e2c3dc92dc6523eab3cc8473d725acba8`, the second (the ingot gold)
-
 **The Faithful Library's pack on Still Faithful is now More Faithful**, with its own releases here. Its numbers go on
 from that pack's, so this is the one after 0.4.0. The mods are the same, all on, each with its switch, and so is the
 server package. What's new is the name: the title screen says **More Faithful 0.5.0**, the settings in Options are

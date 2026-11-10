@@ -39,7 +39,7 @@ the repository `studio-quire/still-faithful`, the page `studioquire.org/still-fa
 
 The Faithful Library's names are permanent: each mod's folder is its id and jar name (`world-rules`, `plain-f3`, `no-toasts`, `water-bottles`, `hearty-food`, `alchemy`, `blue-flowers`, `buried-towers`, `item-repair`, `explosive-arrows`, `wild-saplings`, `wary-creepers`, `wolf-packs`, `stagehand`; `better-dungeons` was public until the user removed it, 2026-11-06, and its id stays retired), `faithful-core`, and `oldfaithful-settings`, which stays Old Faithful's. Its words and version are `library_*` in the root's `gradle.properties`: the jars, the repository `studio-quire/faithful-library`, the page `studioquire.org/faithful-library/`. Its mods' metadata links there.
 
-More Faithful's words, version and seal are `more_*` in the root's `gradle.properties`, its texts in `release/more-faithful/`: the pack `MoreFaithful-<v>.zip`, the server package `MoreFaithful-server-<v>.zip`, the repository `studio-quire/more-faithful`, the page `studioquire.org/more-faithful/`, the dev packs `MoreFaithful-dev*.zip`. It has no mods of its own, so no public id. Through 0.4.0 it was the library's pack `StillFaithful-Library-<v>.zip`, beside `OldFaithful-Library-<v>.zip`, on the library's releases. Its icon is its own seal, crimson with the rim and β in silver as the editions' are (`more_release_icon=morefaithful`, `prism/release/icons/final/morefaithful-*`, drawn by `tools/icon_candidates.py`; the user's pick, 2026-11-10, after an hour with a pine seal trimmed in gold). Inside the game it names itself while any of its mods is on (In the game, below).
+More Faithful's words, version and seal are `more_*` in the root's `gradle.properties`, its texts in `release/more-faithful/`: the pack `MoreFaithful-<v>.zip`, the server package `MoreFaithful-server-<v>.zip`, the repository `studio-quire/more-faithful`, the page `studioquire.org/more-faithful/`, the dev packs `MoreFaithful-dev*.zip`. It has no mods of its own, so no public id. Through 0.4.0 it was the library's pack `StillFaithful-Library-<v>.zip`, beside `OldFaithful-Library-<v>.zip`, on the library's releases. Its icon is its own seal, crimson with the rim and β in silver as the editions' are (`more_release_icon=morefaithful`, `prism/release/icons/final/morefaithful-*`, drawn by `tools/icon_candidates.py`; the user's pick, 2026-11-10). Inside the game it names itself while any of its mods is on (In the game, below).
 
 ## Building one
 
@@ -111,14 +111,7 @@ files it changes as CRLF, and the guard then stops the rebuild); `git ls-files -
 compares against), so `release` and `releaseFixed` stop before writing into a folder whose `SHA256SUMS.txt` this
 build would change (a file changed, added or removed), naming the files (`releaseStill` too), unless `-Prelease.overwrite` says the folder
 is an unpublished build to replace. Changed code under a released version means a new version. Test builds
-(`-Prelease.test`) have their own folder and aren't guarded. Once a released version's files were replaced on purpose
-(the user's calls): More Faithful 0.5.0's pack, twice in the hours after its release on 2026-11-10, as its seal was
-settled (an ingot gold, then crimson with silver). Each time it was rebuilt from a commit whose only shipped change was
-the icon, compared with the published zip entry by entry (only the icon differed, and the server package came out the
-same file, so it stayed), written over its folder by `releaseMore -Prelease.overwrite` alone, and uploaded beside the
-old file under another name and renamed over it, so the download was missing only for a moment; its changelog entry
-and release notes say so with the earlier copies' checksums, and the tag `v0.5.0` moved to the snapshot that builds
-it. The folder holds the reissued files, so later builds compare against those.
+(`-Prelease.test`) have their own folder and aren't guarded.
 
 `gradle/release.gradle` describes each edition once (`releaseEditions`: names, version, icon, mods, server mods,
 README and notices header) and builds both from the same templates; Old Faithful's own texts are in
