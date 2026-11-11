@@ -138,8 +138,8 @@ tasks.register('prismFixedInstance', Zip) {
 
 
 // The server package: beta 1.7.3's server, which the owner supplies, run through Fabric Loader
-// with our hardening mod; start scripts that check the server jar's hash. Written to local/server-package/, never
-// committed; :harness:multiplayerTest runs the game from it.
+// with our hardening mod; start scripts that check the server jar's hash. Written to build/server-package/, this
+// checkout's own; :harness:multiplayerTest runs the game from a copy of it.
 // Applied inside each task's configuration, which runs lazily, after the subprojects are evaluated. The notices,
 // licences, sources and the editions come from gradle/release.gradle, as for the pack; the dev tasks here build Pure
 // Faithful's, and `releaseServerFixed` Old Faithful's (its own README and mods).
@@ -169,21 +169,34 @@ ext.serverPackageContents = { spec, Map ed = releaseEditions.pure ->
     with sourcesSpec(false, ed)
   })
 }
-tasks.register('serverPackage', Sync) {
+// Where the game tests take it from. Under build/, so each checkout has its own: in local/, which checkouts share, one
+// checkout's tests ran on the package another had built last, and a build that had made it once took it for its own
+// from then on (through a linked local/ Gradle doesn't see another checkout's writes).
+ext.serverPackageDir = layout.buildDirectory.dir('server-package/OldFaithful-server')
+tasks.register('serverPackage', Copy) {
     group = 'oldfaithful'
-    description = 'Builds local/server-package/OldFaithful-server/: the hardened b1.7.3 server package (bring your own server jar).'
+    description = 'Builds build/server-package/OldFaithful-server/: the hardened b1.7.3 server package (bring your own server jar).'
     inputs.property('serverSha1', minecraft_server_sha1)
     serverPackageContents(it)
     includeEmptyDirs = false
-    into layout.projectDirectory.dir('local/server-package/OldFaithful-server')
+    // Made in a folder of this build's own and settled into place file by file: tests in this checkout copy the package
+    // while other builds here run, so a file is never written where it's read, and one that hasn't changed isn't touched.
+    def place = serverPackageDir.get().asFile
+    def making = new File(place.parentFile, "making-${UUID.randomUUID()}")
+    into making
+    // Every time, as the folder it copies into is new every time: the cost is 5 MB copied, and settling leaves a
+    // package that's already right as it is.
+    outputs.upToDateWhen { false }
+    doFirst { oldfaithful.gradle.Folders.sweep(place.parentFile.toPath(), 'making-', java.time.Duration.ofHours(1)) }
+    doLast { oldfaithful.gradle.Folders.settle(making.toPath(), place.toPath()) }
 }
 tasks.register('serverPackageZip', Zip) {
     group = 'oldfaithful'
-    description = 'Zips the server package into local/server-package/OldFaithful-server.zip.'
+    description = 'Zips the server package into build/server-package/OldFaithful-server.zip.'
     inputs.property('serverSha1', minecraft_server_sha1)
     into('OldFaithful-server') { serverPackageContents(it) }
     includeEmptyDirs = false
-    destinationDirectory = layout.projectDirectory.dir('local/server-package')
+    destinationDirectory = layout.buildDirectory.dir('server-package')
     archiveFileName = 'OldFaithful-server.zip'
 }
 

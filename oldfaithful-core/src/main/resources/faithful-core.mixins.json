@@ -34,15 +34,13 @@
     "StillLiquidBlockMixin",
     "TntEntityMixin",
     "TranslationStorageMixin",
-    "WorldMixin",
-    "WorldPropertiesMixin"
+    "WorldMixin"
   ],
   "client": [
     "client.BipedEntityModelMixin",
     "client.BrandingMixin",
     "client.ClientNetworkHandlerAccessor",
     "client.ClientNetworkHandlerMixin",
-    "client.ClientWorldMixin",
     "client.CreateWorldScreenMixin",
     "client.GameOptionsMixin",
     "client.GameRendererMixin",

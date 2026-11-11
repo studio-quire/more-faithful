@@ -150,6 +150,7 @@ public final class Core {
 				run(c.getProvider().getMetadata().getId(), () -> c.getEntrypoint().initClient(new ModImpl(c.getProvider().getMetadata().getId())));
 			}
 		}
+		Rules.meet();
 		currentMod = ID;
 		CoreNet.seal();
 	}

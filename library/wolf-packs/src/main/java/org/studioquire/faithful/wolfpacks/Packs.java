@@ -39,6 +39,9 @@ import org.studioquire.faithful.wolfpacks.mixin.PlayerEntityAccessor;
  * <p>Wolves Fight Creepers (its own rule, the user's call the same day) lifts beta's exception for creepers everywhere: the call, guarding and the spread.
  *
  * <p>What's left as beta: a wolf that's hit turns on what hit it.
+ *
+ * <p>A sitting wolf's watch is {@link Watch}'s. A wolf on watch and off its seat is left out of the pack's own looking ({@link #tick}); beta's call can
+ * still send it while it's free, and the others count it as a wolf on its monster when they spread.
  */
 public final class Packs {
 	/** Beta's reach for its call: wolves within 16 blocks of the player across, 4 up or down. Free wolves join a fight from as far. */
@@ -80,6 +83,10 @@ public final class Packs {
 		clock++;
 	}
 
+	static long now() {
+		return clock;
+	}
+
 	public static boolean on() {
 		return WolfPacks.spreadOut != null && WolfPacks.spreadOut.get();
 	}
@@ -104,7 +111,7 @@ public final class Packs {
 		return pack;
 	}
 
-	private static Hunt hunt(WolfEntity wolf) {
+	static Hunt hunt(WolfEntity wolf) {
 		return ((Hunt.Holder) wolf).wolfpacks$hunt();
 	}
 
@@ -128,6 +135,7 @@ public final class Packs {
 		for (Object o : owner.world.collectEntitiesByClass(WolfEntity.class, reach)) {
 			WolfEntity wolf = (WolfEntity) o;
 			if (!ownWolf(owner, wolf) || wolf.getTarget() != null || keepSitting && wolf.isInSittingPose()) continue;
+			Watch.stoodUp(wolf);
 			wolf.setSitting(false);
 			Entity enemy = on() ? call(owner, wolf, creeper) : creeper;
 			wolf.setTarget(enemy);

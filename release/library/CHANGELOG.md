@@ -2,9 +2,49 @@
 
 The Faithful Library's releases, newest first. One version number for Faithful Core and the library's mods; Faithful
 Settings, beside them, is Old Faithful's. Through 0.4.0 it was the library packs' and their server packages' number too,
-and each entry named the edition releases the packs were built on. The pack with every mod on is now
+and each entry named the edition releases the packs were built on. The pack is now
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
+
+## 0.6.0 (2026-11-10)
+
+Faithful Settings is Old Faithful 0.2.4's, as in 0.5.0.
+
+- **Faithful Core**: a pack can choose what its new worlds start with, and More Faithful now does. The pack's choices
+  are `rule.<mod>.<rule>` lines in its `pack.properties` (in `mods-library/` in a pack, beside the start scripts in a
+  server package). The first time a game or server meets a rule, it takes the pack's choice for it, or with no pack the
+  rule's own start, and keeps it in `config/faithful-rules.properties`; from then on that line is yours, changed on
+  Create World's World Rules... page, and no update changes it. That file now has a line for every rule of the mods you
+  have on, where it had lines only for the rules you'd changed. With the mods on their own nothing changes: there's no
+  pack file, so every rule starts as its mod has it.
+- **World Rules**: its description no longer says a world nobody changed plays as beta, since More Faithful now
+  starts its new worlds with rules of its own, and its list of the rules has Blasts Destroy Items, which it had left
+  out. On its own, every rule still starts as beta's.
+- **World Rules**: the **Day Length** rule is gone. It made a day two or three times as long, and it had faults that
+  weren't worth what mending them would take: on a server with a longer day, a player without the mods saw the light
+  step back and forth at dusk and dawn. A world that had a longer day opens as before and has beta's day again: the
+  sun goes to where the world's own time puts it, so the hour jumps once, and nothing else in the world changes. The
+  rule's line in the world's `faithful-world.properties` is no longer read.
+- **Faithful Core**: if you update jars one at a time, update Faithful Core with whichever mod you update, and World
+  Rules and Stagehand together with the core: with Explosive Arrows 0.6.0 on an older core the game doesn't start; nor
+  does it with this core and a World Rules of 0.5.0 or before; and an older Stagehand's `time` and `status` fail.
+  For mods written against the core, `Days` (the day's length and the sun's hour) is gone with the
+  Day Length rule; the hour is `world.getTime() % 24000`, as in beta.
+- **Faithful Core**, for writing mods: `Arrows`, where a mod's arrow says what it flies as, for anything of a mod's own
+  that shoots one (Explosive Arrows' arrow is there), and `Tools.canHarvest` and `Tools.breakProgress`, a player's
+  digging worked out for a miner that isn't a player ([docs/library-authoring.md](docs/library-authoring.md)).
+- **Wolf Packs**: sitting wolves keep watch, a new rule, **Sitting Wolves Watch**, on to start with, in worlds you
+  already have too. A sitting wolf goes for a monster it sees within 8 blocks, follows it no further than 16 from its
+  spot, then walks back to where it sat and sits down again, whether its owner is there or not (if it can't get back,
+  it sits where it ends up). It doesn't see through a wall, glass or leaves, sees over a fence only from a little way
+  back, and takes on only what it sees from its seat. It leaves a spider alone by day and a calm pig zombie. A creeper
+  bitten by a wolf on watch turns on that wolf and blows up beside it, which breaks what's round the wolf too unless
+  World Rules' Mobs Break Blocks is off (one bitten by a wolf at your side still keeps coming for you). A wolf with no
+  way to a monster it sees stays sitting and growls. A sitting wolf hit by a monster or another player, or that gets
+  up because something hurt you, now goes back to its spot when that fight is over, where beta's stayed up and
+  followed you. Turned off, a sitting wolf is beta's.
+- **Wary Creepers** is no longer in More Faithful, where sitting wolves keep a place instead. The mod is unchanged and
+  still here as a jar; the README says how to put it in a More Faithful instance.
 
 ## 0.5.0 (2026-11-10)
 

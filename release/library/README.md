@@ -6,9 +6,9 @@ Mods for Minecraft beta 1.7.3 on Fabric, and Faithful Core, the API they're buil
 mods of your own. Any combination works, in single player and on servers. Open source, from
 [Studio Quire](https://studioquire.org/).
 
-To play them all at once, each with its own switch, take [More Faithful](https://github.com/studio-quire/more-faithful):
-[Still Faithful](https://github.com/studio-quire/still-faithful) with every mod here on, one download to import into
-Prism Launcher. Through 0.4.0 this repository's releases held the packs: the one on Still Faithful is More Faithful now,
+To play them together, each with its own switch, take [More Faithful](https://github.com/studio-quire/more-faithful):
+[Still Faithful](https://github.com/studio-quire/still-faithful) with the mods here on, all but Wary Creepers and
+Stagehand, one download to import into Prism Launcher. Through 0.4.0 this repository's releases held the packs: the one on Still Faithful is More Faithful now,
 and the one on Old Faithful has gone, as each pack now builds on the one before. For the mods without Still Faithful's
 changes, install them on their own in an [Old Faithful](https://github.com/studio-quire/old-faithful) instance (below).
 
@@ -17,11 +17,11 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
 ## The mods
 
 - **World Rules**: rules for each world, on the mod's page in the settings and on Create World's World Rules... page:
-  Mobs Break Blocks, Blasts Destroy Items, Keep Inventory, Sleeping, Day Length (normal, double, triple), Weather (normal, always clear, always
+  Mobs Break Blocks, Blasts Destroy Items, Keep Inventory, Sleeping, Weather (normal, always clear, always
   rain or snow), Natural Monsters, Monster Light (monsters appear in dim light as in beta, or not in any torch or lava
   light), Apple Drops (oak leaves, 1 time in 200), Falling Hit Bonus (beta's, only when really falling, or none) and Bows
   Wear Out (a bow lasts 385 shots, any arrow, as when bows first wore out in 1.0, with a bar showing its wear like a tool's; turned off,
-  worn bows look new and keep their wear for when it's back). A world nobody changed plays as beta. **Lock Rules** locks a world's rules so nothing in the game changes them; on a
+  worn bows look new and keep their wear for when it's back). With the mod on its own, a world nobody changed plays as beta; [More Faithful](https://github.com/studio-quire/more-faithful) starts its new worlds with rules of its own. **Lock Rules** locks a world's rules so nothing in the game changes them; on a
   server, `/rule lock`. While they're locked, the Mods menu doesn't switch off a mod that has rules. Taking
   `rules-locked=true` out of the world's `faithful-world.properties`, with the game closed, unlocks them.
 - **Buried Towers**: ruined towers stand on the land about every 24 chunks, and go a long way down, to about bedrock:
@@ -63,18 +63,23 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
   off, and it hurts you too if you fire too close. Its puffs show as far off as you can hear the bang, where beta draws a
   blast's only within 16 blocks of you. A bow shoots whichever arrows come first in your inventory, the hotbar from the
   left first, so where you keep them decides. Dispensers shoot them too.
-- **Wary Creepers**: creepers keep away from a jack-o'-lantern whose lit face they can see. A creeper within 8 blocks, on
-  the side the face looks out on and with nothing in the way, turns and walks off, and comes back once it no longer sees
-  a lit face in reach, so creepers keep to the edge of a lantern's reach. **A creeper coming from behind a lantern isn't
-  scared at all**, so mind which way each one faces: it faces you as you place it. A creeper sees it as it would see
-  you, so not through glass, leaves or a wall. One already at your side still swells. It's the lantern standing there
-  that keeps a place, not you: carrying or wearing a pumpkin does nothing.
 - **Wolf Packs**: your tamed wolves take on a different monster each. A fight starts when you hit something or
   something hurts you, as in beta, or when a monster after you comes within 4 blocks of you or a skeleton shoots at you;
   then each wolf goes for whichever monster after you or your wolves has the fewest wolves on it, what you hit first,
   and when its own dies it takes the next, so a pack works through a group. A wolf that can't reach its monster gives up
   on it after a while and comes back. Wolves fight creepers too, where beta's left them alone, and a bitten creeper
   keeps coming for you, so keep your wolves between you and it.
+  A sitting wolf keeps watch over the spot where it sits. It goes for a monster it sees within 8 blocks, follows it no
+  further than 16 blocks from its spot, then walks back and sits down again, whether you're there or not; if it can't
+  get back, it sits where it ends up. It doesn't see
+  through a wall, glass or leaves, and it sees over a fence only from a little way back; grass and flowers hide
+  nothing from it. It takes on only what it sees from its seat, so where you sit it decides what it guards. It leaves
+  a spider alone by day and a pig zombie that's calm, as they'd leave you. Wolves on watch get hurt and don't heal by themselves, so a watch costs pork and fish, or wolves: a
+  creeper bitten by a wolf on watch turns on that wolf and blows up beside it, which breaks what's round the wolf too
+  unless World Rules' Mobs Break Blocks is off. To keep a wolf out of the fighting, sit
+  it where it can see the monsters and can't get to them, up a ledge four blocks high, say (a wolf will drop three):
+  there it stays sitting and growls at what it sees. A sitting wolf hit by a monster or another player, or that gets up
+  because something hurt you, as in beta, goes back to its spot after that fight too. Your click stands it up for good, as ever.
   Wolves eat fish as well as pork, raw or cooked, and each food heals a wolf what it heals you (beta's healed a
   raw porkchop's worth, 1.5 hearts, whatever it was); with Hearty Food, as Hearty Food heals you, over time. A wolf at full health eats
   nothing, as in beta, and a click with its food never sits it down or stands it up.
@@ -87,6 +92,17 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
 - **Plain F3**: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - **No Toasts**: no achievement or tutorial pop-ups. Achievements are still earned.
+
+**Wary Creepers** is in the release as a jar of its own and in no pack: More Faithful carried it through 0.5.0, and
+has sitting wolves keep a place instead (Wolf Packs). Creepers keep away from a jack-o'-lantern whose lit face they can
+see. A creeper within 8 blocks, on the side the face looks out on and with nothing in the way, turns and walks off, and
+comes back once it no longer sees a lit face in reach, so creepers keep to the edge of a lantern's reach. **A creeper
+coming from behind a lantern isn't scared at all**, so mind which way each one faces: it faces you as you place it. A
+creeper sees it as it would see you, so not through glass, leaves or a wall. One already at your side still swells.
+It's the lantern standing there that keeps a place, not you: carrying or wearing a pumpkin does nothing. To have it in
+a More Faithful instance, with the game closed copy `wary-creepers-<version>.jar` to
+`.minecraft/mods-library/wary-creepers.jar` and add the line `mods-library/wary-creepers.jar` to `selection.txt`
+there; it then has a switch in the Mods menu like the rest.
 
 **Stagehand** is in the release as a jar of its own and in no pack: it runs scripts dropped into a folder in the game's
 directory (teleports, items, time, weather, mobs, blocks), and writes back what happened, for setting up a play-test from
@@ -106,12 +122,13 @@ doesn't run with StationAPI, so that combination stops at launch with a message.
 
 In an instance from More Faithful, or from the library's old packs, they're in `.minecraft/mods-library` instead, each
 with a switch in the game's settings, and named without their versions: to update one, replace its jar there with the
-new one under the old name (`alchemy-0.5.0.jar` becomes `alchemy.jar`), `faithful-core` included.
+new one under the old name (`alchemy-0.6.0.jar` becomes `alchemy.jar`), `faithful-core` included.
 
 ## Servers
 
 A server takes the server-side mods it wants in `mods/`, with `faithful-core` and `oldfaithful-settings`.
-[More Faithful](https://github.com/studio-quire/more-faithful)'s server package is Still Faithful's with all of them on.
+[More Faithful](https://github.com/studio-quire/more-faithful)'s server package is Still Faithful's with them on, all but
+Wary Creepers.
 
 - **World Rules** runs where the world runs, so a server can use it with any client, vanilla beta 1.7.3 too. A server with
   it is the same to a player who hasn't got it, except that under Bows Wear Out their bow wears out with no bar to show
@@ -126,6 +143,8 @@ A server takes the server-side mods it wants in `mods/`, with `faithful-core` an
   on a server without it, creepers are beta's.
 - **Wolf Packs** runs where the world runs too, so a server can use it with any client, vanilla beta 1.7.3 too. With it
   on a server without it, wolves and creepers are beta's. A player without it feeds fish on a server with it all the same.
+  Sitting wolves keep watch while their owner is away too, wherever players keep the land loaded. A wolf's growl from
+  its seat is heard by players with any library mod on, and not by a vanilla client.
 - **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows** and **Buried Towers** need every player to have them: the first four add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
   on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
@@ -144,9 +163,8 @@ behave there as on a vanilla server.
 Worlds are kept in beta 1.7.3's own format, with the library's data beside it, so they open without the mods, in the
 original game too. What you lose, plainly:
 
-- **World Rules**: nothing. Its choices stay in the world's `faithful-world.properties` and come back with the mod. The
-  hour can jump if the day's length was changed. Worn bows look new and wear no more without it, and show their wear
-  again when it's back.
+- **World Rules**: nothing. Its choices stay in the world's `faithful-world.properties` and come back with the mod.
+  Worn bows look new and wear no more without it, and show their wear again when it's back.
 - **Buried Towers**: towers it's built stay, as ordinary blocks, and new chunks go back to beta's own dungeons. A tower half
   made stays half made. Rooms the old Better Dungeons built stay too.
 - **Water Bottles**: its items don't survive. Bottles in that world become bowls for good. Alchemy goes off with it, as it needs it.
@@ -160,8 +178,8 @@ original game too. What you lose, plainly:
 - **Hearty Food**: food goes back to beta's. Healing still to come waits in the player's save and goes on if the mod returns.
 - **Item Repair**: nothing. What it mended stays mended, and Repair Bonus, if you turned it on, stays in the world's file.
 - **Wild Saplings**: nothing. Trees it grew stay, and saplings grow as in beta again.
-- **Wolf Packs**: wolves eat as in beta again. Its rules stay in the world's file, and a wolf's healing still to come waits in
-  the save, and both come back with the mod.
+- **Wolf Packs**: wolves eat as in beta again, and sitting ones only sit. Its rules stay in the world's file, and a wolf's
+  healing still to come waits in the save, and both come back with the mod.
 - **Wary Creepers**, **Plain F3** and **No Toasts** leave nothing in a world.
 
 While any library mod is on, Faithful Core is loaded and warns you before a world that's seen a removed content mod
@@ -192,8 +210,8 @@ working name, `oldfaithful`.
 ## Credits and licence
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
-Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers and Wolf Packs with Shoalstone, and drew the
-arrow's head and the golden flowers and feather. Idea, direction and play-testing: Shoalstone.
+Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers and Wolf Packs with Shoalstone, wrote Wolf Packs'
+sitting wolves' watch, and drew the arrow's head and the golden flowers and feather. Idea, direction and play-testing: Shoalstone.
 
 The library's code is under the [MIT licence](LICENSE). It builds on Fabric Loader, Mixin and Babric's mappings, each
 under its own licence.

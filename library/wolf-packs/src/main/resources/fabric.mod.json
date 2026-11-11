@@ -3,9 +3,9 @@
   "id": "wolf-packs",
   "version": "${version}",
   "name": "Wolf Packs",
-  "description": "Your wolves take a monster each, guard you, fight creepers and eat fish. A fight starts when you hit something or something hurts you, as in beta, or when a monster after you comes within 4 blocks or a skeleton shoots at you; then each wolf goes for whichever of the monsters after you or your wolves has the fewest wolves on it, what you hit first, then the nearest, and when its monster dies it takes the next. Wolves fight creepers too, and a bitten creeper keeps coming for you. Wolves eat fish as well as pork, and each food heals a wolf as it heals you (with Hearty Food, as Hearty Food heals you), and a click with its food never sits it down. Each is a world rule. It runs where the world runs, so a server can use it with any client.",
+  "description": "Your wolves take a monster each, guard you and your home, fight creepers and eat fish. A fight starts when you hit something or something hurts you, as in beta, or when a monster after you comes within 4 blocks or a skeleton shoots at you; then each wolf goes for whichever of the monsters after you or your wolves has the fewest wolves on it, what you hit first, then the nearest, and when its monster dies it takes the next. A sitting wolf keeps watch: it goes for a monster it sees within 8 blocks, then walks back to its spot and sits again, and growls at one it sees and can't get to. Wolves fight creepers too: a bitten creeper keeps coming for you, but one bitten by a wolf on watch turns on that wolf. Wolves eat fish as well as pork, and each food heals a wolf as it heals you (with Hearty Food, as Hearty Food heals you), and a click with its food never sits it down. Each is a world rule. It runs where the world runs, so a server can use it with any client.",
   "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
-  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design)", "Shoalstone (idea, design and direction)"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design, and the sitting wolves' watch)", "Shoalstone (idea, design and direction)"],
   "contact": {
     "homepage": "${homepage}",
     "sources": "https://github.com/${repo}",

@@ -27,31 +27,16 @@ import net.minecraft.recipe.CraftingRecipeManager;
 import net.minecraft.screen.ScreenHandler;
 import org.studioquire.faithful.harness.test.WorldTest;
 import org.studioquire.faithful.worldrules.WorldRules;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.oldfaithful.core.api.Rule;
 import org.studioquire.oldfaithful.core.impl.Rules;
 
 /**
- * Day length, weather, natural monsters, apples and bows where the world runs. It leaves a double day and rain for the restart to find; the client's half is {@code RulesClientTest}.
+ * Weather, natural monsters, apples and bows where the world runs. It leaves rain for the restart to find; the client's half is {@code RulesClientTest}.
  * After the restart it locks the rules and checks they hold, then unlocks them as a player would, by the line in the world's file, read again as a world opening reads it, so
  * the world is as it was for any test after this one.
  */
 public final class RulesTest extends WorldTest {
 	private static final int LEAVES = 4000;
-
-	private long clock, ticks;
-
-	private void pace(String what, int n, int divisor) {
-		then(() -> {
-			clock = Days.time(world);
-			ticks = world.getTime();
-		});
-		wait(n);
-		then(() -> {
-			long passed = world.getTime() - ticks, moved = Days.time(world) - clock;
-			check(what + ": ticks keep their pace, the sun takes " + divisor + " of them: " + passed + ", " + moved, Math.abs(passed - n) <= 1 && Math.abs(moved - (double) passed / divisor) <= 1);
-		});
-	}
 
 	/** The open world's file, found by its lock: the one world here whose rules are locked. */
 	private static Path lockedFile() {
@@ -104,34 +89,10 @@ public final class RulesTest extends WorldTest {
 		return found;
 	}
 
-	private void day() {
-		check("a new world: beta's day, one clock for the two", Days.length() == Days.NORMAL && Days.time(world) == world.getTime());
-		then(() -> Rules.change(WorldRules.dayLength, "double"));
-		pace("double", 60, 2);
-		then(() -> Rules.change(WorldRules.dayLength, "triple"));
-		pace("triple", 60, 3);
-		// A new server's land leaves a queue of block ticks, a thousand run a tick and the oldest first, which a timing has to come after.
-		then(() -> set(2, 2, 0, Block.SAND));
-		until("the new land's block ticks are done", 1000, () -> block(2, 2, 0) == 0);
-		wait(30);
-		then(() -> {
-			set(2, 0, 0, null);
-			world.setTime(18000);
-			check("setting the time sets the hour", Days.time(world) == 18000 && world.getTime() == 18000);
-			set(2, 0, 0, Block.FLOWING_WATER);
-		});
-		until("water runs at beta's pace in a long day", 12, () -> block(3, 0, 0) == Block.FLOWING_WATER.id);
-		then(() -> {
-			for (int dx = 0; dx <= 7; dx++) {
-				for (int dz = -7; dz <= 7; dz++) set(dx, 0, dz, null);
-			}
-			check("and night falls by the sun's clock: " + world.ambientDarkness, world.ambientDarkness >= 10);
-		});
-	}
-
-	/** The same night's sleep is the weather's test: beta clears the weather when it ends. */
+	/** A night's sleep is the weather's test: beta clears the weather when it ends. */
 	private void sleep() {
 		then(() -> {
+			world.setTime(18000);
 			Rules.change(WorldRules.naturalMonsters, "false");
 			Rules.change(WorldRules.weather, "rain");
 			set(2, -1, 0, Block.STONE);
@@ -140,14 +101,16 @@ public final class RulesTest extends WorldTest {
 			set(2, 0, 1, Block.BED, 8);
 		});
 		until("it rains", 150, () -> world.isRaining());
+		// A bed goes by the darkness the world's last tick worked out, so the hour just set counts only once a tick has run: the wait for rain is one, unless a test before this left it raining.
+		await("night has fallen", 40, () -> world.ambientDarkness >= 4);
 		then(() -> {
 			Block.BED.onUse(world, x + 2, y, z, player);
-			check("a bed works at night in a long day", player.isSleeping());
+			check("at night under the rule's rain, the player sleeps", player.isSleeping());
 		});
 		until("everyone slept", 300, () -> !player.isSleeping());
 		then(() -> {
-			long hour = Days.time(world) % Days.NORMAL;
-			check("it's sunrise by the sun's clock: " + hour, hour < 100);
+			long hour = world.getTime() % 24000;
+			check("the night was slept through to sunrise: " + hour, hour < 100);
 			check("and it hasn't stopped raining", raining());
 			set(2, 0, 0, null);
 			set(2, 0, 1, null);
@@ -422,20 +385,12 @@ public final class RulesTest extends WorldTest {
 		scene("unlock", args -> unlock());
 		bowScenes();
 		if (restarted()) {
-			check("the rules came back", WorldRules.dayLength.get().equals("double") && WorldRules.weather.get().equals("rain"));
-			check("the sun's clock came back: " + Days.time(world) + " at tick " + world.getTime(), Days.time(world) != world.getTime());
+			check("the rule came back", WorldRules.weather.get().equals("rain"));
 			until("it rains", 150, () -> world.isRaining());
-			pace("double, restarted", 40, 2);
-			then(() -> {
-				Rules.change(WorldRules.dayLength, "normal");
-				Rules.change(WorldRules.weather, "normal");
-			});
-			pace("normal again", 40, 1);
-			then(() -> check("and the sun stays where it was", Days.time(world) != world.getTime()));
+			then(() -> Rules.change(WorldRules.weather, "normal"));
 			lock();
 			return;
 		}
-		day();
 		sleep();
 		weather();
 		// A long tick, and a server catches up on one with quick ticks of its own: this comes well before anything timed on the client.
@@ -444,7 +399,5 @@ public final class RulesTest extends WorldTest {
 		bows();
 		monsterLight();
 		naturalSpawning();
-		then(() -> Rules.change(WorldRules.dayLength, "double"));
-		wait(40);
 	}
 }

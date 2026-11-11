@@ -25,6 +25,13 @@ import org.studioquire.oldfaithful.core.api.Rule;
  * {@code /rule} on a server; a client on a server only hears the server's values. The file holds only what was changed from a
  * rule's default, and a world nobody touched has no file. The install keeps one thing: what a new world starts with.
  * <p>
+ * What a new world starts with is the install's own, {@code config/faithful-rules.properties}, a line a rule. A rule gets its line the first time
+ * this install meets it ({@link #meet}): the pack's choice for it ({@link PackFile}, for a pack that starts its worlds differently from beta), or
+ * with none the rule's declared default. From then on only the player changes the line, on Create World's page. So an install carried from one
+ * version of a pack to the next keeps every start it had, a rule that's new in the later version starts as that version's pack chose, and a pack
+ * that changes its mind about an old rule reaches fresh installs only. A file that lacks a rule's line, whoever wrote it and whenever, hasn't
+ * met that rule: a server owner's file with the one line they wanted, or a file from before lines were written on meeting, gets the rest now.
+ * <p>
  * A world's rules can be locked, every mod's at once: then nothing in the game changes them, {@code /rule} included, and nothing in the
  * game unlocks them. The lock is a plain line in the world's file, so taking it out with the world closed is the way back, and
  * nothing here notices or minds.
@@ -127,8 +134,10 @@ public final class Rules {
 	private static final Map<String, String> worldValues = new HashMap<>();
 	/** Values heard from the server, on a client on one; null when not on a server. */
 	private static Map<String, String> serverValues;
-	/** What a new world starts with, this install's. */
+	/** What a new world starts with here: the install's file, a line for each rule it has met. */
 	private static WorldFile newWorld;
+	private static final String DEFAULTS_HEADER = "# What a new world starts with in this game or on this server, a line a rule. In the game they're the choices on\n"
+			+ "# Create World's World Rules... page. An update doesn't change a line here; it adds one for a rule that's new.\n";
 	/** The open world's lock, or what the server said of its own. */
 	private static boolean locked;
 
@@ -159,7 +168,7 @@ public final class Rules {
 	}
 
 	static void start() {
-		newWorld = new WorldFile(FabricLoader.getInstance().getConfigDir().resolve(DEFAULTS_FILE));
+		newWorld = new WorldFile(FabricLoader.getInstance().getConfigDir().resolve(DEFAULTS_FILE), DEFAULTS_HEADER);
 		channel = CoreNet.channel(Core.ID + ":rules", 1).onClient(Rules::heard);
 		Commands.register("rule", "rule [name] [value] | lock  shows, sets or locks this world's rules", Rules::command);
 	}
@@ -169,7 +178,31 @@ public final class Rules {
 		return worldValues.get(id);
 	}
 
-	/** A world opens here, in single player or on a server. A new one starts from this install's choices. */
+	/**
+	 * Once every mod has declared its rules: each one the install's file has no line for is met now, and gets its line, the pack's choice or the
+	 * rule's default. One write, and none when there's nothing new, so an install with no rules has no file.
+	 */
+	static void meet() {
+		Properties own = newWorld.values();
+		Map<String, String> met = new LinkedHashMap<>();
+		for (Declared r : RULES.values()) {
+			if (own.getProperty(key(r.id)) == null) met.put(key(r.id), starting(r, own));
+		}
+		if (met.isEmpty()) return;
+		if (newWorld.set(met)) System.out.println("[faithful-core] New here, so new worlds start with: " + met);
+	}
+
+	/**
+	 * What a new world starts this rule with: the install's line ({@code own}, its file). The pack's choice and then the rule's default stand in
+	 * for a line that isn't there, which is how a rule is met, and what goes on being true if the file couldn't be written.
+	 */
+	private static String starting(Declared r, Properties own) {
+		String v = own.getProperty(key(r.id));
+		if (v == null) v = PackFile.get(key(r.id));
+		return v == null ? r.defaultText : r.read(v.trim());
+	}
+
+	/** A world opens here, in single player or on a server. A new one starts from the install's lines. */
 	public static void open(Path dir) {
 		boolean fresh = !java.nio.file.Files.exists(dir.resolve("level.dat"));
 		SeenMods.note(dir);
@@ -183,10 +216,10 @@ public final class Rules {
 			if (v != null) worldValues.put(r.id, v.trim());
 		}
 		if (fresh && worldValues.isEmpty() && !locked) {
-			Properties defaults = newWorld.values();
+			Properties own = newWorld.values();
 			for (Declared r : RULES.values()) {
-				String v = defaults.getProperty(key(r.id));
-				if (v != null && !r.read(v.trim()).equals(r.defaultText)) set(r.id, r.read(v.trim()));
+				String v = starting(r, own);
+				if (!v.equals(r.defaultText)) set(r.id, v);
 			}
 		}
 		for (Map.Entry<String, String> e : worldValues.entrySet()) System.out.println("[faithful-core] Rule " + e.getKey() + " = " + e.getValue());
@@ -255,8 +288,10 @@ public final class Rules {
 		if (serverValues != null) {
 			if (!channel.available()) return null;
 			v = serverValues.get(r.id);
+		} else if (world != null) {
+			v = worldValues.get(r.id);
 		} else {
-			v = world != null ? worldValues.get(r.id) : newWorld.values().getProperty(key(r.id));
+			return starting(r, newWorld.values());
 		}
 		return v != null ? r.read(v.trim()) : r.defaultText;
 	}

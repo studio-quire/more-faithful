@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import org.studioquire.oldfaithful.core.api.Arrows;
 import org.studioquire.oldfaithful.core.api.Channel;
 import org.studioquire.oldfaithful.core.api.Content;
 import org.studioquire.oldfaithful.core.api.Explosions;
@@ -52,6 +53,8 @@ public final class ExplosiveArrows implements FaithfulMod {
 			if (e.source() instanceof ExplosiveArrow) e.spareBlocks(block -> block instanceof TntBlock);
 		});
 		bursts = mod.channel("burst", 1);
+		// What this arrow flies as, for shooters that ask the core (a golem's bow). Beta's bow and dispenser don't ask: the mixins here patch them.
+		Arrows.flies(explosiveArrow.get(), ExplosiveArrow::new);
 	}
 
 	/**

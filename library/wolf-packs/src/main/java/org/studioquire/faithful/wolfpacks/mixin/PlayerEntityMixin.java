@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.studioquire.faithful.wolfpacks.Packs;
+import org.studioquire.faithful.wolfpacks.Watch;
 
 /**
  * A mixin because the core has no say in what wolves go for. Beta's call to arms has already picked the wolves it sends (its own, free, within 16 blocks,
@@ -26,6 +27,13 @@ abstract class PlayerEntityMixin {
 		if (!(called instanceof CreeperEntity) || owner.world.isRemote || !Packs.fightCreepers()) return;
 		Packs.callAboutCreeper(owner, (CreeperEntity) called, keepSitting);
 		ci.cancel();
+	}
+
+	/** Beta's call stands a sitting wolf up when its owner is hurt: one on watch goes back to its spot after the fight (`Watch`). */
+	@WrapOperation(method = "commandWolvesToAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;setSitting(Z)V"))
+	private void wolfpacks$leavesItsSpot(WolfEntity wolf, boolean sitting, Operation<Void> setSitting) {
+		Watch.stoodUp(wolf);
+		setSitting.call(wolf, sitting);
 	}
 
 	@WrapOperation(method = "commandWolvesToAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;setTarget(Lnet/minecraft/entity/Entity;)V"))

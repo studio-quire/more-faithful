@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.PigZombieEntity;
@@ -15,8 +16,10 @@ import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import org.studioquire.faithful.harness.test.WorldTest;
 import org.studioquire.faithful.wolfpacks.Packs;
+import org.studioquire.faithful.wolfpacks.Watch;
 import org.studioquire.faithful.wolfpacks.WolfFood;
 import org.studioquire.faithful.wolfpacks.WolfPacks;
 import org.studioquire.oldfaithful.core.impl.Rules;
@@ -24,7 +27,7 @@ import org.studioquire.oldfaithful.core.impl.Rules;
 /**
  * Where the world runs, with real ticks: wolves, pig zombies (which don't burn by day, unlike zombies) and creepers on the plot, the call to arms by the
  * player's own punch. The selftest server is Peaceful, which takes monsters on their first tick, so it's Normal for the test; single player's comes from
- * the options. The player is kept whole throughout, as the pig zombies go for them.
+ * the options. The player is kept whole throughout, as the pig zombies go for them. Then a sitting wolf's watch ({@link #watch}).
  */
 public final class PacksTest extends WorldTest {
 	private final List<Entity> ours = new ArrayList<>();
@@ -91,18 +94,19 @@ public final class PacksTest extends WorldTest {
 	protected void script() {
 		clientScenes();
 		if (restarted()) {
-			check("the rules on after the restart, as the first life left them", WolfPacks.spreadOut.get() && WolfPacks.fightCreepers.get() && WolfPacks.feeding.get() && WolfPacks.guarding.get());
+			check("the rules on after the restart, as the first life left them", WolfPacks.spreadOut.get() && WolfPacks.fightCreepers.get() && WolfPacks.feeding.get() && WolfPacks.guarding.get() && WolfPacks.watch.get());
 			return;
 		}
 		difficultyBefore = world.difficulty;
 		if (!singlePlayer()) world.difficulty = 2;
 		check("monsters can live here (difficulty " + world.difficulty + ")", world.difficulty > 0);
-		check("the rules on by default", WolfPacks.spreadOut.get() && WolfPacks.fightCreepers.get() && WolfPacks.feeding.get() && WolfPacks.guarding.get());
+		check("the rules on by default", WolfPacks.spreadOut.get() && WolfPacks.fightCreepers.get() && WolfPacks.feeding.get() && WolfPacks.guarding.get() && WolfPacks.watch.get());
 		spreading();
 		oneEnemy();
 		ruleOff();
 		guarding();
 		creepers();
+		watch();
 		feeding();
 		then(() -> {
 			for (Entity e : ours) e.markDead();
@@ -214,6 +218,8 @@ public final class PacksTest extends WorldTest {
 		then(() -> {
 			keepWell();
 			check("no fight going on to begin with", !Packs.fighting(player));
+			// Guarding by itself: a sitting wolf's own watch would take these monsters from its seat.
+			Rules.change(WolfPacks.watch, "false");
 			wolves = new WolfEntity[] {wolf(-1, 1, false), wolf(1, 1, false)};
 			seated = wolf(0, 2, true);
 			coming = besidePlayer(new PigZombieEntity(world), 0, -7);
@@ -229,7 +235,7 @@ public final class PacksTest extends WorldTest {
 		});
 		then(() -> {
 			check("taken " + String.format("%.1f", takenAt) + " blocks off, before it could strike", takenAt <= 4.5 && takenAt > 2);
-			check("the sitting wolf stays seated, with nothing to do", seated.isInSittingPose() && seated.getTarget() == null);
+			check("the sitting wolf stays seated, with nothing to do (Sitting Wolves Watch off)", seated.isInSittingPose() && seated.getTarget() == null);
 			clearMonsters();
 		});
 		wait(70);
@@ -284,10 +290,239 @@ public final class PacksTest extends WorldTest {
 		then(() -> {
 			check("off, a spider after you 3 blocks away is left alone until it strikes or you do, as in beta", on(idle) == 0);
 			check("the rule turns back on", Rules.change(WolfPacks.guarding, "true") && WolfPacks.guarding.get());
+			Rules.change(WolfPacks.watch, "true");
 			clearMonsters();
 			for (WolfEntity w : wolves) w.markDead();
 			seated.markDead();
 		});
+	}
+
+	private WolfEntity sentry;
+	private double[] spot;
+	private PigZombieEntity calm, far, high, boxed, lure;
+	private int growlsBefore;
+	private double strayed;
+
+	/** On the floor of the plot's cell or, for the top of a pillar, {@code dy} above it. */
+	private <T extends Entity> T stood(T entity, int dx, int dy, int dz) {
+		entity.setPositionAndAngles(x + dx + 0.5, y + dy, z + dz + 0.5, 0.0F, 0.0F);
+		world.spawnEntity(entity);
+		ours.add(entity);
+		return entity;
+	}
+
+	/** A pig zombie after the player that can't strike for now: a monster a wolf on watch minds, and one that doesn't burn by day. */
+	private PigZombieEntity hostile(int dx, int dy, int dz) {
+		PigZombieEntity pig = stood(new PigZombieEntity(world), dx, dy, dz);
+		pig.setTarget(player);
+		pig.attackCooldown = 1000;
+		return pig;
+	}
+
+	private void pillar(int dx, int dz, Block block) {
+		for (int dy = 0; dy < 4; dy++) set(dx, dy, dz, block);
+	}
+
+	private WolfEntity seated(int dx, int dz) {
+		sentry = wolf(dx, dz, true);
+		spot = new double[] {sentry.x, sentry.boundingBox.minY, sentry.z};
+		return sentry;
+	}
+
+	private double fromSpot(WolfEntity wolf) {
+		double dx = wolf.x - spot[0], dz = wolf.z - spot[2];
+		return Math.sqrt(dx * dx + dz * dz);
+	}
+
+	private boolean stillSeated() {
+		return sentry.isInSittingPose() && sentry.getTarget() == null && !Watch.onDuty(sentry);
+	}
+
+	/** Its monster gone, the wolf walks back onto the spot it left and sits. */
+	private void backOnItsSpot(String what) {
+		until(what, 300, () -> {
+			keepWell();
+			sentry.health = 20;
+			return sentry.isInSittingPose() && !Watch.onDuty(sentry) && fromSpot(sentry) < 0.5;
+		});
+	}
+
+	/**
+	 * A sitting wolf 6 blocks west of the player, and pig zombies after the player for monsters. Left alone: a calm pig zombie 4 blocks off, a spider at
+	 * peace by day, a monster on a pillar 12 blocks away, one shut in glass 3 blocks off. One on a pillar 6 blocks off, seen and out of reach: growled at
+	 * from the seat. The glass taken away: gone for, and once it's dead the wolf back on its spot and sitting. One past tall grass, which beta's sight stops at: gone for. Lured across the plot after a monster that keeps
+	 * ahead of it: let go past 16 blocks, and back. A creeper: bitten, it turns on the wolf; with Wolves Fight Creepers off, left alone. Hit on its
+	 * spot: it fights and goes back. Written to NBT off its spot and read back as a new wolf: it still goes back. The rule off: beta's sitting wolf.
+	 */
+	private void watch() {
+		wait(70);
+		then(() -> {
+			keepWell();
+			seated(-6, 0);
+			calm = stood(new PigZombieEntity(world), -6, 0, 4);
+			idle = stood(new SpiderEntity(world), -6, 0, -4);
+			idle.attackCooldown = 1000;
+			pillar(5, -3, Block.STONE);
+			far = hostile(5, 4, -3);
+			for (int[] side : new int[][] {{-4, 0}, {-2, 0}, {-3, -1}, {-3, 1}}) for (int dy = 0; dy < 2; dy++) set(side[0], dy, side[1], Block.GLASS);
+			boxed = hostile(-3, 0, 0);
+			growlsBefore = Watch.growls();
+		});
+		wait(25);
+		then(() -> {
+			boolean atPeace = idle.getTarget() == null && idle.getBrightnessAtEyes(1.0F) >= 0.5F;
+			check("a sitting wolf leaves alone a calm pig zombie 4 blocks off, a monster " + String.format("%.1f", sentry.getDistance(far)) + " blocks away, one behind glass 3 blocks off"
+					+ (atPeace ? " and a spider at peace by day" : " (the spider wasn't at peace: dark here)") + ", and doesn't growl",
+					(stillSeated() || !atPeace && sentry.getTarget() == idle) && Watch.growls() == growlsBefore && !Watch.alarmed(sentry));
+			calm.markDead();
+			idle.markDead();
+			if (sentry.getTarget() == idle) {
+				sentry.markDead();
+				seated(-6, 0);
+			}
+			pillar(-6, -5, Block.STONE);
+			high = hostile(-6, 4, -5);
+		});
+		until("one on a pillar 6.4 blocks off, which it sees and has no way to: it growls", 60, () -> {
+			keepWell();
+			return Watch.growls() > growlsBefore;
+		});
+		then(() -> {
+			check("and stays sitting, roused", stillSeated() && Watch.alarmed(sentry));
+			high.markDead();
+			pillar(-6, -5, null);
+			set(-4, 0, 0, null);
+			set(-4, 1, 0, null);
+		});
+		until("the glass gone, it sees the monster 3 blocks off and goes for it", 30, () -> {
+			keepWell();
+			return sentry.getTarget() == boxed && !sentry.isInSittingPose();
+		});
+		then(() -> {
+			check("off its seat it's on watch still, its spot the one it left",
+					Watch.onDuty(sentry) && Watch.spot(sentry) != null && Math.abs(Watch.spot(sentry)[0] - spot[0]) + Math.abs(Watch.spot(sentry)[2] - spot[2]) < 0.01);
+			for (int[] side : new int[][] {{-2, 0}, {-3, -1}, {-3, 1}}) for (int dy = 0; dy < 2; dy++) set(side[0], dy, side[1], null);
+		});
+		wait(15);
+		then(() -> {
+			note("on its monster, " + String.format("%.1f", fromSpot(sentry)) + " blocks from its spot");
+			boxed.markDead();
+		});
+		backOnItsSpot("its monster dead, it walks back to its spot and sits");
+		then(() -> {
+			note("back within " + String.format("%.2f", fromSpot(sentry)) + " of its spot");
+			set(-5, -1, 0, Block.DIRT);
+			set(-5, 0, 0, Block.GRASS, 1);
+			lure = hostile(-1, 0, 0);
+			check("tall grass beside the wolf is in the line from its eyes to a monster 5 blocks off, as beta's mobs see",
+					block(-5, 0, 0) == Block.GRASS.id && !sentry.canSee(lure));
+		});
+		until("and it sees the monster all the same, and goes for it", 30, () -> {
+			keepWell();
+			return sentry.getTarget() == lure;
+		});
+		then(() -> {
+			lure.markDead();
+			set(-5, 0, 0, null);
+			set(-5, -1, 0, Block.STONE);
+		});
+		backOnItsSpot("and comes back from that one too");
+
+		// The leash: from one corner of the plot toward the other, after a monster kept 6 blocks ahead of it.
+		then(() -> {
+			sentry.markDead();
+			seated(-7, -7);
+			lure = hostile(-4, 0, -7);
+		});
+		until("a wolf in the corner goes for a monster 3 blocks off", 30, () -> {
+			keepWell();
+			return sentry.getTarget() == lure;
+		});
+		until("the monster keeping 6 blocks ahead of it across the plot, it follows and then lets it go", 300, () -> {
+			keepWell();
+			strayed = fromSpot(sentry);
+			if (sentry.getTarget() == null && Watch.onDuty(sentry)) return true;
+			lure.setPositionAndAngles(Math.min(sentry.x + 4.2, x + 7.5), y, Math.min(sentry.z + 4.2, z + 7.5), 0.0F, 0.0F);
+			return false;
+		});
+		then(() -> {
+			check("let go " + String.format("%.1f", strayed) + " blocks from its spot, just past 16", strayed > 15.5 && strayed < 18.5);
+			lure.markDead();
+		});
+		backOnItsSpot("and it walks back to its corner and sits");
+		then(() -> {
+			far.markDead();
+			pillar(5, -3, null);
+			sentry.markDead();
+		});
+
+		// Creepers, each gone before it's near enough to anyone to light its fuse.
+		wait(2);
+		then(() -> {
+			keepWell();
+			seated(-6, 0);
+			creeper = stood(new CreeperEntity(world), -6, 0, -5);
+			creeper.setTarget(player);
+		});
+		until("a sitting wolf goes for a creeper it sees 5 blocks off", 30, () -> sentry.getTarget() == creeper);
+		then(() -> {
+			creeper.damage(sentry, 4);
+			check("bitten by a wolf on watch, the creeper turns on the wolf, as beta's, though it was after the player", creeper.getTarget() == sentry);
+			creeper.markDead();
+		});
+		backOnItsSpot("and the wolf goes back to its spot");
+		then(() -> {
+			check("Wolves Fight Creepers turns off", Rules.change(WolfPacks.fightCreepers, "false") && !WolfPacks.fightCreepers.get());
+			creeper = stood(new CreeperEntity(world), -6, 0, -5);
+			creeper.setTarget(player);
+		});
+		wait(25);
+		then(() -> {
+			check("off, a sitting wolf leaves a creeper alone, and doesn't growl at it", stillSeated() && !Watch.alarmed(sentry));
+			creeper.markDead();
+			check("it turns back on", Rules.change(WolfPacks.fightCreepers, "true") && WolfPacks.fightCreepers.get());
+			// Hit on its spot by something it wasn't minding.
+			calm = stood(new PigZombieEntity(world), -6, 0, 2);
+			sentry.damage(calm, 1);
+			check("hit on its spot, it stands and turns on what hit it, as in beta, on watch still", !sentry.isInSittingPose() && sentry.getTarget() == calm && Watch.onDuty(sentry));
+			calm.markDead();
+		});
+		backOnItsSpot("and that fight over, it goes back to its spot too");
+
+		// Saved off its spot: the wolf written and read back as beta saves a chunk's, put down 6 blocks from its spot.
+		then(() -> lure = hostile(-6, 0, 3));
+		until("it goes for another", 30, () -> {
+			keepWell();
+			return sentry.getTarget() == lure;
+		});
+		then(() -> {
+			lure.markDead();
+			NbtCompound saved = new NbtCompound();
+			sentry.write(saved);
+			sentry.markDead();
+			WolfEntity loaded = new WolfEntity(world);
+			loaded.read(saved);
+			loaded.setPositionAndAngles(x + 0.5, y, z + 3.5, 0.0F, 0.0F);
+			world.spawnEntity(loaded);
+			ours.add(loaded);
+			sentry = loaded;
+			check("a wolf saved off its spot and loaded again is on watch still, standing " + String.format("%.1f", fromSpot(sentry)) + " blocks from it",
+					Watch.onDuty(sentry) && !sentry.isInSittingPose() && fromSpot(sentry) > 5);
+		});
+		backOnItsSpot("and walks back to the spot it left before the save");
+
+		then(() -> {
+			check("the rule turns off", Rules.change(WolfPacks.watch, "false") && !WolfPacks.watch.get());
+			lure = hostile(-6, 0, 4);
+		});
+		wait(25);
+		then(() -> {
+			check("off, a sitting wolf leaves a monster 4 blocks off alone, as in beta", sentry.isInSittingPose() && sentry.getTarget() == null);
+			check("the rule turns back on", Rules.change(WolfPacks.watch, "true") && WolfPacks.watch.get());
+			lure.markDead();
+			sentry.markDead();
+		});
+		wait(2);
 	}
 
 	private WolfEntity fed;

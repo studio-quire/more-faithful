@@ -1,19 +1,15 @@
 package org.studioquire.oldfaithful.core.mixin.server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import java.util.List;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.oldfaithful.core.api.Players;
 import org.studioquire.oldfaithful.core.impl.Attachments;
 
@@ -30,11 +26,6 @@ abstract class PlayerManagerMixin {
 	private void faithful$respawned(ServerPlayerEntity player, int dimensionId, CallbackInfoReturnable<ServerPlayerEntity> cir) {
 		Attachments.sendAllToSelf(cir.getReturnValue());
 		Players.respawned(player, cir.getReturnValue());
-	}
-
-	@WrapOperation(method = "sendWorldInfo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/ServerWorld;getTime()J"))
-	private long faithful$timeSent(ServerWorld world, Operation<Long> getTime) {
-		return Days.time(world);
 	}
 
 	/** Both of beta's ways out, and stopping is apart. */

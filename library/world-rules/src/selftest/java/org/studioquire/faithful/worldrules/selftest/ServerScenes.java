@@ -21,7 +21,6 @@ import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import org.studioquire.faithful.worldrules.WorldRules;
 import org.studioquire.oldfaithful.core.api.Commands;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.oldfaithful.core.api.Rule;
 import org.studioquire.oldfaithful.core.impl.Rules;
 import org.studioquire.oldfaithful.core.api.Server;
@@ -49,9 +48,6 @@ final class ServerScenes {
 				case "kill": kill(world, player(args[1]), Boolean.parseBoolean(args[2])); break;
 				case "kept": kept(player(args[1]), Boolean.parseBoolean(args[2])); break;
 				case "set": set(args[1], args[2]); break;
-				case "mark": mark(world); break;
-				case "time": time(world, Integer.parseInt(args[1])); break;
-				case "added": added(world, Integer.parseInt(args[1])); break;
 				case "nether": player(args[1]).server.playerManager.changePlayerDimension(player(args[1])); break;
 				case "spawning": spawning((ServerWorld) Server.world(Integer.parseInt(args[1]))); break;
 				case "spawned": spawned((ServerWorld) Server.world(Integer.parseInt(args[1])), Boolean.parseBoolean(args[2])); break;
@@ -66,22 +62,6 @@ final class ServerScenes {
 		for (Rule r : Rules.all()) {
 			if (r.id().endsWith(":" + name)) Rules.change(r, value);
 		}
-	}
-
-	private static long marked, drift;
-
-	private static void mark(ServerWorld w) {
-		marked = Days.time(w);
-		drift = marked - w.getTime();
-	}
-
-	private static void time(ServerWorld w, int hour) {
-		check("/time set is the hour: " + Days.time(w), Math.abs(Days.time(w) - hour) <= 1);
-	}
-
-	/** The drift is what would be lost if {@code time add} went on from the tick count. */
-	private static void added(ServerWorld w, int added) {
-		check("/time add goes on from the hour, past a drift of " + drift + ": " + marked + " to " + Days.time(w), drift < -10 && Math.abs(Days.time(w) - marked - added) <= 2);
 	}
 
 	/** A test server has no monsters of its own, so it's given them for this, at night. */

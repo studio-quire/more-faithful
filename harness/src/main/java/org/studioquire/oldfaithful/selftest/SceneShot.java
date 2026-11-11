@@ -45,7 +45,8 @@ import org.studioquire.oldfaithful.selftest.mixin.WorldRendererAccessor;
  * blocks within r of a place into {@code probe-<n>.txt}. Scheduled block ticks don't run here, so sand left over air
  * stays. With {@code -Doldfaithful.selftest.sceneSettle=true} a view is
  * shot as soon as it's built near the camera ({@link #unbuilt}), after at least {@link #SETTLE_MIN} ticks, with
- * {@code sceneViewTicks} as the cap: for near views like a tower's rooms, where the far view filling in doesn't matter. With {@code -Doldfaithful.selftest.sceneBright=true} every level of light shows as full daylight, for
+ * {@code sceneViewTicks} as the cap: for near views like a tower's rooms, where the far view filling in doesn't matter, or with
+ * {@code sceneSettleRadius} at the render distance (256 for Far) for a landscape, all of it. With {@code -Doldfaithful.selftest.sceneBright=true} every level of light shows as full daylight, for
  * looking at what's built underground.
  *
  * <p>With {@code -Doldfaithful.selftest.sceneSurvey="x0 z0 x1 z1"}: no pictures, a map of the world's surface over
@@ -235,6 +236,7 @@ public final class SceneShot {
 		mc.world.getProperties().setRaining(rain);
 		mc.world.getProperties().setRainTime(Integer.MAX_VALUE / 2);
 		if (shotAt == 0) {
+			if (SETTLE && !BRIGHT) workLightQueue(mc);
 			// Rain fades in over about 100 ticks, so a rainy view always gets the whole hold.
 			if (SETTLE && !rain && held >= SETTLE_MIN - SETTLE_STEADY) steady = (waiting = unbuilt(mc, x, y, z, yaw, pitch)) == null ? steady + 1 : 0;
 			if (held >= VIEW_TICKS || held >= SETTLE_MIN && steady >= SETTLE_STEADY) {
@@ -261,6 +263,18 @@ public final class SceneShot {
 		return false;
 	}
 
+	/**
+	 * A settling view waits for the light queue, which beta works off 500 updates a frame, and a hidden window draws 64 frames a second
+	 * once its chunks are built: a new place's half a million updates took 15 s of a 19 s settle (2026-11-10). So the queue is worked
+	 * here as well, some milliseconds a tick, fewer while chunks still wait to be built. The same updates in the same order, sooner.
+	 */
+	private static void workLightQueue(Minecraft mc) {
+		long until = System.nanoTime() + (StartupCheck.chunksWaiting(mc) ? 10_000_000L : 35_000_000L);
+		while (mc.world.doLightingUpdates() && System.nanoTime() < until) {
+			// 500 a call.
+		}
+	}
+
 	private int shotAt, steady;
 	private String waiting;
 
@@ -269,7 +283,7 @@ public final class SceneShot {
 	 * renderer last moved it, or waiting to be rebuilt; without the bright light, also light updates still queued, as each
 	 * can change what's drawn. In view is the renderer's own frustum flag, but for a built empty chunk, whose flag cullChunks
 	 * never updates: for those, a cone a little wider than the window's view. Beta's light queue in a new world takes far
-	 * longer than the hold to empty, so without the bright light a view gets the whole hold.
+	 * longer than the hold to empty at its own 500 a frame, so a settling view works it off itself ({@link #workLightQueue}).
 	 */
 	private static String unbuilt(Minecraft mc, double x, double y, double z, float yaw, float pitch) {
 		int light = BRIGHT ? 0 : ((WorldLightQueueAccessor) mc.world).oldfaithful$lightingQueue().size();
@@ -277,6 +291,7 @@ public final class SceneShot {
 		double lx = -Math.sin(yr) * Math.cos(pr), ly = -Math.sin(pr), lz = Math.cos(yr) * Math.cos(pr);
 		long r2 = (long) SETTLE_RADIUS * SETTLE_RADIUS;
 		int dirty = 0, unbuilt = 0;
+		ChunkBuilder first = null;
 		for (ChunkBuilder c : ((WorldRendererAccessor) mc.worldRenderer).oldfaithful$chunks()) {
 			double dx = c.centerX - x, dy = c.centerY - y, dz = c.centerZ - z;
 			double d2 = dx * dx + dy * dy + dz * dz;
@@ -289,9 +304,13 @@ public final class SceneShot {
 			}
 			if (!((ChunkBuilderSceneAccessor) c).oldfaithful$sceneBuilt()) unbuilt++;
 			else if (c.dirty) dirty++;
+			else continue;
+			if (first == null) first = c;
 		}
 		if (light == 0 && dirty == 0 && unbuilt == 0) return null;
-		return String.format(Locale.ROOT, "%d render chunks unbuilt, %d to rebuild, %d light updates", unbuilt, dirty, light);
+		// Where one is, for a view that never settles: the same place every time is a chunk the renderer isn't getting to.
+		String at = first == null ? "" : String.format(Locale.ROOT, " (one about %d %d %d%s)", first.centerX, first.centerY, first.centerZ, first.inFrustum ? "" : ", out of the renderer's view");
+		return String.format(Locale.ROOT, "%d render chunks unbuilt, %d to rebuild, %d light updates%s", unbuilt, dirty, light, at);
 	}
 
 	/** Half a render chunk's diagonal; and from the middle of the view to its corner, with room (a 1440x900 window at beta's 70 degrees is about 54). */

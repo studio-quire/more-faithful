@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import org.studioquire.oldfaithful.core.api.BoolRule;
 import org.studioquire.oldfaithful.core.api.ChoiceRule;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.oldfaithful.core.api.Drops;
 import org.studioquire.oldfaithful.core.api.Entities;
 import org.studioquire.oldfaithful.core.api.Explosions;
@@ -20,8 +19,8 @@ import org.studioquire.oldfaithful.core.api.Recipes;
 import org.studioquire.oldfaithful.core.api.Ticks;
 
 /**
- * The first library mod. A rule is one line here, two in the lang file and a hook. They run where the world runs, except that a client that knows the day's length draws its sun by it,
- * and one that knows bows wear out wears its own as the world does, as beta's client does every tool.
+ * The first library mod. A rule is one line here, two in the lang file and a hook. They run where the world runs, except that a client that knows bows wear out wears its own as the
+ * world does, as beta's client does every tool.
  */
 public final class WorldRules implements FaithfulMod {
 	/** Beta's shortest wait for the weather to change, for when the rule is taken off. */
@@ -35,7 +34,6 @@ public final class WorldRules implements FaithfulMod {
 	public static BoolRule blastsDestroyItems;
 	public static BoolRule keepInventory;
 	public static BoolRule sleeping;
-	public static ChoiceRule dayLength;
 	public static ChoiceRule weather;
 	public static BoolRule naturalMonsters;
 	public static ChoiceRule monsterLight;
@@ -64,7 +62,6 @@ public final class WorldRules implements FaithfulMod {
 		blastsDestroyItems = mod.rules().bool("blasts_destroy_items", true);
 		keepInventory = mod.rules().bool("keep_inventory", false);
 		sleeping = mod.rules().bool("sleeping", true);
-		dayLength = mod.rules().choice("day_length", "normal", "double", "triple");
 		weather = mod.rules().choice("weather", "normal", "clear", "rain");
 		naturalMonsters = mod.rules().bool("natural_monsters", true);
 		monsterLight = mod.rules().choice("monster_light", "beta", "none");
@@ -79,13 +76,6 @@ public final class WorldRules implements FaithfulMod {
 		Players.keepInventory(p -> keepInventory.get());
 		Beds.onSleep(s -> {
 			if (!sleeping.get()) s.setSpawnOnly();
-		});
-		Days.length(length -> {
-			switch (dayLength.get()) {
-				case "double": return length * 2;
-				case "triple": return length * 3;
-				default: return length;
-			}
 		});
 		Ticks.onWorld(WorldRules::holdWeather);
 		Entities.onMonsterSpawning(m -> {

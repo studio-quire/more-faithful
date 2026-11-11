@@ -147,11 +147,11 @@ public final class RulesCheck implements WorldCheck {
 
 	/** A page of locked rules: the lock's button says so and can't be pressed, and every rule shows its value and can't be pressed either. */
 	private void lockedPage(Screen page, String where) {
-		ButtonWidget lock = find(page, RuleSettings.LOCKED), keep = find(page, "Keep Inventory"), day = find(page, "Day Length");
+		ButtonWidget lock = find(page, RuleSettings.LOCKED), keep = find(page, "Keep Inventory"), weather = find(page, "Weather");
 		results.check(where + ": the page reads " + RuleSettings.LOCKED + ", not pressable: " + (lock == null ? null : lock.text + " " + lock.active),
 				lock != null && !lock.active && find(page, RuleSettings.LOCK) == null);
-		results.check(where + ": the rules show their values and can't be pressed: " + (keep == null || day == null ? null : keep.text + ", " + day.text),
-				keep != null && day != null && !keep.active && !day.active && keep.text.equals("Keep Inventory: OFF") && day.text.equals("Day Length: Normal"));
+		results.check(where + ": the rules show their values and can't be pressed: " + (keep == null || weather == null ? null : keep.text + ", " + weather.text),
+				keep != null && weather != null && !keep.active && !weather.active && keep.text.equals("Keep Inventory: OFF") && weather.text.equals("Weather: Normal"));
 		if (lock != null) {
 			String drawn = drawnOver(page, lock);
 			results.check(where + ": the button's hint says the rules are locked, not how to unlock: " + drawn, drawn.contains(RuleSettings.WORLD_LOCKED) && saysNothingOfUnlocking(drawn));
@@ -186,9 +186,17 @@ public final class RulesCheck implements WorldCheck {
 		return mc.currentScreen;
 	}
 
+	/** A rule's button on its mod's page, turned to the next page when it isn't on this one: a page shares its rules evenly, so where one falls moves as rules are added. */
+	private ButtonWidget across(Screen page, String prefix) {
+		ButtonWidget b = find(page, prefix), next = find(page, ">");
+		if (b != null || next == null) return b;
+		press(page, next);
+		return find(page, prefix);
+	}
+
 	/** A choice's button goes through its words, each taking effect, back to where it started. */
 	private void steps(Screen page, String prefix, ChoiceRule rule, String... words) {
-		ButtonWidget b = find(page, prefix);
+		ButtonWidget b = across(page, prefix);
 		for (int i = 0; i < words.length; i++) {
 			results.check("the button reads " + words[i] + ", the rule " + rule.values().get(i) + ": " + (b == null ? null : b.text),
 					b != null && b.text.equals(prefix + words[i]) && rule.get().equals(rule.values().get(i)));
@@ -248,7 +256,7 @@ public final class RulesCheck implements WorldCheck {
 		switch (stage) {
 			case 0: {
 				results.check("a new world: every rule at beta's default", WorldRules.mobsBreakBlocks.get() && WorldRules.blastsDestroyItems.get() && !WorldRules.keepInventory.get() && WorldRules.sleeping.get()
-						&& WorldRules.dayLength.get().equals("normal") && WorldRules.weather.get().equals("normal") && WorldRules.naturalMonsters.get());
+						&& WorldRules.weather.get().equals("normal") && WorldRules.naturalMonsters.get());
 				results.check("a world nobody touched has no rules file", !Files.exists(worldFile()));
 				Screen options = open(mc, new OptionsScreen(null, mc.options));
 				results.check("Options has the settings button", find(options, FabricLoader.getInstance().isModLoaded("oldfaithful-options") ? "Old Faithful..." : "Mods...") != null);
@@ -263,10 +271,8 @@ public final class RulesCheck implements WorldCheck {
 				results.check("the rule's page says what's set: " + (keep == null ? null : keep.text), keep != null && keep.text.equals("Keep Inventory: OFF") && keep.active);
 				press(page, keep);
 				results.check("pressing it writes the world's file and takes effect at once: " + keep.text, keep.text.equals("Keep Inventory: ON") && WorldRules.keepInventory.get() && Files.exists(worldFile()));
-				steps(page, "Day Length: ", WorldRules.dayLength, "Normal", "Double", "Triple");
-				press(page, find(page, ">"));
 				steps(page, "Weather: ", WorldRules.weather, "Normal", "Clear", "Rain or Snow");
-				ButtonWidget monsters = find(page, "Natural Monsters");
+				ButtonWidget monsters = across(page, "Natural Monsters");
 				results.check("monsters read ON: " + (monsters == null ? null : monsters.text), monsters != null && monsters.text.equals("Natural Monsters: ON"));
 				mc.setScreen(null);
 				give(mc);
@@ -293,14 +299,20 @@ public final class RulesCheck implements WorldCheck {
 			case 3: {
 				results.check("rule off: a death drops what was carried: " + itemsNear(mc), itemsNear(mc) > 0);
 				mc.respawnPlayer(false, 0);
+				stage = 30;
+				wait = 5;
+				return false;
+			}
+			case 30: {
+				// Counted now, as after the first death: what was dropped lies at the spawn, and can be picked up again from 40 ticks on.
+				results.check("rule off: nothing carried over: " + diamonds(mc), diamonds(mc) == 0);
 				stage = 4;
 				// The window's close skips the final save, so the reopened world has what the last autosave saw; wait for one, every 40
 				// ticks, with the player alive, or the reopen can find them dead on the death screen.
-				wait = 45;
+				wait = 40;
 				return false;
 			}
 			case 4: {
-				results.check("rule off: nothing carried over: " + diamonds(mc), diamonds(mc) == 0);
 				int x = (int) Math.floor(mc.player.x) + 2, y = (int) Math.floor(mc.player.y) + 6, z = (int) Math.floor(mc.player.z) + 2;
 				for (int dx = -1; dx <= 1; dx++) {
 					for (int dz = -1; dz <= 2; dz++) mc.world.setBlock(x + dx, y - 1, z + dz, Block.STONE.id);
@@ -375,9 +387,9 @@ public final class RulesCheck implements WorldCheck {
 				rest.remove(Rules.LOCK_KEY + "=true");
 				results.check("and nothing else in the file changed", rest.equals(java.util.Arrays.asList(fileBefore.split("\r?\n"))));
 				lockedPage(page, "locked");
-				boolean changed = Rules.change(WorldRules.keepInventory, "true") | Rules.change(WorldRules.dayLength, "triple");
+				boolean changed = Rules.change(WorldRules.keepInventory, "true") | Rules.change(WorldRules.weather, "rain");
 				results.check("a change from anywhere in the game is refused: the rules as they were, the file too",
-						!changed && !WorldRules.keepInventory.get() && WorldRules.dayLength.get().equals("normal") && worldText().equals(text));
+						!changed && !WorldRules.keepInventory.get() && WorldRules.weather.get().equals("normal") && worldText().equals(text));
 				press(page, find(page, "Keep Inventory"));
 				results.check("a press on a rule does nothing", !WorldRules.keepInventory.get() && find(page, "Keep Inventory").text.equals("Keep Inventory: OFF"));
 				stage = 9;
@@ -458,9 +470,9 @@ public final class RulesCheck implements WorldCheck {
 				if (capture == null) {
 					results.check("on a locked server the client hears it's locked", Rules.locked());
 					page = modPage(mc);
-					ButtonWidget keep = find(page, "Keep Inventory"), day = find(page, "Day Length");
+					ButtonWidget keep = find(page, "Keep Inventory"), weather = find(page, "Weather");
 					results.check("its page reads " + RuleSettings.LOCKED + ", not pressable, and the rules aren't either", find(page, RuleSettings.LOCKED) != null
-							&& !find(page, RuleSettings.LOCKED).active && keep != null && !keep.active && day != null && !day.active);
+							&& !find(page, RuleSettings.LOCKED).active && keep != null && !keep.active && weather != null && !weather.active);
 					lockedSwitch(page, "on a locked server", RuleSettings.SERVER_LOCKED);
 				}
 				if (!shot("server-locked", find(page, RuleSettings.LOCKED))) return false;
@@ -482,8 +494,8 @@ public final class RulesCheck implements WorldCheck {
 				Screen page = modPage(mc);
 				ButtonWidget keep = find(page, "Keep Inventory");
 				results.check("on a server the rule shows the server's value and can't be pressed: " + keep.text, keep.text.equals("Keep Inventory: " + (expected ? "ON" : "OFF")) && !keep.active);
-				ButtonWidget day = find(page, "Day Length");
-				results.check("and a choice too: " + day.text, day.text.equals("Day Length: Triple") && !day.active);
+				ButtonWidget weather = find(page, "Weather");
+				results.check("and a choice too: " + weather.text, weather.text.equals("Weather: Rain or Snow") && !weather.active);
 				mc.player.sendChatMessage("/ruletest kill OldFaithfulTest true");
 				stage = 102;
 				wait = 40;

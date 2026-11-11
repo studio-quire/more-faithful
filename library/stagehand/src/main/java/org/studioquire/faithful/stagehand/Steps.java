@@ -19,7 +19,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.faithful.stagehand.mixin.EntityAccessor;
 import org.studioquire.oldfaithful.core.api.Server;
 
@@ -28,6 +27,8 @@ final class Steps {
 	private static final int TICKS_TO_SEE_IT_TOOK = 2;
 	private static final int LONGEST_WAIT = 20 * 60 * 60;
 	private static final int MOST_TICKS_FOR_A_CLIENT = 200;
+	/** Ticks in beta's day: the hour is the world's time within one. */
+	private static final int DAY = 24000;
 
 	private Steps() {
 	}
@@ -356,7 +357,7 @@ final class Steps {
 			}
 			String word = words.next("").toLowerCase(Locale.ROOT);
 			Integer named = HOURS.get(word);
-			hour = named != null ? named : Integer.valueOf(Words.number("the hour", word, 0, Days.NORMAL - 1));
+			hour = named != null ? named : Integer.valueOf(Words.number("the hour", word, 0, DAY - 1));
 		}
 
 		/**
@@ -368,14 +369,14 @@ final class Steps {
 			if (hour != null) {
 				for (World world : Server.worlds()) {
 					long now = world.getTime();
-					long next = now - now % Days.NORMAL + hour;
-					if (next <= now) next += Days.NORMAL;
+					long next = now - now % DAY + hour;
+					if (next <= now) next += DAY;
 					run.side.setTime(world, next);
 				}
 			}
 			World world = run.world(null);
-			data.put("hour", Days.time(world) % Days.NORMAL);
-			data.put("day", Days.time(world) / Days.NORMAL);
+			data.put("hour", world.getTime() % DAY);
+			data.put("day", world.getTime() / DAY);
 			return true;
 		}
 	}
@@ -713,8 +714,8 @@ final class Steps {
 			data.put("paused", run.side.paused());
 			data.put("players", Run.names());
 			World world = run.world(null);
-			data.put("hour", Days.time(world) % Days.NORMAL);
-			data.put("day", Days.time(world) / Days.NORMAL);
+			data.put("hour", world.getTime() % DAY);
+			data.put("day", world.getTime() / DAY);
 			data.put("raining", world.getProperties().getRaining());
 			data.put("thundering", world.getProperties().getThundering());
 			data.put("difficulty", world.difficulty);

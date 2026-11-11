@@ -383,6 +383,25 @@ public final class Tools {
 		return !required && usual;
 	}
 
+	/** Whether something holding this gets the block's drops: what {@code PlayerEntity.canHarvest} asks, for a miner that isn't a player. */
+	public static boolean canHarvest(ItemStack held, Block block) {
+		return harvests(held, block, block.material.isHandHarvestable() || held != null && held.isSuitableFor(block));
+	}
+
+	/**
+	 * How far a tick takes the breaking of a block, 1 being broken: what {@code Block.getHardness(player)} works out, for a miner that isn't a player, which has to say for itself what a player's
+	 * {@code getBlockBreakingSpeed} reads off its body. Zero for a block nothing breaks.
+	 */
+	public static float breakProgress(Block block, ItemStack held, boolean onGround, boolean inWater) {
+		float hardness = block.getHardness();
+		if (hardness < 0.0F) return 0.0F;
+		if (!canHarvest(held, block)) return 1.0F / hardness / 100.0F;
+		float speed = held == null ? 1.0F : held.getMiningSpeedMultiplier(block);
+		if (inWater) speed /= 5.0F;
+		if (!onGround) speed /= 5.0F;
+		return speed / hardness / 30.0F;
+	}
+
 	/** What {@code Item.SHEARS.id} should read as for what's in the hand: anything that is shears is as good. */
 	public static int shearsId(ItemStack held, int shears) {
 		return held != null && held.getItem() instanceof ShearsItem ? held.itemId : shears;

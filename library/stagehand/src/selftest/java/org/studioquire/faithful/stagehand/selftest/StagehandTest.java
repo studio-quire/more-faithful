@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import org.studioquire.faithful.harness.test.WorldTest;
 import org.studioquire.faithful.stagehand.selftest.server.NetherSwitch;
 import org.studioquire.oldfaithful.core.api.Chunks;
-import org.studioquire.oldfaithful.core.api.Days;
 import org.studioquire.oldfaithful.core.api.Names;
 import org.studioquire.oldfaithful.core.api.Server;
 import org.studioquire.oldfaithful.core.api.Worldgen;
@@ -228,12 +227,12 @@ public final class StagehandTest extends WorldTest {
 		long[] before = new long[1];
 		then(() -> before[0] = world.getTime());
 		script("time", "time noon\n", r -> {
-			long hour = Days.time(world) % Days.NORMAL;
+			long hour = world.getTime() % 24000;
 			check("time: noon by the clock, the ticks since allowed: " + hour, hour >= 6000 && hour < 6600);
 			check("time: never backward", world.getTime() >= before[0]);
 		});
 		script("time-back", "time dawn\ntime 1234\n", r -> {
-			long hour = Days.time(world) % Days.NORMAL;
+			long hour = world.getTime() % 24000;
 			check("time: dawn then a number: " + hour, hour >= 1234 && hour < 1834);
 			check("time: still never backward", world.getTime() >= before[0]);
 		});

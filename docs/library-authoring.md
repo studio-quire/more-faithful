@@ -104,11 +104,11 @@ Every mixin is a future conflict, and forty mods reach for the same places. Befo
 
 | | |
 |---|---|
-| Life | `Lifecycle`, `Ticks`, `Chunks`, `Worldgen`, `Server` (the running worlds and players, either side), `Days` (the day's length, the hour) |
+| Life | `Lifecycle`, `Ticks`, `Chunks`, `Worldgen`, `Server` (the running worlds and players, either side) |
 | Players | `Players` (join, leave, drops, respawn, dimension change, keepInventory), `Beds`, `Attachment` |
 | Blocks | `Blocks` (placed, broken, used), `Drops`, `Crop`, `Leaves`, `Log`, `Growth` (bonemeal, farmland), `Fire`, `Explosions`, `Lightning` |
 | Entities | `Entities` (spawning, monsters appearing on their own, damage, death, natural spawn lists), `Creepers` (what frightens one; how it flees is the core's), `Content.entity`, `EntitySpawnData` |
-| Items | `Stacks`, `Tools`, `Recipes`, `Tags`, `Armor`, `Names` (anyone's blocks and items by name) |
+| Items | `Stacks`, `Tools`, `Arrows` (what an arrow item flies as, for a shooter of your own), `Recipes`, `Tags`, `Armor`, `Names` (anyone's blocks and items by name) |
 | Block entities | `Lookups`, `ItemStorage`, `SyncedBlockEntity`, `BlockEntities`, `Containers` |
 | World rules, talk | `mod.rules()`, `Commands`, `mod.channel()`, `Sounds` |
 | Client (`api/client`) | `Client` (the game, a world entered or left), `Hud`, `WorldRender`, `Screens`, `Keys`, `Input`, `PlayerRender`, `Camera`, `Renderers` (drawing, reading a tile), `ContainerScreens` |
@@ -134,7 +134,7 @@ Need a mixin anyway? Fine, and say why in its comment: it's how we find what the
 - **Entities**: a mod's own entity may use `DataTracker` from id 16 (the warning above is about players). A tracker change that lasts under about 3 ticks never reaches clients. A server's players have no velocity to read, only positions, so measure over time.
 - **Finding your own blocks**: don't scan. Keep positions in a persisted `Attachment.chunk`, added in `onPlaced` and removed in `onBreak`, and read the few chunks in range with `Chunks.isLoaded`.
 - **Statistics**: mod content has none, on purpose.
-- **Time**: `world.getTime()` is a count of ticks, right for "every 100 ticks". The hour is `Days.time(world) % Days.NORMAL`, as a day may be any length; the two only look alike in a beta-length day. On a client on a server `getTime()` is the server's hour instead, so it's no tick count there.
+- **Time**: `world.getTime()` is beta's one clock: a count of ticks, right for "every 100 ticks", whose remainder by 24000 is the hour (0 sunrise, 6000 noon, 18000 midnight). It jumps when a night is slept through and when `/time` is used. On a client on a server it's the server's, put right every second.
 - **Animals despawn**, as beta's do: `LivingEntity.tryDespawn` takes any mob over 128 blocks from every player at once, and past 32 by chance, and an `AnimalEntity` is no exception. A test or a mod that leaves one somewhere has to allow for that, or override `canDespawn`.
 - **An item's `use`** runs on both, the client's first, as a guess. A server only corrects the hand, and only if the hand ended different from what the client said it held *before* guessing, so a guess of a change the server didn't make stays on the client. Where the two can disagree (`use` that looks along the player's angles: a server's are a tick old), leave it to the server: `if (world.isRemote) return stack;`, and the answer arrives as a slot update. Anything else a server's `use` changes in the inventory never reaches the client unless you call `user.currentScreenHandler.sendContentUpdates()` there and then: the packet handler's own call right after is muted, and it marks those slots as sent. `library/water-bottles` does both.
 - **`world.raycast`** walks its `start` along the ray, so that vector ends up beside the hit: make a new one for anything after.

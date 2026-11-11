@@ -6,3 +6,5 @@ rule.wolf-packs.feeding.name=Wolves Eat Fish
 rule.wolf-packs.feeding.hint=Wolves eat fish too, and food heals a wolf as it heals you. Off: any pork heals 1.5 hearts, as in beta.
 rule.wolf-packs.guarding.name=Wolves Guard You
 rule.wolf-packs.guarding.hint=Wolves go for a monster after you within 4 blocks, or a skeleton shooting at you. Off: only after a hit, as in beta.
+rule.wolf-packs.watch.name=Sitting Wolves Watch
+rule.wolf-packs.watch.hint=A sitting wolf goes for a monster it sees within 8 blocks, then sits back down. Off: it doesn't, as in beta.

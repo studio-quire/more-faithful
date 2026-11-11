@@ -3,24 +3,34 @@ package org.studioquire.faithful.wolfpacks.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodItem;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.studioquire.faithful.wolfpacks.Hunt;
 import org.studioquire.faithful.wolfpacks.Packs;
+import org.studioquire.faithful.wolfpacks.Watch;
 import org.studioquire.faithful.wolfpacks.WolfFood;
 
 /**
- * A mixin because the core has no say in how a mob thinks or what an animal eats: a tamed wolf looks to its pack's fight and its pending healing at the
- * start of its own thinking each tick, and beta's feeding in {@code interact} asks this what it eats and what it heals.
+ * A mixin because the core has no say in how a mob thinks or what an animal eats: a tamed wolf looks to its watch, its pack's fight and its pending healing
+ * at the start of its own thinking each tick, and beta's feeding in {@code interact} asks this what it eats and what it heals. A wolf on watch and off its
+ * seat isn't beta's follower meanwhile, and walks its last steps back by this.
  */
 @Mixin(WolfEntity.class)
-abstract class WolfEntityMixin implements Hunt.Holder {
+abstract class WolfEntityMixin extends AnimalEntity implements Hunt.Holder {
+	private WolfEntityMixin(World world) {
+		super(world);
+	}
+
 	@Unique
 	private Hunt wolfpacks$state;
 	/** What the feeding in progress is, between beta asking whether it's meat and its heal, in the same call. */
@@ -40,7 +50,44 @@ abstract class WolfEntityMixin implements Hunt.Holder {
 	private void wolfpacks$think(CallbackInfo ci) {
 		WolfEntity wolf = (WolfEntity) (Object) this;
 		WolfFood.tick(wolf);
-		Packs.tick(wolf);
+		if (!Watch.tick(wolf)) Packs.tick(wolf);
+	}
+
+	/**
+	 * Beta's tamed wolf with no path walks to its owner, appears beside them when they're far, and sits down where it is when they're away. Not one on watch
+	 * and off its seat: it has its monster or its spot to go to. Only the first of the two questions in that method: the second keeps wild wolves' hunting
+	 * for wild wolves.
+	 */
+	@WrapOperation(method = "tickLiving", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/WolfEntity;isTamed()Z", ordinal = 0))
+	private boolean wolfpacks$notAtHeel(WolfEntity wolf, Operation<Boolean> isTamed) {
+		return isTamed.call(wolf) && !Watch.onDuty(wolf);
+	}
+
+	/** After beta's thinking: a sitting wolf faces what it's growling at, and one nearly back at its spot walks straight onto it. */
+	@Inject(method = "tickLiving", at = @At("TAIL"))
+	private void wolfpacks$watches(CallbackInfo ci) {
+		WolfEntity wolf = (WolfEntity) (Object) this;
+		if (wolf.world.isRemote || !wolf.isTamed()) return;
+		if (Watch.settled(wolf)) jumping = false;
+		Entity alarm = Watch.growlsAt(wolf);
+		if (alarm != null) {
+			// As beta turns a sitting wolf's head to a player.
+			lookAt(alarm, 10.0F, 20.0F);
+			return;
+		}
+		double[] to = Watch.lastSteps(wolf);
+		if (to == null) return;
+		double dx = to[0] - x, dz = to[2] - z;
+		yaw = (float) (Math.atan2(dz, dx) * 180.0 / Math.PI) - 90.0F;
+		forwardSpeed = dx * dx + dz * dz < 0.64 ? movementSpeed * 0.5F : movementSpeed;
+		sidewaysSpeed = 0.0F;
+		jumping = horizontalCollision || isSubmergedInWater();
+	}
+
+	/** Beta stands a sitting wolf up when anything hurts it and turns it on what did: one on watch goes back to its spot after (`Watch.hit`). */
+	@Inject(method = "damage(Lnet/minecraft/entity/Entity;I)Z", at = @At("HEAD"))
+	private void wolfpacks$hitOnItsSpot(Entity source, int amount, CallbackInfoReturnable<Boolean> cir) {
+		Watch.hit((WolfEntity) (Object) this, source);
 	}
 
 	/**

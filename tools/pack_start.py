@@ -73,8 +73,10 @@ shutil.copytree(REPO / "local/cache/selftest-sounds/resources", game / "resource
 wave = str(game / "sound.wav").replace("\\", "/")
 (game / "alsoft.ini").write_text(f"[general]\nchannels = stereo\nsample-type = int16\nfrequency = 44100\n[wave]\nfile = {wave}\n")
 if a.style:
+    # The install's own choice for new worlds, as if picked on Create World's page; every other rule starts as the pack has it.
     (game / "config").mkdir(exist_ok=True)
-    (game / "config" / "faithful-rules.properties").write_text(f"rule.buried-towers.style={a.style}\n")
+    with open(game / "config" / "faithful-rules.properties", "a", encoding="iso-8859-1", newline="") as rules:
+        rules.write(f"rule.buried-towers.style={a.style}\r\n")
 
 cfg = (inst / "instance.cfg").read_text()
 pack_args = next(l.split("=", 1)[1] for l in cfg.splitlines() if l.startswith("JvmArgs=")).split()
