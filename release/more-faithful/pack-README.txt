@@ -2,7 +2,10 @@
 @TAGLINE@
 
 This folder is a Prism Launcher instance. Prism downloads Minecraft beta 1.7.3 itself, from Mojang, the first time
-you launch it; everything else is already here. You need a Minecraft account that owns the game.
+you launch it; everything else is already here. You need a Minecraft account that owns the game. On its first start
+the game also fetches beta's own bow and door sounds (about 28 KB), which Mojang no longer offers, from Modification
+Station's archive of beta's files. To keep it from doing so, set resources.download=false in
+.minecraft/config/purefaithful-hardening.properties before you first launch it, creating the file if it isn't there.
 
 @NAME@ is beta with more in it, where you still do everything yourself: @EDITION_NAME@'s own pack with
 mods from the Faithful Library @LIBRARY_VERSION@ in .minecraft/mods-library, all on. Underneath is

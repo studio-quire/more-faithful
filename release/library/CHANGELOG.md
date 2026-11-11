@@ -6,6 +6,15 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.7.1 (2026-11-11)
+
+Faithful Settings is Old Faithful 0.2.6's, unchanged since 0.2.4's but for its version.
+
+- **Buried Towers**: cocoa beans turn up in the towers' chests, among the food and supplies of the upper floors, a bean
+  or a few at a time, in about two towers in three. Beta's only cocoa beans were in its dungeons' chests, and the towers
+  take the dungeons' place, so land made with the mod had none, and with that no cookies and no brown dye. Towers in
+  land already made keep the chests they have: the beans are in towers made from now on.
+
 ## 0.7.0 (2026-11-11)
 
 Faithful Settings is Old Faithful 0.2.5's, unchanged since 0.2.4's but for its version.

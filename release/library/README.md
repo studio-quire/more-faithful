@@ -130,7 +130,7 @@ doesn't run with StationAPI, so that combination stops at launch with a message.
 
 In an instance from More Faithful, or from the library's old packs, they're in `.minecraft/mods-library` instead, each
 with a switch in the game's settings, and named without their versions: to update one, replace its jar there with the
-new one under the old name (`alchemy-0.7.0.jar` becomes `alchemy.jar`), `faithful-core` included.
+new one under the old name (`alchemy-0.7.1.jar` becomes `alchemy.jar`), `faithful-core` included.
 
 ## Servers
 

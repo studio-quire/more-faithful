@@ -7,6 +7,18 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.7.1 (2026-11-11)
+
+On the Faithful Library 0.7.1 and Still Faithful 0.7.1, on Old Faithful 0.2.6 and Pure Faithful 0.1.6.
+
+- **Buried Towers**: cocoa beans turn up in the towers' chests, among the food and supplies of the upper floors, a bean
+  or a few at a time, in about two towers in three. Beta's only cocoa beans were in its dungeons' chests, and the towers
+  take the dungeons' place, so new land had none, and with that no cookies and no brown dye. Towers in land already
+  made keep the chests they have: the beans are in towers made from now on.
+- From Pure Faithful 0.1.6: the bow, doors opening and closing, and explosions sound as they did in beta, where launchers
+  today give later recordings. Beta's bow and doors, which Mojang no longer offers, are fetched once from Modification
+  Station's archive of beta's files. Pure Faithful's changelog has the detail.
+
 ## 0.7.0 (2026-11-11)
 
 On the Faithful Library 0.7.0 and Still Faithful 0.7.0, on Old Faithful 0.2.5 and Pure Faithful 0.1.5.

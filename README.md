@@ -142,6 +142,12 @@ You need a Minecraft account that owns the game, and [Prism Launcher](https://pr
 4. In the game: **Options > More Faithful... > Mods...** (**Still Faithful...** when every mod is off). Each mod's page
    has an **Enabled** switch, which takes effect the next time you launch.
 
+Everything else is inside the zip, and nothing comes from us. Besides Mojang (your login, skins and sounds) and the
+servers you join, the game reaches one other place: on its first start it fetches beta's own bow and door sounds
+(about 28 KB) from the archive of beta's files kept by Modification Station, a community of beta modders. To keep it
+from doing so, before you first launch it set `resources.download=false` in
+`.minecraft/config/purefaithful-hardening.properties`, creating the file if it isn't there.
+
 All the mods start on. Faithful Core comes on by itself when any mod is on, and goes off when none is. The jars are in
 `.minecraft/mods-library`, and the switches are kept in `.minecraft/mods-library/selection.txt`. With every mod off the
 game is Still Faithful, and the title screen and Options say so; `pack.properties` in that folder is what tells it it's
@@ -168,7 +174,7 @@ wolves keeping watch, Feather Lure, Pickup Reach) is in the changelog. A world f
 pack on Old Faithful gets Still Faithful's changes here, each of which can be switched off (below). That pack's own
 instance keeps working too: to update its mods, replace each jar in its `.minecraft/mods-library`, `faithful-core`
 included, with the new one from the [Faithful Library's release](https://github.com/studio-quire/faithful-library/releases)
-under the old name (`alchemy-0.7.0.jar` becomes `alchemy.jar`).
+under the old name (`alchemy-0.7.1.jar` becomes `alchemy.jar`).
 
 ### Without Still Faithful's changes
 

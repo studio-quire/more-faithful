@@ -11,7 +11,8 @@ import org.studioquire.oldfaithful.core.api.Worldgen;
 /**
  * What's in a chest, by what the chest is for and how deep it lies. Beta's items only, nothing from the Nether, and nothing a player couldn't have put there. Near the top, plenty of everyday things:
  * food, coal, string, seeds, bones, flint, arrows, paper, now and then a saddle or a few ingots, so going in a little way pays. Gear and the rare valuables lie deeper, the chests getting fuller with
- * depth; the vault is the best of it without being a hoard: no blocks of metal, a handful of diamonds, and only rarely a diamond tool or piece of armour (user, 2026-11-07).
+ * depth; the vault is the best of it without being a hoard: no blocks of metal, a handful of diamonds, and only rarely a diamond tool or piece of armour (user, 2026-11-07). Cocoa beans are among the
+ * food in the kitchens, stores and granaries, found about as readily as in beta's dungeons, whose chests were its only cocoa: some in about two towers in three, as in two dungeons in three.
  */
 public final class Loot {
 	private Loot() {
@@ -48,8 +49,18 @@ public final class Loot {
 		return item(item, 1, 1);
 	}
 
+	/** Every dye is the one item, told apart by its damage. */
+	private static Draw dye(int which, int low, int high) {
+		return r -> new ItemStack(Item.DYE, low + r.nextInt(high - low + 1), which);
+	}
+
 	private static Draw ink(int low, int high) {
-		return r -> new ItemStack(Item.DYE, low + r.nextInt(high - low + 1), 0);
+		return dye(0, low, high);
+	}
+
+	/** Beta's only cocoa beans lay in its dungeons' chests, and the towers take the dungeons' place: without them here a world's new land has no cookies and no brown dye. */
+	private static Draw cocoa(int low, int high) {
+		return dye(3, low, high);
 	}
 
 	/** A worn tool or a bit of armour: it's been lying here a long time. */
@@ -119,8 +130,8 @@ public final class Loot {
 				break;
 			case "kitchen":
 				fill(chest, r, 6 + more, e(2, item(Item.BREAD, 1, 4)), e(1.5, item(Item.COOKED_PORKCHOP, 1, 3)), e(1.5, item(Item.COOKED_FISH, 1, 3)), e(1.5, item(Item.WHEAT, 2, 8)),
-						e(1, item(Item.SUGAR, 1, 4)), e(1, item(Item.APPLE, 1, 3)), e(1, item(Item.EGG, 1, 4)), e(1.5, item(Item.COAL, 2, 6)), e(0.7, item(Item.BOWL, 1, 2)), e(0.5, one(Item.BUCKET)),
-						e(0.4, one(Item.MILK_BUCKET)));
+						e(1, item(Item.SUGAR, 1, 4)), e(1, item(Item.APPLE, 1, 3)), e(1, item(Item.EGG, 1, 4)), e(1.5, cocoa(1, 3)), e(1.5, item(Item.COAL, 2, 6)), e(0.7, item(Item.BOWL, 1, 2)),
+						e(0.5, one(Item.BUCKET)), e(0.4, one(Item.MILK_BUCKET)));
 				break;
 			case "bunk":
 				fill(chest, r, 4 + more, e(2, item(Item.ARROW, 4, 12)), e(1.5, item(Item.BREAD, 1, 3)), e(1.5, item(Item.COAL, 1, 4)), e(1.5, item(Item.STRING, 1, 3)), e(1, item(Item.LEATHER, 1, 3)),
@@ -130,7 +141,7 @@ public final class Loot {
 			case "stores":
 				fill(chest, r, 7 + more, e(2, item(Item.WHEAT, 4, 12)), e(1.5, item(Item.SEEDS, 3, 10)), e(1.5, item(Item.BREAD, 1, 4)), e(1, item(Item.APPLE, 1, 4)), e(1, item(Item.SUGAR_CANE, 1, 6)),
 						e(2, item(Item.COAL, 3, 10)), e(1, block(Block.TORCH, 2, 8)), e(1, item(Item.STRING, 1, 4)), e(1, item(Item.BONE, 2, 6)), e(1, item(Item.LEATHER, 1, 4)), e(0.7, item(Item.CLAY, 2, 6)),
-						e(0.8, item(Item.IRON_INGOT, 1, 3)), e(0.4, one(Item.MUSHROOM_STEW)), e(0.4, one(Item.SADDLE)));
+						e(1, cocoa(1, 2)), e(0.8, item(Item.IRON_INGOT, 1, 3)), e(0.4, one(Item.MUSHROOM_STEW)), e(0.4, one(Item.SADDLE)));
 				break;
 			case "cell":
 				fill(chest, r, 3, e(2, item(Item.BONE, 1, 5)), e(1.5, item(Item.STRING, 1, 3)), e(1.5, item(Item.FLINT, 1, 3)), e(1, item(Item.COAL, 1, 3)), e(1, item(Item.BREAD, 1, 2)),
@@ -176,7 +187,7 @@ public final class Loot {
 				break;
 			case "granary":
 				fill(chest, r, 6 + more, e(3, item(Item.WHEAT, 4, 16)), e(2.5, item(Item.SEEDS, 4, 16)), e(1.5, item(Item.BREAD, 1, 4)), e(1, item(Item.SUGAR, 1, 4)), e(0.8, item(Item.STRING, 1, 3)),
-						e(0.6, item(Item.BONE, 1, 3)), e(0.4, worn(Item.WOODEN_HOE)), e(0.3, worn(Item.STONE_HOE)), e(0.3, one(Item.BUCKET)));
+						e(0.7, cocoa(1, 2)), e(0.6, item(Item.BONE, 1, 3)), e(0.4, worn(Item.WOODEN_HOE)), e(0.3, worn(Item.STONE_HOE)), e(0.3, one(Item.BUCKET)));
 				break;
 			case "farm":
 				fill(chest, r, 5 + more, e(2.5, item(Item.BOWL, 1, 4)), e(1.5, one(Item.MUSHROOM_STEW)), e(2, item(Item.BONE, 2, 6)), e(1.5, item(Item.SEEDS, 2, 8)), e(1, item(Item.COAL, 1, 4)),

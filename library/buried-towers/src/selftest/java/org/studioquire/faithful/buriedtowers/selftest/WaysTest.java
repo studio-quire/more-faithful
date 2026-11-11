@@ -393,11 +393,14 @@ public final class WaysTest extends WorldTest {
 			String over = null;
 			// What the valuables in a chest are worth on average, by kind, at each depth: a diamond eight, a gold ingot two, an iron one.
 			double[][] worth = new double[Loot.KINDS.length][5];
+			// How many of each kind's 200 chests at the top hold cocoa beans.
+			int[] cocoa = new int[Loot.KINDS.length];
 			for (int kind = 0; kind < Loot.KINDS.length; kind++) {
 				for (int k = 0; k <= 4; k++) {
 					for (int seed = 0; seed < 200; seed++) {
 						for (int i = 0; i < chest.size(); i++) chest.setStack(i, null);
 						Loot.fill(chest, Loot.KINDS[kind], k / 4.0, new Random(seed * 31L + k));
+						boolean beans = false;
 						for (int i = 0; i < chest.size(); i++) {
 							ItemStack stack = chest.getStack(i);
 							if (stack == null) continue;
@@ -405,11 +408,22 @@ public final class WaysTest extends WorldTest {
 							if (stack.count > stack.getMaxCount() || stack.count < 1) over = Loot.KINDS[kind] + ": " + stack.count + " of " + stack.itemId;
 							int each = stack.itemId == Item.DIAMOND.id ? 8 : stack.itemId == Item.GOLD_INGOT.id ? 2 : stack.itemId == Item.IRON_INGOT.id ? 1 : 0;
 							worth[kind][k] += each * stack.count / 200.0;
+							beans |= stack.itemId == Item.DYE.id && stack.getDamage() == 3;
 						}
+						if (k == 0 && beans) cocoa[kind]++;
 					}
 				}
 			}
 			check("no chest slot holds more than its item stacks to, over " + filled + " filled: " + (over == null ? "none" : over), over == null && filled > 0);
+			// Beta's only cocoa beans were in its dungeons' chests, and the mod stops its dungeons: the towers' food and stores chests hold them, from the top floors down.
+			String found = "";
+			boolean some = true;
+			for (String kind : new String[] {"kitchen", "stores", "granary"}) {
+				int with = cocoa[Arrays.asList(Loot.KINDS).indexOf(kind)];
+				some &= with > 0;
+				found += " " + kind + " " + with + ";";
+			}
+			check("cocoa beans, which only beta's dungeons had, are in the top floors' food and stores chests, of 200 each:" + found, some);
 			// A hidden room's chest rewards noticing it: better than any floor's chest at its depth, from halfway down, and short of the vault's best (which has three more beside it).
 			int hidden = Arrays.asList(Loot.KINDS).indexOf("hidden"), best = Arrays.asList(Loot.KINDS).indexOf("vault-best");
 			String order = "";
