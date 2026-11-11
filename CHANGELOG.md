@@ -7,6 +7,14 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.6.1 (2026-11-10)
+
+On the Faithful Library 0.6.0 and Still Faithful 0.6.1, on Old Faithful 0.2.4 and Pure Faithful 0.1.5. The pack now
+carries Still Faithful 0.6.1; the library's mods are unchanged. From Still Faithful 0.6.1: a skeleton riding a spider no
+longer shoots its own spider when it shoots down at you. Since Still Faithful 0.6.0, the steeper the shot, the more of
+its arrows hit the spider, nearly all of them when it was well above you and close by. Still Faithful's changelog has
+the detail.
+
 ## 0.6.0 (2026-11-10)
 
 On the Faithful Library 0.6.0 and Still Faithful 0.6.0, on Old Faithful 0.2.4 and Pure Faithful 0.1.5.

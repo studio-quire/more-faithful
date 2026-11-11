@@ -985,7 +985,7 @@ if (findProject(':library:tower-check') != null) {
         towers = providers.gradleProperty('towers.count').map { it as int }.orElse(6)
         at = providers.gradleProperty('towers.at')
         style = providers.gradleProperty('towers.style')
-        // Servers only, nothing shown: four worlds side by side, each a busy thread at below-normal priority (one while the user's own game runs).
+        // Servers only, nothing shown: four worlds side by side, each a busy thread at below-normal priority (one while a game of the user's leaves too little room for four: tools/user_busy.ps1 -For servers).
         parallel = providers.gradleProperty('towers.parallel').map { it as int }.orElse(4)
         // -Ptowers.hurry=false for the game's own 20 ticks a second while chunks load, as the test ran until 2026-11-09.
         hurry = providers.gradleProperty('towers.hurry').map { it != 'false' }.orElse(true)
