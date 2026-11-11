@@ -20,6 +20,7 @@ import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -306,6 +307,89 @@ public final class RulesTest extends WorldTest {
 		return stack == null ? "nothing" : stack.count + " of " + stack.getItem().getTranslationKey() + " at " + stack.getDamage();
 	}
 
+	/** The player to the middle of the plot, standing, as the harness puts them there at the start: earlier tests leave them about. */
+	private void toMiddle() {
+		player.setPosition(x + 0.5, y + 0.01 + player.standingEyeHeight, z + 0.5);
+		player.velocityX = player.velocityY = player.velocityZ = 0.0;
+	}
+
+	/** An item lying still with its bottom at {@code bottom}, to be picked up at once if it's in reach (an item's y is the middle of its box). */
+	private ItemEntity lying(Item item, double ix, double bottom, double iz) {
+		ItemEntity e = new ItemEntity(world, ix, bottom + 0.125, iz, new ItemStack(item));
+		e.velocityX = e.velocityY = e.velocityZ = 0.0;
+		e.pickupDelay = 0;
+		world.spawnEntity(e);
+		return e;
+	}
+
+	/**
+	 * Pickup Reach, in single player: a server ticks a player only as its client's moves come in, and the joined client sends none during the server's own steps
+	 * (its player ticked 0 times in 100), so there nothing is picked up whatever the rule. A server's player picks up in the same {@code tickMovement}, from
+	 * {@code playerTick}. Beside the player, from the middle of the plot a block across: a feather on a pillar two high, its bottom 0.2 over the
+	 * player's head, and a string on a slab sunk into the floor, its top 0.25 below the feet; later versions reach both, half a block up and down, and beta
+	 * neither. Then riding a boat: a bone on the floor 1.55 across along z (a boat seats its rider 0.4 off its middle along its yaw, x here), past the player's reach but within a block of the boat's side.
+	 */
+	private void pickup() {
+		if (!singlePlayer()) return;
+		double px = x + 0.5, pz = z + 0.5;
+		ItemEntity[] up = new ItemEntity[2], down = new ItemEntity[2];
+		then(this::toMiddle);
+		await("the player in the middle of the plot", 40, () -> Math.abs(player.x - px) < 0.05 && Math.abs(player.z - pz) < 0.05);
+		then(() -> {
+			Arrays.fill(player.inventory.main, null);
+			player.currentScreenHandler.sendContentUpdates();
+			set(1, 0, 0, Block.STONE);
+			set(1, 1, 0, Block.STONE);
+			set(-1, -1, 0, Block.SLAB);
+			Rules.change(WorldRules.pickupReach, "false");
+			up[0] = lying(Item.FEATHER, px + 1.0, y + 2.0, pz);
+			down[0] = lying(Item.STRING, px - 1.0, y - 0.5, pz);
+			lying(Item.SEEDS, px, y, pz + 1.0);
+		});
+		// Seeds on the floor beside the player, in beta's reach: once they're taken the player is picking up, and the rest have had their chance.
+		await("pickup reach off: the seeds beside the player picked up", 100, () -> count(Item.SEEDS) == 1);
+		wait(10);
+		then(() -> {
+			check("pickup reach off, as beta: neither the feather over the head nor the string under the feet", !up[0].dead && !down[0].dead && count(Item.FEATHER) == 0 && count(Item.STRING) == 0);
+			up[0].markDead();
+			down[0].markDead();
+			Rules.change(WorldRules.pickupReach, "true");
+			up[1] = lying(Item.FEATHER, px + 1.0, y + 2.0, pz);
+			down[1] = lying(Item.STRING, px - 1.0, y - 0.5, pz);
+		});
+		until("pickup reach on: the feather over the head and the string under the feet picked up", 100, () -> count(Item.FEATHER) == 1 && count(Item.STRING) == 1 && up[1].dead && down[1].dead);
+		then(() -> {
+			set(1, 0, 0, null);
+			set(1, 1, 0, null);
+			set(-1, -1, 0, Block.STONE);
+		});
+		BoatEntity[] boat = new BoatEntity[1];
+		ItemEntity[] bone = new ItemEntity[2];
+		then(() -> {
+			boat[0] = new BoatEntity(world);
+			boat[0].setPosition(px, y + 0.3, pz); // its y is the middle of its box too, so on the floor
+			world.spawnEntity(boat[0]);
+			player.setVehicle(boat[0]);
+			Rules.change(WorldRules.pickupReach, "false");
+			bone[0] = lying(Item.BONE, px, y, pz + 1.55);
+		});
+		wait(20);
+		then(() -> {
+			check("pickup reach off, as beta: riding a boat, not the bone off its side", player.vehicle == boat[0] && !bone[0].dead && count(Item.BONE) == 0);
+			bone[0].markDead();
+			Rules.change(WorldRules.pickupReach, "true");
+			bone[1] = lying(Item.BONE, px, y, pz + 1.55);
+		});
+		until("pickup reach on: riding a boat, the bone off its side picked up", 20, () -> count(Item.BONE) == 1 && bone[1].dead);
+		then(() -> {
+			player.setVehicle(null);
+			boat[0].markDead();
+			toMiddle();
+			Arrays.fill(player.inventory.main, null);
+			player.currentScreenHandler.sendContentUpdates();
+		});
+	}
+
 	/** Bows Wear Out where the world runs: a bow's most damage following the rule, the wear a shot makes, the last shot, and what makes things of bows. */
 	private void bows() {
 		then(() -> {
@@ -397,6 +481,7 @@ public final class RulesTest extends WorldTest {
 		apples();
 		fallingBonus();
 		bows();
+		pickup();
 		monsterLight();
 		naturalSpawning();
 	}

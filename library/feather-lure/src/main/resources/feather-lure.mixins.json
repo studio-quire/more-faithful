@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.featherlure.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["FishingBobberAccess", "FishingBobberEntityMixin"],
+  "client": ["FishingBobberEntityRendererMixin", "PlayerEntityMixin"],
+  "injectors": {"defaultRequire": 1}
+}

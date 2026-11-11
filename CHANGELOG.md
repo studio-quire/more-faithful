@@ -7,6 +7,38 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.7.0 (2026-11-11)
+
+On the Faithful Library 0.7.0 and Still Faithful 0.7.0, on Old Faithful 0.2.5 and Pure Faithful 0.1.5.
+
+- **Pickup Reach**, a new rule of World Rules, on in new worlds and in worlds you already have: you pick up items from
+  half a block above and below you as well, so something on top of a two-block step beside you comes to you without a
+  jump, and riding a boat, a minecart or a pig, from all round what you ride, as in later versions. Turn it off on
+  World Rules' page for beta's reach.
+- From Still Faithful, **Boat Steering**: boats steer as in later versions, A and D turning the boat and your view with
+  it, W paddling it the way it faces, up to 6.5 blocks a second where beta's reached about 5.8; a boat you place faces the
+  way you look. With it, from Old Faithful, **Riding Look**: on a server, others see your head turn while you ride, and
+  a server with Boat Steering steers your boat. Players joining with a game without Riding Look paddle as in beta. Still
+  Faithful's changelog has the detail.
+- From Still Faithful, **Boat Handling**: boats no longer bob up and down at the surface. A boat settles after a bob or
+  two and stays put, about as high in the water as before, and your view with it.
+- From Still Faithful, **Held Attack**: holding the button to attack or mine no longer hits whatever comes under the
+  crosshair, such as the animal behind a block you've just mined: a hold goes on hitting only what you clicked. Still
+  Faithful's changelog has the detail.
+- From Old Faithful 0.2.5, through Still Faithful: mobs at the edges of the screen stay drawn while any part of
+  them is in view, where beta dropped them while a head, arms or tentacles still showed; and a correction to the fix
+  that sends a server's chunks nearest first. Old Faithful's changelog has the detail.
+- **Feather Lure**, a new mod, on: a fishing rod and a feather make a Lured Fishing Rod, as worn as the rod was, and
+  fish bite on it twice as often; its bobber shows a small feather over the hook. Each fish you catch has a 1 in 8 chance
+  of taking the feather, leaving you a plain fishing rod, just as worn. Two lured rods mend into one, but a lured rod
+  and a plain one don't. The server package has it on as it comes, so it now refuses players without it; the pack has
+  it.
+- **Updating**, from any earlier version: copy your worlds and `.minecraft/config` from the old instance, but no longer
+  your old `.minecraft/mods-library/selection.txt`, which earlier entries told you to copy. The new one has every mod on, Feather
+  Lure included. If you'd switched mods off, switch them off again in Options > More Faithful... > Mods..., then restart
+  the game before you open a world. If you'd added a mod yourself (Wary Creepers, say), copy its jar into the new
+  `.minecraft/mods-library` and add its line to the new `selection.txt` again.
+
 ## 0.6.1 (2026-11-10)
 
 On the Faithful Library 0.6.0 and Still Faithful 0.6.1, on Old Faithful 0.2.4 and Pure Faithful 0.1.5. The pack now

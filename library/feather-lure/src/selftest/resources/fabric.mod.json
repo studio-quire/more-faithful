@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "feather-lure-selftest",
+  "version": "1",
+  "name": "Feather Lure self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.featherlure.selftest.LureTest"],
+    "faithful:test-client": ["org.studioquire.faithful.featherlure.selftest.client.LureClientTest"]
+  },
+  "depends": {
+    "feather-lure": "*"
+  }
+}

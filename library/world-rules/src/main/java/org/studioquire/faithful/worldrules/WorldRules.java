@@ -40,6 +40,8 @@ public final class WorldRules implements FaithfulMod {
 	public static BoolRule appleDrops;
 	public static ChoiceRule fallingBonus;
 	public static BoolRule bowsWearOut;
+	/** On by default, where the others start as beta: worlds that already exist take it too (the user, 2026-11-10). */
+	public static BoolRule pickupReach;
 
 	/** Whether a bow wears in this world: the rule here, or as the server said. Asked for the bow's most damage at every turn, so off before the rule exists, as beta's. */
 	public static boolean bowsWear() {
@@ -68,6 +70,7 @@ public final class WorldRules implements FaithfulMod {
 		appleDrops = mod.rules().bool("apple_drops", false);
 		fallingBonus = mod.rules().choice("falling_bonus", "beta", "fixed", "off");
 		bowsWearOut = mod.rules().bool("bows_wear_out", false);
+		pickupReach = mod.rules().bool("pickup_reach", true);
 		dispenserFromAnyBow();
 
 		Explosions.onBlocks(e -> {

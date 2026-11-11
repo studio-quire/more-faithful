@@ -275,6 +275,8 @@ public final class PacksTest extends WorldTest {
 		});
 		until("once it's after you, a wolf goes for it", 30, () -> {
 			keepWell();
+			// Kept after you: in light, beta's spider drops its target 1 time in 100 a tick, and then no wolf has reason to go (a run on a server, 2026-11-11).
+			if (on(idle) == 0) idle.setTarget(player);
 			return on(idle) > 0;
 		});
 		then(() -> {

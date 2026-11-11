@@ -73,8 +73,16 @@ public final class WaysTest extends WorldTest {
 		return false;
 	}
 
+	/**
+	 * The glowstone's light first: beta works off a world's light queue a few hundred cells a frame, newest first, and with new land still lighting round the plot
+	 * (55,000 and more queued in the library test's single player) the pool's light sometimes hadn't come within the wait (2026-11-11).
+	 */
 	private void unfrozen(int half) {
-		await("no water there that a cold biome could freeze", 40, () -> !couldFreeze(half));
+		await("no water there that a cold biome could freeze", 40, () -> {
+			while (world.doLightingUpdates()) {
+			}
+			return !couldFreeze(half);
+		});
 	}
 
 	private void place(double dy) {

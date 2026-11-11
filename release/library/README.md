@@ -21,7 +21,9 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
   rain or snow), Natural Monsters, Monster Light (monsters appear in dim light as in beta, or not in any torch or lava
   light), Apple Drops (oak leaves, 1 time in 200), Falling Hit Bonus (beta's, only when really falling, or none) and Bows
   Wear Out (a bow lasts 385 shots, any arrow, as when bows first wore out in 1.0, with a bar showing its wear like a tool's; turned off,
-  worn bows look new and keep their wear for when it's back). With the mod on its own, a world nobody changed plays as beta; [More Faithful](https://github.com/studio-quire/more-faithful) starts its new worlds with rules of its own. **Lock Rules** locks a world's rules so nothing in the game changes them; on a
+  worn bows look new and keep their wear for when it's back) and Pickup Reach (you pick up items from half a block above and below you as well,
+  and all round a boat, minecart or pig you ride, as in later versions; on unless you turn it off, in worlds you already have too). With the
+  mod on its own, a world nobody changed plays as beta but for Pickup Reach; [More Faithful](https://github.com/studio-quire/more-faithful) starts its new worlds with rules of its own. **Lock Rules** locks a world's rules so nothing in the game changes them; on a
   server, `/rule lock`. While they're locked, the Mods menu doesn't switch off a mod that has rules. Taking
   `rules-locked=true` out of the world's `faithful-world.properties`, with the game closed, unlocks them.
 - **Buried Towers**: ruined towers stand on the land about every 24 chunks, and go a long way down, to about bedrock:
@@ -63,6 +65,12 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
   off, and it hurts you too if you fire too close. Its puffs show as far off as you can hear the bang, where beta draws a
   blast's only within 16 blocks of you. A bow shoots whichever arrows come first in your inventory, the hotbar from the
   left first, so where you keep them decides. Dispensers shoot them too.
+- **Feather Lure**: a fishing rod and a feather make a Lured Fishing Rod, in the inventory's grid too, as worn as the
+  rod was. Fish bite on it twice as often, in rain as well, and it wears as a fishing rod does. Each fish you catch has
+  a 1 in 8 chance of taking the feather: bits of it fly off at the end of your line, and the rod in your hand is a
+  plain fishing rod again, just as worn, until you give it another feather. It's the rod in your hand that counts, so
+  switching to a plain one with your line out fishes at beta's pace. With Item Repair, two worn lured rods mend into one;
+  a lured rod and a plain one don't, so put a feather on the plain one first.
 - **Wolf Packs**: your tamed wolves take on a different monster each. A fight starts when you hit something or
   something hurts you, as in beta, or when a monster after you comes within 4 blocks of you or a skeleton shoots at you;
   then each wolf goes for whichever monster after you or your wolves has the fewest wolves on it, what you hit first,
@@ -122,7 +130,7 @@ doesn't run with StationAPI, so that combination stops at launch with a message.
 
 In an instance from More Faithful, or from the library's old packs, they're in `.minecraft/mods-library` instead, each
 with a switch in the game's settings, and named without their versions: to update one, replace its jar there with the
-new one under the old name (`alchemy-0.6.0.jar` becomes `alchemy.jar`), `faithful-core` included.
+new one under the old name (`alchemy-0.7.0.jar` becomes `alchemy.jar`), `faithful-core` included.
 
 ## Servers
 
@@ -145,7 +153,7 @@ Wary Creepers.
   on a server without it, wolves and creepers are beta's. A player without it feeds fish on a server with it all the same.
   Sitting wolves keep watch while their owner is away too, wherever players keep the land loaded. A wolf's growl from
   its seat is heard by players with any library mod on, and not by a vanilla client.
-- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows** and **Buried Towers** need every player to have them: the first four add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
+- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure** and **Buried Towers** need every player to have them: the first five add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
   on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
   them can join a server without them, where they can't be made and no towers are built.
@@ -175,6 +183,7 @@ original game too. What you lose, plainly:
   yellow flower is called Flower again.
 - **Explosive Arrows**: its arrows don't survive. Carried, in that world they become plain arrows, for good, and any in
   flight are gone.
+- **Feather Lure**: its rods don't survive. In that world they become plain fishing rods, as good as new, for good.
 - **Hearty Food**: food goes back to beta's. Healing still to come waits in the player's save and goes on if the mod returns.
 - **Item Repair**: nothing. What it mended stays mended, and Repair Bonus, if you turned it on, stays in the world's file.
 - **Wild Saplings**: nothing. Trees it grew stay, and saplings grow as in beta again.
@@ -211,7 +220,8 @@ working name, `oldfaithful`.
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
 Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers and Wolf Packs with Shoalstone, wrote Wolf Packs'
-sitting wolves' watch, and drew the arrow's head and the golden flowers and feather. Idea, direction and play-testing: Shoalstone.
+sitting wolves' watch, and drew the arrow's head, the golden flowers and feather, and Feather Lure's bobber, to
+Shoalstone's shape. Idea, direction and play-testing: Shoalstone.
 
 The library's code is under the [MIT licence](LICENSE). It builds on Fabric Loader, Mixin and Babric's mappings, each
 under its own licence.

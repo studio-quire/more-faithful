@@ -23,7 +23,8 @@ on Old Faithful has gone; for the mods without Still Faithful's changes, see
   rain or snow), Natural Monsters, Monster Light (monsters appear in dim light as in beta, or not in any torch or lava
   light), Apple Drops (oak leaves, 1 time in 200), Falling Hit Bonus (beta's, only when really falling, or none) and Bows
   Wear Out (a bow lasts 385 shots, any arrow, as when bows first wore out in 1.0, with a bar showing its wear like a tool's; turned off,
-  worn bows look new and keep their wear for when it's back). **Lock Rules** locks a world's rules so nothing in the game changes them; on a
+  worn bows look new and keep their wear for when it's back) and Pickup Reach (you pick up items from half a block above and below you as well,
+  and all round a boat, minecart or pig you ride, as in later versions). **Lock Rules** locks a world's rules so nothing in the game changes them; on a
   server, `/rule lock`. While they're locked, the Mods menu doesn't switch off a mod that has rules. Taking
   `rules-locked=true` out of the world's `faithful-world.properties`, with the game closed, unlocks them.
 
@@ -31,10 +32,11 @@ on Old Faithful has gone; for the mods without Still Faithful's changes, see
   ghast fireballs still hurt, and leave the world alone), Blasts Destroy Items off (an explosion throws items lying on
   the ground and destroys none), Sleeping off (a bed sets your respawn point at any hour, and the night goes on),
   Monster Light at Dark Only (no monster appears in any torch or lava light; spawners stay as beta's), Apple Drops on, Falling Hit Bonus off (no
-  half heart more on a hit) and Bows Wear Out on. The rest start as beta: you lose what you carry when you die, the
+  half heart more on a hit), Bows Wear Out on and Pickup Reach on. The rest start as beta: you lose what you carry when you die, the
   weather is beta's, and monsters appear by themselves. Create World's World Rules... page shows all of them before
   you make a world, and what you choose there is what your next new world starts with too. Worlds you already have keep
-  the rules they have, those made in an earlier More Faithful or brought from anywhere else too.
+  the rules they have, those made in an earlier More Faithful or brought from anywhere else too, except that Pickup
+  Reach, new in 0.7.0, comes on in them as well.
 
   What new worlds start with is your game's own from its first launch, kept in
   `.minecraft/config/faithful-rules.properties`, and an update doesn't change it: copy your `.minecraft/config` into a
@@ -79,6 +81,12 @@ on Old Faithful has gone; for the mods without Still Faithful's changes, see
   off, and it hurts you too if you fire too close. Its puffs show as far off as you can hear the bang, where beta draws a
   blast's only within 16 blocks of you. A bow shoots whichever arrows come first in your inventory, the hotbar from the
   left first, so where you keep them decides. Dispensers shoot them too.
+- **Feather Lure**: a fishing rod and a feather make a Lured Fishing Rod, in the inventory's grid too, as worn as the
+  rod was. Fish bite on it twice as often, in rain as well, and it wears as a fishing rod does. Each fish you catch has
+  a 1 in 8 chance of taking the feather: bits of it fly off at the end of your line, and the rod in your hand is a
+  plain fishing rod again, just as worn, until you give it another feather. It's the rod in your hand that counts, so
+  switching to a plain one with your line out fishes at beta's pace. Two worn lured rods mend into one, as Item Repair
+  mends two of a kind; a lured rod and a plain one don't, so put a feather on the plain one first.
 - **Wolf Packs**: your tamed wolves take on a different monster each. A fight starts when you hit something or
   something hurts you, as in beta, or when a monster after you comes within 4 blocks of you or a skeleton shoots at you;
   then each wolf goes for whichever monster after you or your wolves has the fewest wolves on it, what you hit first,
@@ -142,21 +150,25 @@ More Faithful, and holds the rules the pack chose for new worlds.
 ### Updating
 
 Import the new zip as a new instance, then copy your worlds from the old instance's `.minecraft/saves` into the new
-one's. To keep your switches and settings too, copy `.minecraft/mods-library/selection.txt` and `.minecraft/config`.
-Your worlds open as they are and keep their rules; what each version changed is in the [changelog](CHANGELOG.md). If
-the title screen then says a jar is gone and wasn't loaded, a mod on your old list has left the pack (Wary Creepers,
-after 0.5.0), and nothing is wrong. From 0.5.0 or before, new worlds also start differently: see below.
+one's, and `.minecraft/config` to keep your settings. Leave the new instance's `.minecraft/mods-library/selection.txt`
+as it comes, rather than copying your old one over it: it has every mod on, including any that's new to the pack
+(Feather Lure, new in 0.7.0). If you'd switched mods off, switch them off again in **Options > More Faithful... >
+Mods...**, and restart the game before you open a world, as a switch takes effect at the next start. If you'd added a
+mod yourself (Wary Creepers, say), copy its jar into the new `.minecraft/mods-library` and add its line to the new
+`selection.txt` again. Your worlds open as they are and keep their rules, but for Pickup Reach, new in 0.7.0, which
+comes on in them too; what each version changed is in the [changelog](CHANGELOG.md). From 0.5.0 or before, new worlds also
+start differently: see below.
 
 ### Coming from the Faithful Library's packs
 
 The same, from the library's pack on Still Faithful (through 0.4.0) or from More Faithful 0.5.0. New worlds then
 start with [More Faithful's rules](#the-mods), except any rule you'd set for new worlds yourself in the old instance,
 which stays as you set it. What's changed since those packs (Wary Creepers out of the pack, no Day Length rule, sitting
-wolves keeping watch) is in the changelog. A world from the
+wolves keeping watch, Feather Lure, Pickup Reach) is in the changelog. A world from the
 pack on Old Faithful gets Still Faithful's changes here, each of which can be switched off (below). That pack's own
 instance keeps working too: to update its mods, replace each jar in its `.minecraft/mods-library`, `faithful-core`
 included, with the new one from the [Faithful Library's release](https://github.com/studio-quire/faithful-library/releases)
-under the old name (`alchemy-0.6.0.jar` becomes `alchemy.jar`).
+under the old name (`alchemy-0.7.0.jar` becomes `alchemy.jar`).
 
 ### Without Still Faithful's changes
 
@@ -170,14 +182,14 @@ them on their own, with how to install them.
 
 `MoreFaithful-server-<version>.zip` is Still Faithful's server package with the library's server-side mods on in
 `mods/`, as in the pack. So as it comes it refuses a player without Water Bottles, Alchemy, Blue Flowers, Explosive
-Arrows and Buried Towers. Move out of `mods/` the jars you don't want, before the first start; `faithful-core` and
+Arrows, Feather Lure and Buried Towers. Move out of `mods/` the jars you don't want, before the first start; `faithful-core` and
 `oldfaithful-settings` stay while any library mod does. With them all out it's Still Faithful's own server. The README
 inside says more.
 
 - **World Rules** runs where the world runs, so a server can use it with any client, vanilla beta 1.7.3 too. A server with
   it is the same to a player who hasn't got it, except that under Bows Wear Out their bow wears out with no bar to show
   it. `/rule <name> <value>` for ops and the console. A new world on the server package starts with the same rules as a
-  new world in the pack (above); a world it already has, or one copied in, keeps its own. To start one differently, put
+  new world in the pack (above); a world it already has, or one copied in, keeps its own, but for Pickup Reach, which comes on there too. To start one differently, put
   your own lines in `config/faithful-rules.properties` before the first start; the server README says how.
 - **Hearty Food** runs where the world runs too. On a server with it food heals over time for every player, but only a
   player who has it too sees the pale hearts. With it on a server without it, food is beta's.
@@ -189,7 +201,7 @@ inside says more.
   on a server without it, wolves and creepers are beta's. A player without it feeds fish on a server with it all the same.
   Sitting wolves keep watch while their owner is away too, wherever players keep the land loaded. A wolf's growl from
   its seat is heard by players with any library mod on, and not by a vanilla client.
-- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows** and **Buried Towers** need every player to have them: the first four add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
+- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure** and **Buried Towers** need every player to have them: the first five add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
   on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
   them can join a server without them, where they can't be made and no towers are built.
@@ -219,6 +231,7 @@ original game too. What you lose, plainly:
   yellow flower is called Flower again.
 - **Explosive Arrows**: its arrows don't survive. Carried, in that world they become plain arrows, for good, and any in
   flight are gone.
+- **Feather Lure**: its rods don't survive. In that world they become plain fishing rods, as good as new, for good.
 - **Hearty Food**: food goes back to beta's. Healing still to come waits in the player's save and goes on if the mod returns.
 - **Item Repair**: nothing. What it mended stays mended, and Repair Bonus, if you turned it on, stays in the world's file.
 - **Wild Saplings**: nothing. Trees it grew stay, and saplings grow as in beta again.
@@ -248,7 +261,8 @@ and its server package into `local/release/more-faithful-<version>/`; [docs/buil
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
 Alchemy's Ward, Haste and Feather Potions, designed Wolf Packs with Shoalstone and wrote its sitting wolves' watch,
-and drew the arrow's head, the golden flowers and feather, and More Faithful's seal. Idea, direction and play-testing: Shoalstone.
+and drew the arrow's head, the golden flowers and feather, More Faithful's seal and Feather Lure's bobber, to
+Shoalstone's shape. Idea, direction and play-testing: Shoalstone.
 
 The code is under the [MIT licence](LICENSE). The pack builds on Fabric Loader, Mixin, ASM, Babric's mappings, LWJGL, SDL
 and OpenAL Soft, each under its own licence; the downloads carry their notices and licence texts, and the source code

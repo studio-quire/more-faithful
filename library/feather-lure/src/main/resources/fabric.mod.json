@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "feather-lure",
+  "version": "${version}",
+  "name": "Feather Lure",
+  "description": "A feather tied on a fishing rod's line, so fish bite twice as often. A fishing rod and a feather make a Lured Fishing Rod, anywhere they fit, keeping the rod's wear. It wears as a fishing rod does, and each fish you catch has a 1 in 8 chance of taking the feather, leaving a plain fishing rod in your hand.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (the bobber's art)", "Shoalstone (direction, and the bobber's shape)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.featherlure.FeatherLure"],
+    "faithful:client": ["org.studioquire.faithful.featherlure.client.FeatherLureClient"]
+  },
+  "mixins": ["feather-lure.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

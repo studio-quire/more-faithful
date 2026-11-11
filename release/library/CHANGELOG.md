@@ -6,6 +6,27 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.7.0 (2026-11-11)
+
+Faithful Settings is Old Faithful 0.2.5's, unchanged since 0.2.4's but for its version.
+
+- **World Rules**: a new rule, **Pickup Reach**, on to start with, and in worlds you already have too. You pick up
+  items, and arrows lying about, from half a block above and below you as well, so something on top of a two-block
+  step beside you comes to you without a jump, and riding a boat, a minecart or a pig, from all round what you ride,
+  as in later versions. Beta picked up only what was within a block of you across and between your feet and the top
+  of your head. Turn it off on World Rules' page for beta's reach. It's the one World Rules rule that doesn't start as
+  beta. On a server it works for players with any client.
+- **Feather Lure**, a new mod: a fishing rod and a feather make a Lured Fishing Rod, anywhere they fit, as worn as the
+  rod was, and fish bite on it twice as often, in rain as well; its bobber shows a small feather over the hook. It wears
+  as a fishing rod does, and each fish you catch has a 1 in 8 chance of taking the feather: bits of it fly off at the
+  end of your line, and you're left holding a plain fishing rod, just as worn. With Item Repair, two lured rods mend
+  into one, but a lured rod and a plain one don't. It adds an item, so a server running it needs every player to have
+  it.
+- **Faithful Core**, for writing mods: the hand draws an item from the sheet of the tile its holder picks for it
+  (`getItemStackTextureId`), where it took the item's own, so a mod's item can show one of beta's tiles in the hand, as
+  Feather Lure's rod shows beta's cast rod while its line is out. On an older core that rod shows the wrong picture,
+  or none, while it's cast, so update the core with it.
+
 ## 0.6.0 (2026-11-10)
 
 Faithful Settings is Old Faithful 0.2.4's, as in 0.5.0.

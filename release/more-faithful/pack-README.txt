@@ -20,16 +20,17 @@ the game it's @NAME@.
 The mods:
 - World Rules: rules for each world, on its page in Mods... and on Create World's World Rules... page: Mobs Break Blocks,
   Blasts Destroy Items, Keep Inventory, Sleeping, Weather, Natural Monsters, Monster Light, Apple Drops, Falling Hit Bonus,
-  Bows Wear Out (385 shots, as in 1.0). Lock Rules locks a world's rules so nothing in the game changes them; taking the line
+  Bows Wear Out (385 shots, as in 1.0), Pickup Reach (half a block above and below you, and all round what you ride).
+  Lock Rules locks a world's rules so nothing in the game changes them; taking the line
   rules-locked=true out of the world's faithful-world.properties, with the game closed, unlocks them. While a world's
   rules are locked, Mods... doesn't switch off a mod that has rules.
   A new world here doesn't start with beta's rules but with @NAME@'s: Mobs Break Blocks off (creepers and ghast
   fireballs still hurt, and leave the world alone), Blasts Destroy Items off (an explosion throws items lying on the
   ground and destroys none), Sleeping off (a bed sets your respawn point at any hour, and the night goes on), Monster
   Light at Dark Only (no monster appears in any torch or lava light; spawners stay as beta's), Apple Drops on, Falling Hit Bonus off (no half
-  heart more on a hit) and Bows Wear Out on. The rest start as beta. Create World's World Rules... page shows them all
+  heart more on a hit), Bows Wear Out on and Pickup Reach on. The rest start as beta. Create World's World Rules... page shows them all
   before you make a world, and what you choose there is what your next new world starts with too. Worlds you already
-  have keep the rules they have. What new worlds start with is your game's own from its first launch, kept in
+  have keep the rules they have, but Pickup Reach, new in 0.7.0, comes on in them too. What new worlds start with is your game's own from its first launch, kept in
   .minecraft/config/faithful-rules.properties, and an update doesn't change it: copy your .minecraft/config into a later
   version's instance and your new worlds start as they did. Only a rule that's new in that version starts as it chose.
 - Buried Towers: ruined towers stand on the land about every 24 chunks, and go a long way down: floors somebody built
@@ -65,6 +66,12 @@ The mods:
   off, and it hurts you too if you fire too close. Its puffs show as far off as you can hear the bang, where beta draws a
   blast's only within 16 blocks of you. A bow shoots whichever arrows come first in your inventory, the hotbar from the
   left first, so where you keep them decides. Dispensers shoot them too.
+- Feather Lure: a fishing rod and a feather make a Lured Fishing Rod, in the inventory's grid too, as worn as the rod
+  was. Fish bite on it twice as often, in rain as well, and it wears as a fishing rod does. Each fish you catch has a 1
+  in 8 chance of taking the feather: bits of it fly off at the end of your line, and the rod in your hand is a plain
+  fishing rod again, just as worn, until you give it another feather. It's the rod in your hand that counts, so
+  switching to a plain one with your line out fishes at beta's pace. Two worn lured rods mend into one, as Item Repair
+  mends two of a kind; a lured rod and a plain one don't, so put a feather on the plain one first.
 - Wolf Packs: your tamed wolves take on a different monster each. A fight starts when you hit something or something
   hurts you, as in beta, or when a monster after you comes within 4 blocks of you or a skeleton shoots at you; then
   each wolf goes for whichever monster after you or your wolves has the fewest wolves on it, what you hit first, and
@@ -92,7 +99,7 @@ sees the pale hearts; on a server without it, food is beta's. Item Repair runs w
 mend on a server with it, and nothing is mended on one without it. Wild Saplings runs where the world runs too: any
 client gets its trees on a server with it, and on one without it saplings grow as in beta. Wolf Packs runs where the
 world runs too: on a server with it every player's wolves spread out, guard them, keep watch sitting, fight creepers
-and eat fish, and on one without it they're beta's. Plain F3 and No Toasts are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows or Buried Towers needs every player
+and eat fish, and on one without it they're beta's. Plain F3 and No Toasts are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure or Buried Towers needs every player
 to have it: anyone else is refused with a message saying so. If you have any library mod on, the refusal screen's Match
 This Server's Mods turns on what that server needs, for your next launch; with none on, it's Options > Still Faithful...
 > Mods..., as above.
@@ -111,6 +118,7 @@ Turning a mod off or removing it:
   feathers and potions bowls, for good. A ward and potions still running wait in your save and go on if it returns.
 - Blue Flowers' don't either: bluebells, growing or carried, become roses for good.
 - Explosive Arrows' don't either: carried ones become plain arrows for good, and any in flight are gone.
+- Feather Lure's don't either: lured rods become plain fishing rods, as good as new, for good.
 - If other library mods are still on, a screen tells you before such a world opens, and offers to make a backup. If that
   was the last mod on, Faithful Core goes too and nothing warns you, so back up first: copy the world's folder from
   .minecraft/saves. With the core gone, the library's data in a chunk goes when that chunk is next saved.

@@ -26,3 +26,5 @@ rule.world-rules.falling_bonus.fixed=Fixed
 rule.world-rules.falling_bonus.off=Off
 rule.world-rules.bows_wear_out.name=Bows Wear Out
 rule.world-rules.bows_wear_out.hint=Beta's bows never wore out. On: a bow lasts 385 shots, as when bows first wore out in 1.0.
+rule.world-rules.pickup_reach.name=Pickup Reach
+rule.world-rules.pickup_reach.hint=Beta: you pick up only items beside you. On: also half a block above and below, and all round what you ride.

@@ -27,7 +27,7 @@ if (findProject(':oldfaithful-core') == null || !releaseEditions.containsKey('st
 // its texts in release/<its name>/. A new mod of the library goes in one on purpose; one that's a jar in the library's release
 // and nothing more says library_jar_only=true (it's in no pack or server package), and a test-only one library_test=true.
 def packMods = [
-    more: ['alchemy', 'blue-flowers', 'buried-towers', 'explosive-arrows', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
+    more: ['alchemy', 'blue-flowers', 'buried-towers', 'explosive-arrows', 'feather-lure', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
 ]
 def libraryMods = packMods.values().flatten()
 // A pack that isn't out yet says <key>_unreleased=true: it builds and tests as any pack, and the library's release leaves out

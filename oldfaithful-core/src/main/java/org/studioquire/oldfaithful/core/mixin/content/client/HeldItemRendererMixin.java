@@ -2,6 +2,7 @@ package org.studioquire.oldfaithful.core.mixin.content.client;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.render.item.HeldItemRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,14 +21,18 @@ abstract class HeldItemRendererMixin {
 		return ContentRegistry.isBlockItem(stack.itemId) ? Integer.MAX_VALUE : limit;
 	}
 
+	/**
+	 * The atlas of the tile the hand draws, which is the holder's choice (beta's fishing rod shows its cast tile while the line is out) and can be another atlas than the
+	 * stack's own: a mod's rod cast is vanilla's cast rod.
+	 */
 	@ModifyArg(method = "renderItem", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glBindTexture(II)V", ordinal = 1), index = 1)
-	private int faithful$blockSprite(int name, @Local(argsOnly = true) ItemStack stack) {
-		return ClientAtlases.name(stack.getTextureId() >> 8, name);
+	private int faithful$blockSprite(int name, @Local(argsOnly = true) LivingEntity holder, @Local(argsOnly = true) ItemStack stack) {
+		return ClientAtlases.name(holder.getItemStackTextureId(stack) >> 8, name);
 	}
 
 	@ModifyArg(method = "renderItem", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glBindTexture(II)V", ordinal = 2), index = 1)
-	private int faithful$itemSprite(int name, @Local(argsOnly = true) ItemStack stack) {
-		return ClientAtlases.name(stack.getTextureId() >> 8, name);
+	private int faithful$itemSprite(int name, @Local(argsOnly = true) LivingEntity holder, @Local(argsOnly = true) ItemStack stack) {
+		return ClientAtlases.name(holder.getItemStackTextureId(stack) >> 8, name);
 	}
 
 	/** Inside a mod's block: its stand-in's tile would be right for vanilla's sheet, and that's what's bound here. */
