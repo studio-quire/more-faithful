@@ -1,0 +1,6 @@
+plugins { id 'oldfaithful.mod' }
+
+dependencies {
+    compileOnly project(':oldfaithful-core')
+    selftestCompileOnly project(':library:pumpkins')
+}

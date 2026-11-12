@@ -37,10 +37,10 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
 - **Hearty Food**: food heals half as much again, at half a heart a second instead of at once, and pale hearts show where
   you'll end up. Eating is one click as ever. More food adds to what's coming, a hit doesn't cancel it,
   and it helps even mid-fight. A golden apple still heals everything at once. Food past a full bar is wasted, as in beta.
-- **Alchemy**: gild a flower or a feather, then brew it. Four gold ingots around a rose, a dandelion, a bluebell or a
-  feather at the bench make a Golden Rose, Golden Dandelion, Golden Bluebell or Golden Feather. A water bottle with one,
+- **Alchemy**: gild a flower or a feather, then brew it. Four gold ingots around a rose, a dandelion, a lupin or a
+  feather at the bench make a Golden Rose, Golden Dandelion, Golden Lupin or Golden Feather. A water bottle with one,
   two or three of the same golden thing makes a weak, plain or strong potion of its kind, in the inventory's grid too, and
-  drinking one leaves the bottle. Health Potions (roses) heal 3, 6 or 10 hearts at once. A Ward Potion (bluebells) is a
+  drinking one leaves the bottle. Health Potions (roses) heal 3, 6 or 10 hearts at once. A Ward Potion (lupins) is a
   set of armour in a bottle: it turns the whole armour bar blue, over whatever armour you wear, and protects as a full
   set does. Hits wear it away as they wear a set, the blue draining from the bar, and your own armour takes no wear
   until the blue is gone, then shows again as it was. The bigger the potion, the tougher the set: a weak one lasts about
@@ -49,16 +49,44 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
   you walk and mine 20% faster, and Feather Potions (feathers) make a fall hurt a third as much, for 4, 8 or 12
   minutes; another adds its time, up to 12 minutes. While one runs, its bottle stands beside your figure in the
   inventory, draining as the time goes, in the order you drank them. A potion isn't drunk when there's no room for any
-  of it. Bluebells
+  of it. Lupins
   come from Blue Flowers: without it there are no Ward Potions. Alchemy needs Water Bottles, which comes on with it.
-- **Blue Flowers**: bluebells in patches across Taiga and Tundra, as dandelions grow in warmer land. New chunks only.
-  A bluebell is placed and picked like the rose and dandelion, and makes two light blue dye. Bonemeal on grass in those
-  biomes can grow one too. It also calls beta's yellow flower Dandelion, where beta said Flower; its page in the
-  settings has a switch to keep Flower.
+- **Blue Flowers**: lupins, a blue flower whose dye takes the place of lapis lazuli. They grow in patches across Taiga,
+  Tundra and Highland, as dandelions grow in warmer land, in new chunks only, and bonemeal on grass anywhere can grow
+  one, as it grows roses and dandelions. Highland is our name for the land beta calls Swampland: in beta it has no
+  swamp in it (that came in later versions), only bare, steep, clover-green hills that occur beside the snow. A lupin
+  is placed and picked like the rose and dandelion, and makes two **Lupin Blue**: beta's blue dye, the item that was
+  Lapis Lazuli, with a new name and picture. It dyes wool and sheep and mixes into light blue, cyan, purple and magenta
+  as it always did. With the mod on there's no lapis lazuli ore and no Lapis Lazuli Block: no ore forms in new chunks,
+  and the block can't be made or broken down into nine. In a world that already has
+  them, ore turns to stone and blocks turn to blue wool, for good, as each part of the world is next loaded: blocks
+  you've built with where they stand, and blocks you hold or keep in a chest one for one. Lapis lazuli you hold is
+  Lupin Blue. It also calls beta's yellow flower Dandelion, where beta said Flower; its page in the settings has a
+  switch to keep Flower.
 - **Wild Saplings**: saplings grow every tree that grows wild, so a forest you cut down can be planted again. A spruce
   sapling grows a tall, thin pine one time in three, as a third of Taiga's trees are. An oak sapling grows a big oak as
   often as the wild oaks where it's planted are big: one time in three in Forest and Rainforest, one in ten elsewhere,
   as in beta. And its big oaks are as full as wild ones, where beta's had smaller clumps of leaves.
+- **Pumpkins**: pumpkin pie, and pumpkins that spread into patches. A pumpkin, sugar and an egg make a Pumpkin Pie,
+  in the inventory's grid too, which heals as a cooked porkchop does. Under the world rule **Pumpkins Spread**, a
+  pumpkin standing on grass or dirt now and then grows another near it, on open grass up to about 7 blocks off and 3
+  up or down, or on grass under a layer of snow, which it takes the place of. Never on tall grass, a flower or
+  anything else, so a meadow fills more slowly than a lawn. It stops once there are about six pumpkins within about
+  14 blocks, so a patch grows to about the size of a wild one; take all but one and it fills again. From a single
+  pumpkin a full patch takes a few in-game days spent near it, about an hour of play, sometimes much longer: like
+  wheat, it grows only while someone is near. A pumpkin on stone, planks or anything but grass or dirt never spreads
+  (under a pumpkin grass turns to dirt, as under any block), and nor does a jack-o'-lantern, so give a pumpkin you
+  place for show a floor of something else, or snip it with Snipping's shears. The rule is off in worlds you already
+  have, and with the mod on its own in new worlds too: switch it on from the mod's page in the settings with the
+  world open, or on Create World's World Rules... page. Beta's pumpkins never grew, and its wild patches are rare.
+- **Snipping**: shears stop a plant growing. Right-click one of the things that grow by themselves with shears and
+  it's snipped: a sapling never becomes a tree, wheat stays as it is, ripe or not, a mushroom doesn't spread, sugar
+  cane and cactus stay as tall as they are (snip any part and the whole stalk stops; breaking its top off doesn't
+  start it again, and a piece put on top doesn't grow either), and with Pumpkins a pumpkin doesn't spread. A snip
+  costs the shears a use, with the arm's swing and the plant's sound. Nothing marks a snipped plant: shears on it
+  again do nothing at all, no swing and no use, which is how you tell. Bonemeal does nothing on a snipped sapling or
+  wheat, and isn't used up. A snipped plant still breaks where it couldn't stand, as any would. Break one and you
+  pick up what it always drops, so planted again it grows.
 - **Explosive Arrows**: an arrow and two gunpowder make an Explosive Arrow, in the inventory's grid too. It bursts where it
   lands, on a block or a mob, with a small blast of beta's own, half a creeper's in size: a direct hit takes over half a
   zombie's health, and things a block or two off lose a couple of hearts. It breaks no blocks, but TNT it reaches goes
@@ -130,7 +158,7 @@ doesn't run with StationAPI, so that combination stops at launch with a message.
 
 In an instance from More Faithful, or from the library's old packs, they're in `.minecraft/mods-library` instead, each
 with a switch in the game's settings, and named without their versions: to update one, replace its jar there with the
-new one under the old name (`alchemy-0.7.1.jar` becomes `alchemy.jar`), `faithful-core` included.
+new one under the old name (`alchemy-0.8.0.jar` becomes `alchemy.jar`), `faithful-core` included.
 
 ## Servers
 
@@ -153,10 +181,17 @@ Wary Creepers.
   on a server without it, wolves and creepers are beta's. A player without it feeds fish on a server with it all the same.
   Sitting wolves keep watch while their owner is away too, wherever players keep the land loaded. A wolf's growl from
   its seat is heard by players with any library mod on, and not by a vanilla client.
-- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure** and **Buried Towers** need every player to have them: the first five add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
+- **Snipping** runs where the world runs too, so a server can use it with any client, vanilla beta 1.7.3 too: a
+  player without it snips with shears there all the same, with no swing or sound to show it, and plants snipped by
+  anyone stay snipped for everyone. With it on a server without it, nothing is snipped there, though shears on a
+  plant swing and sound every time.
+- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure**, **Pumpkins** and **Buried Towers** need every player to have them: the first six add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
   on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
-  them can join a server without them, where they can't be made and no towers are built.
+  them can join a server without them, where they can't be made and no towers are built. With Blue Flowers on, a
+  server without it still has lapis lazuli as in beta, and your game shows it under Lupin Blue's name and picture.
+- On a server, Pumpkins Spread is the world's rule: `/rule spreading true` for ops and the console turns it on in a
+  world that has it off.
 - **Plain F3** and **No Toasts** are the player's alone, on any server.
 
 With any library mod on, your game tells a server you join that you have the Faithful Library. A server with the library
@@ -176,14 +211,20 @@ original game too. What you lose, plainly:
 - **Buried Towers**: towers it's built stay, as ordinary blocks, and new chunks go back to beta's own dungeons. A tower half
   made stays half made. Rooms the old Better Dungeons built stay too.
 - **Water Bottles**: its items don't survive. Bottles in that world become bowls for good. Alchemy goes off with it, as it needs it.
-- **Alchemy**: its items don't survive. Golden roses and bluebells in that world become roses, golden dandelions
+- **Alchemy**: its items don't survive. Golden roses and lupins in that world become roses, golden dandelions
   dandelions, golden feathers feathers and potions bowls, for good. A ward and potions still running wait in the
   player's save and go on if the mod returns.
-- **Blue Flowers**: its bluebells don't survive. Growing or carried, in that world they become roses, for good. The
-  yellow flower is called Flower again.
+- **Blue Flowers**: its lupins don't survive. Growing or carried, in that world they become roses, for good. Lupin
+  Blue is Lapis Lazuli again, the same item under beta's name, new chunks have its ore and the block can be made; ore
+  that turned to stone and blocks that turned to wool stay as they are. The yellow flower is called Flower again.
 - **Explosive Arrows**: its arrows don't survive. Carried, in that world they become plain arrows, for good, and any in
   flight are gone.
 - **Feather Lure**: its rods don't survive. In that world they become plain fishing rods, as good as new, for good.
+- **Pumpkins**: its pies don't survive. In that world they become pumpkins, for good. Pumpkins stop spreading, and
+  the ones that grew stay, as beta's own. Its rule stays in the world's file and comes back with the mod.
+- **Snipping**: snipped plants grow again, as in beta. Which plants were snipped waits in the world while any library
+  mod is on, and comes back with the mod: they're snipped again, and so is a plant put meanwhile where a snipped one
+  stood; break it and plant it again to have it grow. With Faithful Core gone too, that goes as each chunk is saved.
 - **Hearty Food**: food goes back to beta's. Healing still to come waits in the player's save and goes on if the mod returns.
 - **Item Repair**: nothing. What it mended stays mended, and Repair Bonus, if you turned it on, stays in the world's file.
 - **Wild Saplings**: nothing. Trees it grew stay, and saplings grow as in beta again.
@@ -220,8 +261,10 @@ working name, `oldfaithful`.
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
 Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers and Wolf Packs with Shoalstone, wrote Wolf Packs'
-sitting wolves' watch, and drew the arrow's head, the golden flowers and feather, and Feather Lure's bobber, to
-Shoalstone's shape. Idea, direction and play-testing: Shoalstone.
+sitting wolves' watch and the lupins in lapis lazuli's place, added to Shoalstone's designs for Pumpkins and Snipping,
+and drew the arrow's head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin pie and, to
+Shoalstone's shape, Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and
+play-testing: Shoalstone.
 
 The library's code is under the [MIT licence](LICENSE). It builds on Fabric Loader, Mixin and Babric's mappings, each
 under its own licence.

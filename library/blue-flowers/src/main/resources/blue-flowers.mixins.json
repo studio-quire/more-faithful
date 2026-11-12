@@ -2,6 +2,7 @@
   "required": true,
   "package": "org.studioquire.faithful.blueflowers.mixin",
   "compatibilityLevel": "JAVA_8",
-  "client": ["TranslationStorageAccessor"],
+  "mixins": ["ItemStackMixin", "LapisVeinMixin"],
+  "client": ["DyeItemMixin", "TranslationStorageAccessor"],
   "injectors": {"defaultRequire": 1}
 }

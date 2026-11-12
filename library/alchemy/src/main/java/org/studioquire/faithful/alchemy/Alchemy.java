@@ -32,10 +32,10 @@ public final class Alchemy implements FaithfulMod {
 	public static final float HASTE = 1.2F;
 	/** Feather: a fall hurts this many times less. */
 	public static final int FEATHER = 3;
-	/** The Blue Flowers mod's flower, gilded into the Golden Bluebell when that mod is on. */
-	public static final String BLUEBELL = "blue-flowers:blue_flower";
+	/** The Blue Flowers mod's flower, the lupin, gilded into the Golden Lupin when that mod is on. */
+	public static final String LUPIN = "blue-flowers:blue_flower";
 
-	public static ItemEntry<Item> goldenRose, goldenDandelion, goldenBluebell, goldenFeather;
+	public static ItemEntry<Item> goldenRose, goldenDandelion, goldenLupin, goldenFeather;
 	/** Weak, plain and strong, each family in that order. */
 	public static final List<ItemEntry<Potion>> health = new ArrayList<>(), haste = new ArrayList<>(), ward = new ArrayList<>(), feather = new ArrayList<>();
 	public static ItemEntry<Potion> weakPotion, healthPotion, strongPotion;
@@ -46,7 +46,8 @@ public final class Alchemy implements FaithfulMod {
 		goldenRose = gilded(c, "golden_rose", Item.ITEMS[Block.ROSE.id]);
 		goldenDandelion = gilded(c, "golden_dandelion", Item.ITEMS[Block.DANDELION.id]);
 		// Declared with or without Blue Flowers, so a world keeps its potions when that mod is off and the set's content is the same either way; only the gilding needs the flower.
-		goldenBluebell = gilded(c, "golden_bluebell", Item.ITEMS[Block.ROSE.id]);
+		// The lupin was a bluebell until 2026-11-12, and a name in a save is forever: the item is still golden_bluebell, its sprite too.
+		goldenLupin = gilded(c, "golden_bluebell", Item.ITEMS[Block.ROSE.id]);
 		goldenFeather = gilded(c, "golden_feather", Item.FEATHER);
 		family(c, "health", health, (player, size) -> player.health < Potion.FULL, (player, size) -> player.heal(HEARTS[size] * 2));
 		family(c, "haste", haste, (player, size) -> !hasted.full(player), (player, size) -> hasted.add(player, MINUTES[size]));
@@ -84,12 +85,12 @@ public final class Alchemy implements FaithfulMod {
 
 		gild(goldenRose.get(), Block.ROSE);
 		gild(goldenDandelion.get(), Block.DANDELION);
-		Block bluebell = Names.block(BLUEBELL);
-		if (bluebell != null) gild(goldenBluebell.get(), bluebell);
+		Block lupin = Names.block(LUPIN);
+		if (lupin != null) gild(goldenLupin.get(), lupin);
 		gild(goldenFeather.get(), Item.FEATHER);
 		brew(health, goldenRose.get());
 		brew(haste, goldenDandelion.get());
-		brew(ward, goldenBluebell.get());
+		brew(ward, goldenLupin.get());
 		brew(feather, goldenFeather.get());
 	}
 

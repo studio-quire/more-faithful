@@ -215,6 +215,11 @@ public final class ContentRegistry {
 		}
 
 		@Override
+		public int itemTexture(String name) {
+			return Atlases.tile(mod, "item", name);
+		}
+
+		@Override
 		public Optional<String> ref(String fullName) {
 			return BLOCKS.containsKey(fullName) || ITEMS.containsKey(fullName) ? Optional.of(fullName) : Optional.empty();
 		}
@@ -288,7 +293,8 @@ public final class ContentRegistry {
 	public static void build() {
 		if (built) return;
 		built = true;
-		if (!any()) return;
+		// A sprite alone is nothing to number or match, but it's drawn from the atlases, which are the content layer's.
+		if (!any() && Atlases.count() == 0) return;
 		if (Block.BLOCKS.length < BLOCK_LIMIT) {
 			throw new IllegalStateException("A mod declared content, but none says so in its fabric.mod.json (\"custom\": {\"faithful\": {\"content\": true}})");
 		}

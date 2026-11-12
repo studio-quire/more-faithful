@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "pumpkins",
+  "version": "${version}",
+  "name": "Pumpkins",
+  "description": "Pumpkin pie, and pumpkins you can grow. A pie is a pumpkin, sugar and an egg, anywhere they fit, and heals as a cooked porkchop does. With the world rule Pumpkins Spread on, a pumpkin standing on grass or dirt now and then grows another on open grass nearby, or on grass under a layer of snow, until there are about six around it: one pumpkin makes a patch in a few in-game days spent near it, and a patch you leave one pumpkin of fills again. Tall grass and flowers are left alone. The rule starts off (More Faithful starts its new worlds with it on): switch it on from the mod's page in the settings with the world open, or on Create World's World Rules... page.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design, and the pie's art)", "Shoalstone (idea, design and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "mixins": ["pumpkins.mixins.json"],
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.pumpkins.Pumpkins"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

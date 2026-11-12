@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.snipping.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": ["ChunkMixin", "PlantBlockInvoker", "ShearsItemMixin", "WorldMixin"],
+  "injectors": {"defaultRequire": 1}
+}

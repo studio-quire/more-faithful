@@ -70,7 +70,13 @@ public final class FlowersClientTest extends ClientTest {
 		then(() -> {
 			TranslationStorage names = TranslationStorage.getInstance();
 			String yellow = Item.ITEMS[Block.DANDELION.id].getTranslationKey() + ".name";
-			check("it's called Bluebell", "Bluebell".equals(names.get(flowerItem.getTranslationKey() + ".name")));
+			check("it's called Lupin", "Lupin".equals(names.get(flowerItem.getTranslationKey() + ".name")));
+			ItemStack blue = new ItemStack(Item.DYE, 1, BlueFlowers.BLUE), red = new ItemStack(Item.DYE, 1, 1), lightBlue = new ItemStack(Item.DYE, 1, 12);
+			check("beta's blue dye is called Lupin Blue", "Lupin Blue".equals(names.get(blue.getTranslationKey() + ".name")));
+			check("and Rose Red is still Rose Red", "Rose Red".equals(names.get(red.getTranslationKey() + ".name")));
+			// A mod's sprite lives past vanilla's sheet, in an atlas of its own; every other dye stays on items.png.
+			check("it's drawn from the mod's own sprite: " + blue.getTextureId(), blue.getTextureId() == BlueFlowers.dyeSprite && blue.getTextureId() >= 256);
+			check("and the other dyes from beta's sheet", red.getTextureId() < 256 && lightBlue.getTextureId() < 256);
 			check("beta's yellow flower is called Dandelion", "Dandelion".equals(names.get(yellow)));
 			BlueFlowersClient.dandelion(false);
 			String off = names.get(yellow);

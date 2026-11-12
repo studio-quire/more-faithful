@@ -841,6 +841,10 @@ if (findProject(':library:harness-probe') != null) {
         // The monkey's budget at 20 ticks a second, and time to start and stop.
         def monkeyTicks = providers.gradleProperty('library.monkeyTicks').map { it as int }.getOrElse(6000)
         task.extraJvmArgs.add("-Dfaithful.harness.monkeyTicks=${monkeyTicks}".toString())
+        // A client of 2 GB (the last -Xmx wins): beta's single player unloads no chunk while a world is open, and one client walks every mod's plot, 96
+        // blocks apart, with Stagehand's trips 3,000 blocks out and api-check's marker in every chunk (64 KB more in each); with every mod (20 at 0.8.0) it held 4,600
+        // chunks and ran out of 1 GB at Stagehand, which beta catches silently, closing the world (Claude Opus 5.5, 2026-11-12).
+        task.extraJvmArgs.add('-Xmx2g')
         task.timeoutSeconds = Math.max(420, (int) (monkeyTicks / 20) + 120)
         if (gameJava.isPresent()) task.javaExecutable = gameJava
         task.stages = providers.gradleProperty('library.stages').map { it.split(',') as List }.orElse([])
@@ -981,7 +985,7 @@ if (findProject(':library:tower-check') != null) {
             intermediaryMappings = mc.intermediaryMappings
             loaderClasspath.from(configurations.loaderRuntime, bakedLwjgl.flatMap { it.output })
             mods.from(testedMods, project(':oldfaithful-display').tasks.named('remapJar'), speedMod, fixedMods, stillMods,
-                    project(':oldfaithful-core').tasks.named('remapJar'), morePack.mods.collect { project(":library:${it}").tasks.named('remapJar') })
+                    project(':oldfaithful-core').tasks.named('remapJar'), (morePack.devMods ?: morePack.mods).collect { project(":library:${it}").tasks.named('remapJar') })
             natives = lwjgl3NativesDir
             soundsGameDir = rootProject.layout.projectDirectory.dir('local/cache/selftest-sounds')
             privateDesktop = rootProject.layout.projectDirectory.file('tools/private_desktop.py')

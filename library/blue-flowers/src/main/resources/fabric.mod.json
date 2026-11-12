@@ -3,9 +3,9 @@
   "id": "blue-flowers",
   "version": "${version}",
   "name": "Blue Flowers",
-  "description": "Bluebells in patches across Taiga and Tundra, as dandelions grow in warmer land. Placed and picked like the rose and dandelion; a bluebell makes light blue dye, and bonemeal on grass in those biomes can grow one. It also calls beta's yellow flower Dandelion, where beta said Flower, with a switch in its settings to keep Flower.",
+  "description": "Lupins, whose dye replaces lapis lazuli: its ore turns to stone, its blocks to wool, for good. Lupins are a blue flower. They grow in patches across Taiga, Tundra and Highland in new land, are placed and picked like the rose and dandelion, and bonemeal on grass anywhere can grow one. Highland is our name for the land beta calls Swampland: in beta it has no swamp in it, only bare, steep, clover-green hills that occur beside the snow. A lupin makes two Lupin Blue: beta's blue dye under a new name, which dyes and mixes as lapis lazuli did. With it on there's no lapis lazuli ore and no Lapis Lazuli Block: no ore forms in new land, the block can't be made or broken down, and in a world that already has them, ore turns to stone and blocks to blue wool, placed or held, for good, as the land loads. It also calls beta's yellow flower Dandelion, where beta said Flower, with a switch in its settings to keep Flower.",
   "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
-  "contributors": ["Shoalstone (idea and direction)"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (the lupin and its dye in lapis lazuli's place, and their art)", "Shoalstone (idea, the lupins' design and direction)"],
   "contact": {
     "homepage": "${homepage}",
     "sources": "https://github.com/${repo}",

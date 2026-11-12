@@ -328,7 +328,7 @@ public final class AlchemyClientTest extends ClientTest {
 	/** Each golden thing has its own thing's outline, from the game's atlas. */
 	private void gilding() {
 		Object[][] pairs = {{new ItemStack(Block.ROSE), rose}, {new ItemStack(Block.DANDELION), Alchemy.goldenDandelion.get()}, {new ItemStack(Item.FEATHER), Alchemy.goldenFeather.get()},
-				{Names.block(Alchemy.BLUEBELL) == null ? null : new ItemStack(Names.block(Alchemy.BLUEBELL)), Alchemy.goldenBluebell.get()}};
+				{Names.block(Alchemy.LUPIN) == null ? null : new ItemStack(Names.block(Alchemy.LUPIN)), Alchemy.goldenLupin.get()}};
 		for (Object[] pair : pairs) {
 			if (pair[0] == null) continue;
 			Item golden = (Item) pair[1];
@@ -515,8 +515,8 @@ public final class AlchemyClientTest extends ClientTest {
 			z = MathHelper.floor(mc.player.z);
 			mc.setScreen(null);
 			TranslationStorage names = TranslationStorage.getInstance();
-			String[] expected = {"Golden Rose", "Golden Dandelion", "Golden Bluebell", "Golden Feather"};
-			Item[] golden = {rose, Alchemy.goldenDandelion.get(), Alchemy.goldenBluebell.get(), Alchemy.goldenFeather.get()};
+			String[] expected = {"Golden Rose", "Golden Dandelion", "Golden Lupin", "Golden Feather"};
+			Item[] golden = {rose, Alchemy.goldenDandelion.get(), Alchemy.goldenLupin.get(), Alchemy.goldenFeather.get()};
 			boolean right = names.get(weak.getTranslationKey() + ".name").equals("Weak Health Potion") && names.get(strong.getTranslationKey() + ".name").equals("Strong Health Potion")
 					&& names.get(Alchemy.ward.get(1).get().getTranslationKey() + ".name").equals("Ward Potion") && names.get(Alchemy.feather.get(0).get().getTranslationKey() + ".name").equals("Weak Feather Potion")
 					&& names.get(Alchemy.haste.get(2).get().getTranslationKey() + ".name").equals("Strong Haste Potion");

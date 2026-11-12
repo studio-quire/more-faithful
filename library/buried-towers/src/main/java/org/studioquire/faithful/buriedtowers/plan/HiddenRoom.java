@@ -155,7 +155,7 @@ final class HiddenRoom {
 		if (t.plan.get(x, y, z) == Plan.KEEP || t.plan.fixture(x, y, z) != null) return false;
 		switch (t.plan.id(x, y, z)) {
 			case STONE: case COBBLE: case MOSSY: case BRICK: case SANDSTONE: case DOUBLE_SLAB: case PLANKS: case LOG: case DIRT: case OBSIDIAN: case CLAY:
-			case COAL_ORE: case IRON_ORE: case GOLD_ORE: case LAPIS_ORE: case DIAMOND_ORE: case REDSTONE_ORE:
+			case COAL_ORE: case IRON_ORE: case GOLD_ORE: case DIAMOND_ORE: case REDSTONE_ORE:
 				return true;
 			default:
 				return false;

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "id": "snipping-selftest", "version": "1", "name": "Snipping self-test", "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.snipping.selftest.SnippingTest"],
+    "faithful:test-client": ["org.studioquire.faithful.snipping.selftest.client.SnippingClientTest"]
+  },
+  "depends": { "snipping": "*", "pumpkins": "*" }
+}

@@ -4,8 +4,10 @@ import static org.studioquire.faithful.buriedtowers.plan.Blocks.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * The kinds of floor. Each is what its builders meant it to be, then a few things time has done to it. Each has one clear idea, in a round room. What's built may be as regular as
@@ -18,6 +20,8 @@ final class Floors {
 			SandFloor.COMPLEX, SpiralGallery.COMPLEX, Aquarium.COMPLEX, LavaLake.COMPLEX, JukeboxHall.COMPLEX, PortalRoom.COMPLEX);
 	/** Where the noise is below this, the top of the tower has gone and the sky comes through. */
 	static final double ROOF_GONE = 0.38;
+	/** For a mine's vein that is drawn and lays nothing: where lapis lazuli was, in both styles' galleries. */
+	static final int NO_ORE = -1;
 
 	private Floors() {
 	}
@@ -1322,20 +1326,27 @@ final class Floors {
 			}
 		}
 
-		/** Veins by beta's own rule for what lies at this depth, a few times as thick as the ground outside, the mine being here for a reason; and gravel, as beta's rock has. */
+		/**
+		 * Veins by beta's own rule for what lies at this depth, a few times as thick as the ground outside, the mine being here for a reason; and gravel, as beta's rock has.
+		 * <p>
+		 * No lapis lazuli (the user, 2026-11-12). Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
+		 * made before and some after: so the vein's place in the drawing stays. {@link #NO_ORE} makes every draw that vein made and lays nothing, and the cells it would have taken are kept from
+		 * the gravel after it, which only takes stone and never took those. Every other cell of every tower then comes out as it always did.
+		 */
 		private void veins(Floor f) {
 			Random r = f.r;
-			for (int i = 3 + r.nextInt(3); i > 0; i--) vein(f, COAL_ORE, 8 + r.nextInt(9));
-			for (int i = 2 + r.nextInt(3); i > 0; i--) vein(f, IRON_ORE, 4 + r.nextInt(5));
+			Set<Long> spared = new HashSet<>();
+			for (int i = 3 + r.nextInt(3); i > 0; i--) vein(f, COAL_ORE, 8 + r.nextInt(9), spared);
+			for (int i = 2 + r.nextInt(3); i > 0; i--) vein(f, IRON_ORE, 4 + r.nextInt(5), spared);
 			if (f.y < 32) {
-				if (r.nextInt(2) == 0) vein(f, GOLD_ORE, 4 + r.nextInt(5));
-				if (r.nextInt(5) == 0) vein(f, LAPIS_ORE, 4 + r.nextInt(3));
+				if (r.nextInt(2) == 0) vein(f, GOLD_ORE, 4 + r.nextInt(5), spared);
+				if (r.nextInt(5) == 0) vein(f, NO_ORE, 4 + r.nextInt(3), spared);
 			}
-			vein(f, GRAVEL, 8 + r.nextInt(8));
+			vein(f, GRAVEL, 8 + r.nextInt(8), spared);
 		}
 
 		/** Beta's {@code OreFeature}, written into stone: blobs along a short line, no two alike. Half lie where a drift's walls will show them, the drift being there for them; the rest anywhere on the floor. */
-		private void vein(Floor f, int id, int size) {
+		private void vein(Floor f, int id, int size, Set<Long> spared) {
 			Random r = f.r;
 			int half = f.half();
 			int along = r.nextInt(half * 2 + 1) - half, off = (r.nextBoolean() ? 1 : -1) * (2 + r.nextInt(2));
@@ -1359,8 +1370,9 @@ final class Floors {
 					for (int y = (int) Math.floor(cy - spread / 2); y <= (int) Math.floor(cy + spread / 2); y++) {
 						for (int z = (int) Math.floor(cz - spread / 2); z <= (int) Math.floor(cz + spread / 2); z++) {
 							double dx = (x + 0.5 - cx) / (spread / 2), dy = (y + 0.5 - cy) / (spread / 2), dz = (z + 0.5 - cz) / (spread / 2);
-							if (dx * dx + dy * dy + dz * dz < 1 && y >= f.y && y <= f.top() && f.t.depth(x, z) >= 2 && f.p.id(x, y, z) == STONE) {
-								if (f.p.isRock(x, y, z)) f.p.rock(x, y, z, cell(id, 0));
+							if (dx * dx + dy * dy + dz * dz < 1 && y >= f.y && y <= f.top() && f.t.depth(x, z) >= 2 && f.p.id(x, y, z) == STONE && !spared.contains(Plan.key(x, y, z))) {
+								if (id == NO_ORE) spared.add(Plan.key(x, y, z));
+								else if (f.p.isRock(x, y, z)) f.p.rock(x, y, z, cell(id, 0));
 								else f.p.force(x, y, z, cell(id, 0));
 							}
 						}

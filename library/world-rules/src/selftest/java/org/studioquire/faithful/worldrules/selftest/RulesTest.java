@@ -366,8 +366,9 @@ public final class RulesTest extends WorldTest {
 		BoatEntity[] boat = new BoatEntity[1];
 		ItemEntity[] bone = new ItemEntity[2];
 		then(() -> {
-			boat[0] = new BoatEntity(world);
-			boat[0].setPosition(px, y + 0.3, pz); // its y is the middle of its box too, so on the floor
+			// On the floor as beta places one: its box's bottom is y less its float half-height, and y + 0.3 put that a hair inside the floor, which
+			// collision doesn't stop, so the boat sank into it, and out of the bottom where the floor had air under it (0.8.0's run of every mod, its plot over a lake).
+			boat[0] = new BoatEntity(world, px, y, pz);
 			world.spawnEntity(boat[0]);
 			player.setVehicle(boat[0]);
 			Rules.change(WorldRules.pickupReach, "false");

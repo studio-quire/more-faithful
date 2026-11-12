@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "snipping",
+  "version": "${version}",
+  "name": "Snipping",
+  "description": "Shears snip a plant that grows by itself, so it stops growing. A sapling never becomes a tree, wheat stays as ripe as it is, a mushroom doesn't spread, sugar cane and cactus stay as tall as they are, and with Pumpkins a pumpkin doesn't spread. A snip costs the shears a use. A snipped plant looks as it did: shears on it again do nothing, which is how to tell. Bonemeal does nothing on a snipped sapling or wheat, and isn't used. Break a snipped plant and what you pick up is as ever, so planted again it grows. It runs where the world runs, so a server can use it with any client.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design)", "Shoalstone (idea, design and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "mixins": ["snipping.mixins.json"],
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.snipping.Snipping"]
+  },
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {}
+  }
+}

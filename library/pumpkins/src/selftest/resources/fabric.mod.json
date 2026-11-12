@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1, "id": "pumpkins-selftest", "version": "1", "name": "Pumpkins self-test", "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.pumpkins.selftest.PumpkinsTest"],
+    "faithful:test-client": ["org.studioquire.faithful.pumpkins.selftest.client.PumpkinsClientTest"]
+  },
+  "depends": { "pumpkins": "*" }
+}

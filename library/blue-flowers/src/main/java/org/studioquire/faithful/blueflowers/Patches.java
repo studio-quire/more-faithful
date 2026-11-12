@@ -9,13 +9,14 @@ import org.studioquire.oldfaithful.core.api.Worldgen;
 
 /**
  * Patches as beta makes its dandelions, in a decoration's own stream: a point at any height, then 64 tries within 7 cells sideways and 3 up or down, each taking a cell the flower can live
- * in. Most points are far from the ground and make nothing, as most of beta's do. By the square's biome, where beta looks for its own flowers: none outside Taiga and Tundra.
+ * in. Most points are far from the ground and make nothing, as most of beta's do. By the square's biome, where beta looks for its own flowers: in Taiga, Tundra and Swampland, none elsewhere.
  * <p>
  * We come after vanilla's snow, so where it has settled, the flower takes the snow's cell, as though it had stood there first and the snow had passed it by, as it passes beta's.
  * <p>
  * Flowers stay {@link #MARGIN} cells inside the square this chunk decorates. A neighbour's tree that's still to come looks for free cells out to its leaves, and gives up on anything but air and
  * leaves there, which moves the rest of that chunk's draws; and its leaves can shade what's under them too deeply to live, so a flower there would drop at its first tick. Beta's own flowers can
- * meet both. A spruce or an oak can't reach these, nor can a pine unless its foot is well below them on a slope.
+ * meet both. A spruce or an oak can't reach these, nor can a pine unless its foot is well below them on a slope. Swampland's one tree in ten is a big oak, whose crown can: it draws from a
+ * stream of its own, so nothing else moves, and a flower it comes to stand over lives by day and drops in the dark, as beta's flowers under trees do.
  */
 final class Patches {
 	private static final int TRIES = 64, MARGIN = 3, SPAN = 16 - 2 * MARGIN;
@@ -26,10 +27,13 @@ final class Patches {
 	/**
 	 * Patches a chunk. Beta gives Taiga 2 of dandelions, but they spill out of the square where these stay in its middle, so 2 of these made about 0.6 of the dandelions in the same land (the test
 	 * counts both); 3 comes to about as many. Tundra is open flat ground with nothing else on it, where every patch shows, so half that looks about as flowered.
+	 * Swampland (bare, steep, green hills beside the snow in beta, nothing like a swamp: Highland to us) is open ground too and where lupins look most at home, so a little more than Tundra, to
+	 * be tuned by the user's play (2026-11-12).
 	 */
 	private static float patches(Biome biome) {
 		if (biome == Biome.TAIGA) return 3.0F;
 		if (biome == Biome.TUNDRA) return 1.5F;
+		if (biome == Biome.SWAMPLAND) return 2.0F;
 		return 0.0F;
 	}
 

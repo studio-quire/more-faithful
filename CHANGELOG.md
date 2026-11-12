@@ -7,6 +7,49 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.8.0 (2026-11-12)
+
+On the Faithful Library 0.8.0 and Still Faithful 0.7.1, on Old Faithful 0.2.6 and Pure Faithful 0.1.6.
+
+- **Blue Flowers**: its flower is the Lupin now, redrawn, and its dye takes the place of lapis lazuli. A lupin makes two
+  **Lupin Blue**, where the bluebell made light blue dye. Lupin Blue is beta's blue dye, the item that was Lapis
+  Lazuli, with a new name and picture, as Rose Red and Dandelion Yellow are named for their flowers: it dyes wool and
+  sheep and mixes as it always did, and light blue is Lupin Blue and bone meal, beta's own recipe. Lupins grow wild in
+  Highland too, in new chunks: our name for the land beta calls Swampland, which in beta has no swamp in it (that came
+  in later versions), only bare, steep, clover-green hills that occur beside the snow. Bonemeal on grass grows a lupin
+  in any biome, as it grows roses and dandelions, where it was Taiga and Tundra only. With the mod on there's no lapis
+  lazuli ore and no Lapis Lazuli Block: no ore forms in new chunks, and the block can't
+  be made or broken down into nine. **In a world you already have, lapis lazuli ore turns to stone and Lapis Lazuli
+  Blocks turn to blue wool, for good**, as each part of the world is next loaded with the mod on; nothing else there
+  changes. Blocks you've built with become blue wool where they stand, which keeps their colour but burns, as wool
+  does. Blocks you hold or keep in a chest become blue wool too, one for one, so the nine lapis lazuli in each is
+  gone: break stored blocks down into lapis lazuli before you update, as it can't be done after. Your bluebells are
+  lupins, and lapis lazuli you hold is Lupin Blue. To keep beta's lapis lazuli, switch Blue Flowers off in
+  **Options > More Faithful... > Mods...** and restart the game before you open your world with this version; the
+  bluebells a world has then become roses, and there are no Ward Potions without the mod (the README's "Turning a mod
+  off or removing it").
+- **Buried Towers**: no tower has lapis lazuli in it. The only lapis lazuli a tower ever held was a little ore in the
+  rock of a mine deep down, in about one tower in a hundred, and a new tower has stone there, or the ore that was under
+  it. Towers are otherwise the same, block for block. A tower already standing loses its lapis lazuli ore to stone
+  too, as all lapis lazuli ore does with Blue Flowers on (above).
+- **Alchemy**: the Golden Bluebell is the Golden Lupin, redrawn over the lupin. The same item, and Ward Potions are
+  as they were.
+- **Pumpkins**, new in the pack: pumpkin pie, and pumpkins that spread into patches under a new world rule, Pumpkins
+  Spread. A new world starts with it on, whatever settings you carried over, as a rule new to the pack starts as the
+  pack chose; in worlds you already have it's off, so a pumpkin placed there for show doesn't start a patch, and you
+  can switch it on from Pumpkins' page with the world open. A pumpkin on grass or dirt now and then grows another on
+  open grass near it, until there are about six round it: from one pumpkin, a few in-game days spent near it. With
+  Hearty Food the pie heals six hearts, over time. The server package has it on, and refuses players without it.
+- **Snipping**, new in the pack: shears snip a sapling, wheat, a mushroom, sugar cane, cactus or a pumpkin so it stops
+  growing, at a use of the shears. Nothing shows a snipped plant; shears on it again do nothing, which is how you tell,
+  and breaking and planting it again starts it growing. On a server it works for players with any client.
+- **Updating**: as from 0.7.0, copy your worlds and `.minecraft/config` from the old instance, and leave the new
+  `.minecraft/mods-library/selection.txt` as it comes, with every mod on, Pumpkins and Snipping included. To keep beta's
+  lapis lazuli in a world, switch Blue Flowers off in Options > More Faithful... > Mods... and restart the game before
+  you open it (above). On a server: players need 0.8.0, as it refuses anyone without Pumpkins. To keep a world's lapis
+  lazuli, move blue-flowers out of `mods/` before the first start with this version; a world that had it then asks for
+  `accept-missing-content` (the server README), and its bluebells become roses.
+
 ## 0.7.1 (2026-11-11)
 
 On the Faithful Library 0.7.1 and Still Faithful 0.7.1, on Old Faithful 0.2.6 and Pure Faithful 0.1.6.

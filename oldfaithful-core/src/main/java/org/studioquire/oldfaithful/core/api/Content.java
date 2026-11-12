@@ -64,6 +64,12 @@ public interface Content {
 	/** An old name of one of this mod's things (a block, item, block entity or entity), in any namespace: saves that hold it load as {@code name}. */
 	void alias(String oldName, String name);
 
+	/**
+	 * A sprite of this mod's for an item that isn't its own, from {@code assets/<modid>/textures/item/<name>.png}: the texture index, for a vanilla item the mod draws differently (through a mixin on
+	 * that item's {@code getTextureId}, in the mod's {@code client} list). Whatever draws an item's icon takes it as it takes a mod item's: a slot, the hand, a dropped stack. Ask in {@code content}.
+	 */
+	int itemTexture(String name);
+
 	/** Another mod's thing, if it's installed: resolves after {@code content}, so hold on to it and ask later. */
 	Optional<String> ref(String fullName);
 

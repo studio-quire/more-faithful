@@ -5,7 +5,7 @@ More Faithful's server package: @EDITION_NAME@'s, with the Faithful Library @LIB
 all on, as they are in the More Faithful pack. Minecraft beta 1.7.3's own server, run through Fabric Loader with our
 @SERVER_MODS@ mods, from
 @EDITION_LINE@, and the library's. Water Bottles, Alchemy, Blue Flowers,
-Explosive Arrows, Feather Lure and Buried Towers are on, so as it comes this server refuses anyone without them, vanilla clients and
+Explosive Arrows, Feather Lure, Pumpkins and Buried Towers are on, so as it comes this server refuses anyone without them, vanilla clients and
 the editions' own packs included; the More Faithful pack has them. Below is how to take them out.
 
 From the editions: it's hardened against malicious clients, a crash or power cut can't damage the world, and beta's clear
@@ -26,7 +26,7 @@ Setting up
 Turning mods off
 With the server stopped, move the jar out of mods/ into any other folder. faithful-core-@VERSION@.jar and
 oldfaithful-settings-@FIXED_VERSION@.jar stay as long as any library mod does. Do this before the first start for any mod
-you don't want: a world that has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure or Buried Towers is asked about below. With all of them out, the core and settings too,
+you don't want: a world that has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins or Buried Towers is asked about below. With all of them out, the core and settings too,
 it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothing new goes over the network.
 
 - world-rules: rules for each world, the same for everyone on the server. /rule <name> <value> for ops and the console,
@@ -35,8 +35,9 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
   A new world here starts as a new world in the More Faithful pack does, not with beta's rules: mobs_break_blocks false
   (creepers and ghast fireballs hurt and break nothing), blasts_destroy_items false (explosions throw items on the
   ground and destroy none), sleeping false (a bed only sets a respawn point, and the night goes on), monster_light none
-  (no monster appears in any torch or lava light; spawners stay as beta's), apple_drops true, falling_bonus off (no half heart more on a hit) and
-  bows_wear_out true (bows last 385 shots; a player without World Rules sees no bar for the wear). Those are the pack's
+  (no monster appears in any torch or lava light; spawners stay as beta's), apple_drops true, falling_bonus off (no half heart more on a hit),
+  bows_wear_out true (bows last 385 shots; a player without World Rules sees no bar for the wear) and pumpkins'
+  spreading true. Those are the pack's
   choices, in pack.properties beside the start scripts. pickup_reach is true as well (items picked up from half a block
   above and below a player, and all round what they ride), as World Rules starts it everywhere. For a different start, make config/faithful-rules.properties
   before the first start with a line for each rule you want otherwise (rule.world-rules.sleeping=true), or use /rule
@@ -59,7 +60,11 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
   message saying so. A player on the More Faithful pack with any mod on gets a button to turn on what your server needs.
 - alchemy: potions of health, ward, haste and feather from gilded flowers and feathers. Every player needs it, in the
   same way. It needs water-bottles, so that goes out only with it.
-- blue-flowers: bluebells in patches across Taiga and Tundra, in new chunks. Every player needs it, in the same way.
+- blue-flowers: lupins, a blue flower, in patches across Taiga, Tundra and Highland in new chunks (Highland is our name
+  for beta's Swampland, which in beta has no swamp in it: bare green hills beside the snow), their blue dye in lapis
+  lazuli's place. No lapis lazuli ore forms in new chunks, and in a world that has them, ore turns to stone and Lapis
+  Lazuli Blocks to blue wool, placed or kept in chests and inventories, for good, as its chunks and players load.
+  Every player needs it, in the same way.
 - explosive-arrows: arrows with gunpowder that burst where they land, hurting what's near (the shooter too) and breaking
   no blocks, though TNT they reach goes off. One a player shoots hurts other players only where the server's pvp
   is on; one from a dispenser hurts players whatever the pvp setting, as its plain arrows do. Every player needs it,
@@ -69,6 +74,14 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
 - wild-saplings: saplings grow every tree that grows wild, as often as it grows wild: spruce saplings grow pines too, and
   oak saplings grow big oaks a third of the time in Forest and Rainforest, as full as wild ones. Any client can join,
   vanilla too.
+- pumpkins: pumpkin pie (a pumpkin, sugar and an egg), and pumpkins that spread on grass under the world rule
+  spreading: a pumpkin on grass or dirt now and then grows another on open grass near it, until there are about six
+  within about 14 blocks. A new world here starts with it true, from pack.properties; a world that's already there,
+  or one you copy in, has it false until /rule spreading true. It grows only where players keep the land loaded.
+  Every player needs it, like water-bottles.
+- snipping: shears snip a sapling, wheat, a mushroom, sugar cane, cactus or (with pumpkins) a pumpkin so it stops
+  growing, at a use of the shears. Any client can join, vanilla too, and snip; snipped plants stay snipped for
+  everyone, and nothing shows which they are.
 - wolf-packs: tamed wolves take on a different monster each, and the next when theirs dies, where beta sent them all at
   one; they go for a monster after their owner within 4 blocks and a skeleton shooting at them, and fight creepers,
   which beta's never did; a sitting wolf keeps watch over its spot, going for a monster it sees within 8 blocks and
@@ -80,10 +93,10 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
 Plain F3 and No Toasts are client-only, so they aren't here, and players can use them on any server.
 
 Taking a mod out again
-A server refuses to start when a world has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure or Buried Towers and it's gone, and says how to go on: make a
+A server refuses to start when a world has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins or Buried Towers and it's gone, and says how to go on: make a
 backup, then add accept-missing-content=true to the world's faithful-world.properties. Its bottles and potions then
-become bowls, its golden roses and bluebells roses, its explosive arrows plain arrows and its lured rods plain
-fishing rods, as good as new, for good. That
+become bowls, its golden roses and lupins roses, its explosive arrows plain arrows, its lured rods plain
+fishing rods, as good as new, and its pies pumpkins, for good. That
 line is good for one start: the server sets it back to false, so a later removal is refused again. World Rules' values
 stay in that file and come back with the mod. Towers built stay, as ordinary blocks, as do rooms the old Better Dungeons
 built. Hearty Food's healing still to come
@@ -91,10 +104,14 @@ waits in each player's save and goes on if the mod returns. If you take out
 faithful-core too, the library's data in a chunk goes when that chunk is next saved, and nothing checks first.
 
 A vanilla beta 1.7.3 server's world and server.properties work as they are: copy them in. The world stays in beta's
-format, with the library's data beside it, which vanilla ignores.
+format, with the library's data beside it, which vanilla ignores. With blue-flowers in mods/, that world's lapis lazuli
+ore turns to stone and its Lapis Lazuli Blocks to blue wool, for good, as its chunks load: move blue-flowers out
+before the first start to keep them. The same goes for a world from 0.7.1 or before; having seen Blue Flowers, it is
+then asked about as above, and its bluebells become roses.
 
 @HOMEPAGE@
 Open source under the MIT licence, made by Claude Opus 5.5 at Studio Quire. Claude Fable 5.2 designed Explosive
-Arrows and Alchemy's Ward, Haste and Feather Potions, and Wolf Packs with Shoalstone. Opus and
+Arrows and Alchemy's Ward, Haste and Feather Potions, and Wolf Packs with Shoalstone, added to Shoalstone's designs
+for Pumpkins and Snipping, and wrote the lupins in lapis lazuli's place. Opus and
 Fable are Anthropic's AI models.
 Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.

@@ -763,12 +763,18 @@ final class SimpleFloors {
 			f.cobwebCorners(14);
 		}
 
-		/** Beta's own ores for this depth, a few times as thick as the ground outside, the mine being here for them, and gravel, as beta's rock has. */
+		/**
+		 * Beta's own ores for this depth, a few times as thick as the ground outside, the mine being here for them, and gravel, as beta's rock has.
+		 * <p>
+		 * No lapis lazuli (the user, 2026-11-12). Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
+		 * made before and some after: so the vein's place in the drawing stays. {@link Floors#NO_ORE} makes every draw that vein made and lays nothing, leaving the rock, which the gravel after it
+		 * takes or doesn't as it always did. Every other cell of every tower then comes out as it always did.
+		 */
 		private void veins(Floor f) {
 			for (int i = 2 + f.r.nextInt(2); i > 0; i--) vein(f, COAL_ORE, 8 + f.r.nextInt(6));
 			for (int i = 1 + f.r.nextInt(2); i > 0; i--) vein(f, IRON_ORE, 4 + f.r.nextInt(4));
 			if (f.y < 32 && f.r.nextBoolean()) vein(f, GOLD_ORE, 4 + f.r.nextInt(4));
-			if (f.y < 32 && f.r.nextInt(5) == 0) vein(f, LAPIS_ORE, 4 + f.r.nextInt(3));
+			if (f.y < 32 && f.r.nextInt(5) == 0) vein(f, Floors.NO_ORE, 4 + f.r.nextInt(3));
 			vein(f, GRAVEL, 6 + f.r.nextInt(6));
 		}
 
@@ -782,6 +788,7 @@ final class SimpleFloors {
 			for (int i = 0; i <= size; i++) {
 				double cx = x0 + (x1 - x0) * i / size, cy = y0 + (y1 - y0) * i / size, cz = z0 + (z1 - z0) * i / size;
 				double spread = (Math.sin(i * Math.PI / size) + 1) * (f.r.nextDouble() * size / 16) + 1;
+				if (id == Floors.NO_ORE) continue;
 				for (int x = (int) Math.floor(cx - spread / 2); x <= (int) Math.floor(cx + spread / 2); x++) {
 					for (int y = (int) Math.floor(cy - spread / 2); y <= (int) Math.floor(cy + spread / 2); y++) {
 						for (int z = (int) Math.floor(cz - spread / 2); z <= (int) Math.floor(cz + spread / 2); z++) {

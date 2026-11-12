@@ -6,6 +6,47 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.8.0 (2026-11-12)
+
+Faithful Settings is Old Faithful 0.2.6's, as in 0.7.1.
+
+- **Blue Flowers**: its flower is the Lupin now, redrawn, and its dye takes the place of lapis lazuli. A lupin makes two
+  **Lupin Blue**, where the bluebell made light blue dye. Lupin Blue is beta's blue dye, the item that was Lapis
+  Lazuli, with a new name and picture, as Rose Red and Dandelion Yellow are named for their flowers: it dyes wool and
+  sheep and mixes as it always did, and light blue is Lupin Blue and bone meal, beta's own recipe. Lupins grow wild in
+  Highland too, in new chunks: our name for the land beta calls Swampland, which in beta has no swamp in it (that came
+  in later versions), only bare, steep, clover-green hills that occur beside the snow. Bonemeal on grass grows a lupin
+  in any biome, as it grows roses and dandelions, where it was Taiga and Tundra only. With the mod on there's no lapis
+  lazuli ore and no Lapis Lazuli Block: no ore forms in new chunks, and the block can't
+  be made or broken down into nine. **In a world you already have, lapis lazuli ore turns to stone and Lapis Lazuli
+  Blocks turn to blue wool, for good**, as each part of the world is next loaded with the mod on; nothing else there
+  changes. Blocks you've built with become blue wool where they stand, which keeps their colour but burns, as wool
+  does. Blocks you hold or keep in a chest become blue wool too, one for one, so the nine lapis lazuli in each is
+  gone: break stored blocks down into lapis lazuli before you update, as it can't be done after. Your bluebells are
+  lupins, and lapis lazuli you hold is Lupin Blue. To keep beta's lapis lazuli, leave Blue Flowers out, from before you
+  first open the world with this version. In a world that had Blue Flowers before, the bluebells then become roses,
+  and no new Golden Lupins can be made for Ward Potions (the README's Turning a mod off or removing it).
+- **Buried Towers**: no tower has lapis lazuli in it. The only lapis lazuli a tower ever held was a little ore in the
+  rock of a mine deep down, in about one tower in a hundred, and a new tower has stone there, or the ore that was under
+  it. Towers are otherwise the same, block for block, and one already standing keeps what it has, unless Blue Flowers
+  is on, which turns that ore to stone like any other lapis lazuli ore.
+- **Alchemy**: the Golden Bluebell is the Golden Lupin, redrawn over the lupin. The same item, and Ward Potions are
+  as they were.
+- **Faithful Core**, for writing mods: `Content.itemTexture`, a sprite of a mod's own for an item that isn't its own,
+  as Blue Flowers draws Lupin Blue. Blue Flowers 0.8.0 needs this core, so update the core with it.
+- **Pumpkins**, a new mod: pumpkin pie, and pumpkins you can grow. A pumpkin, sugar and an egg make a pie, anywhere
+  they fit, which heals as a cooked porkchop does. Under a new world rule, **Pumpkins Spread**, a pumpkin on grass or
+  dirt now and then grows another on open grass near it, until there are about six round it, so a wild patch, or a
+  pumpkin you place, becomes a patch you can harvest and leave one of to grow back; from one pumpkin it takes a few
+  in-game days spent near it. Beta's pumpkins never grew. The rule is off in worlds you already have, and with the mod
+  on its own in new worlds too: switch it on from the mod's page with the world open, or on Create World's World
+  Rules... page. It adds an item, so a server running it needs every player to have it.
+- **Snipping**, a new mod: shears snip a plant that grows by itself so it stays as it is: a sapling that should never
+  become a tree, wheat kept at its stage, a mushroom that shouldn't spread, sugar cane and cactus at the height you
+  want them, and with Pumpkins a pumpkin that shouldn't. A snip costs the shears a use; nothing shows it, and shears on
+  a snipped plant do nothing, which is how you tell. Break and plant it again and it grows. It runs where the world
+  runs, so a server can use it with any client.
+
 ## 0.7.1 (2026-11-11)
 
 Faithful Settings is Old Faithful 0.2.6's, unchanged since 0.2.4's but for its version.

@@ -35,7 +35,7 @@ public final class AlchemyTest extends WorldTest {
 	private static final Item[] IRON_SET = {Item.IRON_BOOTS, Item.IRON_LEGGINGS, Item.IRON_CHESTPLATE, Item.IRON_HELMET};
 	private static final int CHEST = 2, HEAD = 3;
 
-	private Item rose, dandelion, bluebell, featherGold, water, glass;
+	private Item rose, dandelion, lupin, featherGold, water, glass;
 	private Item weak, plain, strong;
 	private int difficultyBefore;
 
@@ -69,9 +69,9 @@ public final class AlchemyTest extends WorldTest {
 		check("a golden rose: four ingots in a plus around a rose", makes(rose, plus(Block.ROSE)));
 		check("a golden dandelion around a dandelion", makes(dandelion, plus(Block.DANDELION)));
 		check("a golden feather around a feather", makes(featherGold, plus(Item.FEATHER)));
-		Block bell = Names.block(Alchemy.BLUEBELL);
-		if (FabricLoader.getInstance().isModLoaded("blue-flowers")) check("a golden bluebell around Blue Flowers' bluebell", bell != null && makes(bluebell, plus(bell)));
-		else check("without Blue Flowers there's no bluebell to gild, and the golden one is still an item", bell == null && bluebell != null);
+		Block flower = Names.block(Alchemy.LUPIN);
+		if (FabricLoader.getInstance().isModLoaded("blue-flowers")) check("a golden lupin around Blue Flowers' lupin", flower != null && makes(lupin, plus(flower)));
+		else check("without Blue Flowers there's no lupin to gild, and the golden one is still an item", flower == null && lupin != null);
 		check("not short of an ingot", crafted(3, null, GOLD, null, GOLD, Block.ROSE, null, null, GOLD, null) == null);
 		check("the clock is still the clock", makes(Item.CLOCK, plus(Item.REDSTONE)));
 		check("the plus doesn't fit the inventory's grid", crafted(2, GOLD, GOLD, Block.ROSE, GOLD) == null);
@@ -80,7 +80,7 @@ public final class AlchemyTest extends WorldTest {
 		check("and in any cells", makes(weak, crafted(3, null, null, rose, null, null, null, water)));
 		check("two roses, the plain one", makes(plain, crafted(3, rose, null, water, null, null, null, null, null, rose)));
 		check("three roses, the strong one, in the inventory's grid", makes(strong, crafted(2, rose, rose, water, rose)));
-		Object[][] families = {{dandelion, items(Alchemy.haste)}, {bluebell, items(Alchemy.ward)}, {featherGold, items(Alchemy.feather)}};
+		Object[][] families = {{dandelion, items(Alchemy.haste)}, {lupin, items(Alchemy.ward)}, {featherGold, items(Alchemy.feather)}};
 		for (Object[] f : families) {
 			Item gilded = (Item) f[0];
 			Item[] sizes = (Item[]) f[1];
@@ -522,14 +522,14 @@ public final class AlchemyTest extends WorldTest {
 		scene("row", a -> {
 			clearInventory();
 			player.health = 20;
-			ItemStack[] row = {new ItemStack(Block.ROSE), new ItemStack(rose), new ItemStack(Block.DANDELION), new ItemStack(dandelion), new ItemStack(bluebell), new ItemStack(Item.FEATHER),
+			ItemStack[] row = {new ItemStack(Block.ROSE), new ItemStack(rose), new ItemStack(Block.DANDELION), new ItemStack(dandelion), new ItemStack(lupin), new ItemStack(Item.FEATHER),
 					new ItemStack(featherGold), new ItemStack(water), new ItemStack(glass)};
 			for (int i = 0; i < row.length; i++) player.inventory.main[i] = row[i];
 			Item[][] families = {items(Alchemy.health), items(Alchemy.haste), items(Alchemy.ward), items(Alchemy.feather)};
 			int slot = 9;
 			for (Item[] family : families) for (Item potion : family) player.inventory.main[slot++] = new ItemStack(potion);
-			Block bell = Names.block(Alchemy.BLUEBELL);
-			if (bell != null) player.inventory.main[slot] = new ItemStack(bell);
+			Block flower = Names.block(Alchemy.LUPIN);
+			if (flower != null) player.inventory.main[slot] = new ItemStack(flower);
 			player.currentScreenHandler.sendContentUpdates();
 			world.setTime(6000);
 		});
@@ -540,7 +540,7 @@ public final class AlchemyTest extends WorldTest {
 	protected void script() {
 		rose = Alchemy.goldenRose.get();
 		dandelion = Alchemy.goldenDandelion.get();
-		bluebell = Alchemy.goldenBluebell.get();
+		lupin = Alchemy.goldenLupin.get();
 		featherGold = Alchemy.goldenFeather.get();
 		weak = Alchemy.weakPotion.get();
 		plain = Alchemy.healthPotion.get();
