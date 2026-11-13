@@ -92,7 +92,7 @@ final class Vanilla {
 		block("redstone_ore", Block.REDSTONE_ORE);
 		block("lit_redstone_ore", Block.LIT_REDSTONE_ORE);
 		// Beta's own names are the other way round from what a player holds: the torch that's crafted and placed is the lit block, and the plain-named one is the unlit
-		// block no player ever has. Given as "redstone_torch", that one sat dark where it was placed until something beside it changed (the user, 2026-11-10).
+		// block no player ever has. Given as "redstone_torch", that one sat dark where it was placed until something beside it changed.
 		block("unlit_redstone_torch", Block.REDSTONE_TORCH);
 		block("redstone_torch", Block.LIT_REDSTONE_TORCH);
 		BLOCKS.put("lit_redstone_torch", Block.LIT_REDSTONE_TORCH);

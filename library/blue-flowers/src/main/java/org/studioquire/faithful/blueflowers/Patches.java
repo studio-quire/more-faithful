@@ -28,7 +28,7 @@ final class Patches {
 	 * Patches a chunk. Beta gives Taiga 2 of dandelions, but they spill out of the square where these stay in its middle, so 2 of these made about 0.6 of the dandelions in the same land (the test
 	 * counts both); 3 comes to about as many. Tundra is open flat ground with nothing else on it, where every patch shows, so half that looks about as flowered.
 	 * Swampland (bare, steep, green hills beside the snow in beta, nothing like a swamp: Highland to us) is open ground too and where lupins look most at home, so a little more than Tundra, to
-	 * be tuned by the user's play (2026-11-12).
+	 * be tuned in play.
 	 */
 	private static float patches(Biome biome) {
 		if (biome == Biome.TAIGA) return 3.0F;

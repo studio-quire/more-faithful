@@ -8,7 +8,7 @@ import org.studioquire.faithful.golems.BoundaryPole;
 import org.studioquire.oldfaithful.core.api.client.BlockShape;
 
 /**
- * A pole a golem is using (the user's look, 2026-11-10, after trying the others in the game): its ring drawn as beta draws a lit torch, at its whole brightness whatever the light where
+ * A pole a golem is using: its ring drawn as beta draws a lit torch, at its whole brightness whatever the light where
  * it stands and with no shading by side, which is what makes a lit redstone torch's head glow at night; and the iron under it lit about half, so it reads as a lit thing without
  * outshining the ring or a torch beside it.
  * <p>
@@ -17,7 +17,7 @@ import org.studioquire.oldfaithful.core.api.client.BlockShape;
  * and drawn flat, as smooth lighting would only darken its foot. Its colours are only ever that one brightness times the shade, as beta's own blocks' are: Still Faithful's dusk keeps a
  * chunk's light per vertex and applies the darkness as it draws, which holds only for a drawing linear in what it reads. The first build of this chose between the cell's brightness
  * and a fixed half by comparing them, which that light can't carry: chunks it coded drew the iron dull and chunks drawn as beta's drew it bright, so poles near a redstone torch could
- * look darker than the rest (the user's find, 2026-11-10).
+ * look darker than the rest (found 2026-11-10).
  */
 public final class LitPoleShape implements BlockShape {
 	/**

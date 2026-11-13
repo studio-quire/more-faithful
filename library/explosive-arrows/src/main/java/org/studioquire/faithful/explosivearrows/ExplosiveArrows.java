@@ -47,7 +47,7 @@ public final class ExplosiveArrows implements FaithfulMod {
 
 	@Override
 	public void init(Mod mod) {
-		// Two, so a creeper's drop is about one arrow's worth (the user, 2026-11-09): a consumable weapon, not an everyday arrow.
+		// Two gunpowder, so a creeper's drop makes one arrow at most, half of one on average: a consumable weapon, not an everyday arrow.
 		Recipes.shapeless(new ItemStack(explosiveArrow.get()), Item.ARROW, Item.GUNPOWDER, Item.GUNPOWDER);
 		Explosions.onBlocks(e -> {
 			if (e.source() instanceof ExplosiveArrow) e.spareBlocks(block -> block instanceof TntBlock);

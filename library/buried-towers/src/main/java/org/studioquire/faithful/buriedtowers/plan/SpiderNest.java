@@ -4,7 +4,7 @@ import static org.studioquire.faithful.buriedtowers.plan.Blocks.*;
 
 /**
  * A room the spiders have taken: webs strung on the walls, round the columns and heaps and across the floor, thickest where a wall meets the ceiling, and only now and then one hung off another out in
- * the air (the user, 2026-11-08: the first round, thick through the air, was cluttered); spider spawners in among them, and what's left of what they caught, string and bones, in a chest by the wall.
+ * the air (thick through the air, they cluttered it); spider spawners in among them, and what's left of what they caught, string and bones, in a chest by the wall.
  * Webs slow you and don't break a fall (beta's own), so it's a hazard, not a way down.
  */
 final class SpiderNest {
@@ -13,7 +13,7 @@ final class SpiderNest {
 	private SpiderNest() {
 	}
 
-	/** Every spawner on the nest is a spider's, as many as any other floor at the depth has (the user, 2026-11-08). */
+	/** Every spawner on the nest is a spider's, as many as any other floor at the depth has. */
 	static final String TAKEN_BY = "Spider";
 
 	static double weight(Tower t) {

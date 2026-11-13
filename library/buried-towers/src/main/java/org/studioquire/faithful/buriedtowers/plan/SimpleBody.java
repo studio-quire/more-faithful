@@ -61,7 +61,7 @@ final class SimpleBody extends Exterior {
 
 	/**
 	 * The top block of the earth banked against the wall here, or lower than anything if there's none: not out past the fallen stones, or in water. It falls away about a block for each out
-	 * from the wall, steeper and gentler by turns and its edge wandering, as ground does, rather than in even rings (a stepped terrace, the user found, 2026-11-07).
+	 * from the wall, steeper and gentler by turns and its edge wandering, as ground does, rather than in even rings (which read as a stepped terrace).
 	 */
 	private int bank(int x, int z) {
 		if (t.depth(x, z) != 0 || t.ground.top(x, z) < Ground.SEA) return Integer.MIN_VALUE;

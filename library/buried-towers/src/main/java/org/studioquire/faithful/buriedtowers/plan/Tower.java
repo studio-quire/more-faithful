@@ -592,7 +592,7 @@ public final class Tower {
 
 	/**
 	 * Whether a tree beta grows may keep a cell of the plan rather than have it put back: the open air above the land outside the walls and over the hall's floor and up, with the snow on the bank and
-	 * the leaves of the hall's own tree. Below that, and wherever the tower built something, the tower's cell goes back. The user, 2026-11-08: a tree with a slice cut out of it looks wrong, and leaves
+	 * the leaves of the hall's own tree. Below that, and wherever the tower built something, the tower's cell goes back. A tree with a slice cut out of it looks wrong, and leaves
 	 * cut off from their log decay away; one a player finds in the way they chop down or walk round.
 	 */
 	public boolean treeMayKeep(int x, int y, int z) {

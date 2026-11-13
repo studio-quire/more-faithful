@@ -2,7 +2,7 @@ package org.studioquire.faithful.buriedtowers.plan;
 
 import static org.studioquire.faithful.buriedtowers.plan.Blocks.*;
 
-/** Where the garrison kept its gear: racks along the wall, some gone, and the chests of arms beside them. No traps (the user, 2026-11-08). */
+/** Where the garrison kept its gear: racks along the wall, some gone, and the chests of arms beside them. No traps. */
 final class Armoury {
 	static final FloorKind SIMPLE = new Simple(), COMPLEX = new Complex();
 
@@ -43,7 +43,7 @@ final class Armoury {
 			return Armoury.weight(t);
 		}
 
-		/** Long racks two high, plain fence, so they read as racks in a room this small (the user, 2026-11-08, after short low ones). */
+		/** Long racks two high, plain fence, so they read as racks in a room this small (short low ones didn't). */
 		@Override
 		void draw(Floor f) {
 			int turn = f.r.nextInt(360);

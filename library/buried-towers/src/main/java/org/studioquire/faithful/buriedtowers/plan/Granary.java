@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Where the grain was kept: bins against the wall, boxes of boards a block high and open on top, empty, and chests of seed and wheat beside them. Stores' towers have them most.
- * The user, 2026-11-08: open bins are how bins are, but every one whole, as a board beside a bin reads as a broken one, and two high looked bad.
+ * Open, as bins are, but each one whole (a board beside a bin reads as a broken one) and one block high.
  */
 final class Granary {
 	static final FloorKind SIMPLE = new Simple(), COMPLEX = new Complex();

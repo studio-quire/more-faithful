@@ -27,7 +27,7 @@ import org.studioquire.oldfaithful.core.api.Mod;
 import org.studioquire.oldfaithful.core.api.Sounds;
 
 /**
- * Sitting wolves keep watch (the user's design, 2026-11-10; the rule Sitting Wolves Watch), where the world runs. A tamed wolf that's sitting goes for a
+ * Sitting wolves keep watch (the rule Sitting Wolves Watch), where the world runs. A tamed wolf that's sitting goes for a
  * monster it can see from its seat ({@link #sees}), within {@link #SEES} blocks, if beta's pathfinder has a way for it to where it could bite it;
  * then it walks back to the spot it left and sits again. It takes a monster only from its seat, so what it sees from there is what it covers. With no way
  * to a monster it sees, it stays sitting and growls. It needs no owner near: it keeps a place, for whoever is there.

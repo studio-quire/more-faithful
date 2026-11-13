@@ -4,7 +4,7 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * Beta's own biped, box for box the one its player and zombie are (the user's choice, 2026-11-09): what makes it a golem is its skin and how it carries itself. Iron hangs still, so its
+ * Beta's own biped, box for box the one its player and zombie are: what makes it a golem is its skin and how it carries itself. Iron hangs still, so its
  * arms don't sway out and in with breath as a biped's do, and they swing half as far in a walk. A bow at work is held drawn ({@link #drawing}).
  */
 final class GolemModel extends BipedEntityModel {

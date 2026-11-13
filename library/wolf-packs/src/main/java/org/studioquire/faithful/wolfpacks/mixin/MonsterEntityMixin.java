@@ -13,8 +13,8 @@ import org.studioquire.faithful.wolfpacks.Watch;
 
 /**
  * A mixin because the core has no say in what a monster goes for. Beta's monster turns on whatever hurt it; a creeper bitten by a tamed wolf keeps going for
- * whoever it was after (the user's call, 2026-11-10, with Wolves Fight Creepers), so a blast is only ever where its own target is. The bite still pushes it
- * away from the wolf, as any hit does. Not when the wolf is one on watch ({@link Watch}; the user's call the same day): that creeper is beta's, turns on the
+ * whoever it was after (with Wolves Fight Creepers), so a blast is only ever where its own target is. The bite still pushes it
+ * away from the wolf, as any hit does. Not when the wolf is one on watch ({@link Watch}): that creeper is beta's, turns on the
  * wolf and goes off beside it, whoever it was after before, so a watch costs wolves.
  */
 @Mixin(MonsterEntity.class)

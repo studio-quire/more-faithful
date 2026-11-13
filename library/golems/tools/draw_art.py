@@ -11,9 +11,8 @@ ASSETS = Path(__file__).resolve().parent.parent / "src/main/resources/assets/gol
 # Iron as beta draws it (the block, the armour, the door): pale, with white where it catches the light and a darker rim to each piece.
 # Lightest to darkest, the shade leaning a little blue as it deepens. A mob is drawn at about three quarters of its skin's brightness on
 # its front and half on its sides, so the iron itself reads as a light grey in the world, lighter than stone, and only the white as white.
-# "d" is the bands: the seam at the hips, the cuffs, the feet. They were a dark grey (104, 110, 123) until the user, seeing the golems in the
-# game, asked for them near the skin's lighter lines and a little darker (2026-11-10). "e" is the top of the eyes, which went lighter with
-# the bands and then a little darker again. Both are the user's final call.
+# "d" is the bands: the seam at the hips, the cuffs, the feet: a little darker than the skin's lighter lines (a dark grey,
+# 104, 110, 123, until 2026-11-10). "e" is the top of the eyes, toned with the bands.
 TONES = {
     "W": (252, 252, 252),
     "H": (234, 235, 237),
@@ -60,8 +59,8 @@ def flip(rows):
     return [r.replace(" ", "")[::-1] for r in rows]
 
 
-# How many rows of a leg are foot, under its band. It was 2; the user asked for the bands a little higher, for a larger foot, and of 3 and 4
-# chose 3 (2026-11-10). The one crack that runs down a leg ends just over the band wherever it is.
+# How many rows of a leg are foot, under its band. It was 2; 3 sets the bands a little higher for a larger foot
+# (2026-11-10). The one crack that runs down a leg ends just over the band wherever it is.
 FOOT = 3
 
 
@@ -87,9 +86,8 @@ def skin(foot=None, out=None):
         "m S s s s s S m",
     ])
     # The eyes' shade turns the corner onto each side as a soft mark that fades as it runs back, no darker than the front's own edge: it
-    # was a darker stroke from when the eyes were near black, and the user saw it no longer followed from the face (2026-11-10). Over it the
-    # brow's light turns the corner too, as a band one row high: it had a pixel standing on it, an L, which they had taken off, and one pixel of it
-    # a step brighter than the rest, which they had evened out.
+    # was a darker stroke, left from when the eyes were near black, that no longer fit the face (2026-11-10). Over it the
+    # brow's light turns the corner too, as an even band one row high.
     side = [
         "s , . h h . , s",
         ", . . . . . . ,",
@@ -258,8 +256,7 @@ def skin(foot=None, out=None):
 # Damage shows as cracks: three overlays on the skin's own layout, clear but for the cracks, for a golem below three quarters, a half and a
 # quarter of its health. One map a face, a digit a pixel: the stage it first shows at. So each stage holds the one before it and grows from
 # its ends, and mending steps back the same way. A crack is drawn in the skin's own shades: a hairline in its shade where it's new, deepening as it
-# stays open to a dark grey that was the bands' own when the user approved them, and no further. They're toned for how cracked iron looks near to, not to be made out from far off (the user
-# found darker ones too dark, 2026-11-10).
+# stays open to a dark grey, the bands' own when the cracks were drawn, and no further. They're toned for how cracked iron looks near to, not to be made out from far off.
 # They run where a casting gives: down from the crown between the eyes, in from a shoulder across the chest to the hip seam, up the back.
 # The head and the body carry them, with an arm's and a leg's outer side: a limb's front would show the same crack on both limbs at once,
 # since the two share their skin.
@@ -374,7 +371,7 @@ CRACKS = {
     ],
 }
 # By how many stages a crack has been open: new, older, oldest.
-# The first two are the skin's shades; the last is its own, kept as approved now that the bands are lighter.
+# The first two are the skin's shades; the last is its own, the bands' old dark grey, kept now that the bands are lighter.
 CRACK_TONES = [TONES["S"], TONES["m"], (104, 110, 123)]
 PARTS = {"head": (0, 0, 8, 8, 8), "body": (16, 16, 8, 12, 4), "arm": (40, 16, 4, 12, 4), "leg": (0, 16, 4, 12, 4)}
 
@@ -399,23 +396,23 @@ def cracks(foot=None, folder=None):
 
 
 # The boundary pole: a short iron rod with a ring of redstone at its top, four of which mark out a golem's work. It began as a taller
-# ranging pole with a red head over this ring; the user had the head and the iron under it taken off (2026-11-10). As a block it's one box,
+# ranging pole with a red head over this ring; the head and the iron under it came off (2026-11-10). As a block it's one box,
 # 2 pixels square and 10 high in the middle of its cell, a torch's size, textured as beta textures any block's box: each face shows the part
 # of its tile the box covers, so of the side's tile only the middle two columns of its lower ten rows are seen, a lit one and a shaded one.
 # The tiles are drawn right across all the same, so a thicker post would wear them too. Redstone's reds are the core icon's.
-# The pole glows while a golem works by it, as a redstone torch does, and is dull when none does (the user's ask, 2026-11-10): two pairs of
+# The pole glows while a golem works by it, as a redstone torch does, and is dull when none does (2026-11-10): two pairs of
 # tiles, the plain names the dull one. Only the ring differs. "g" and "G" are the glow, a hot pale red and a bright one, kept red where
 # beta's torch goes to yellow and white.
 POLE_TONES = dict(TONES, g=(255, 176, 160), G=(255, 92, 62), r=(232, 72, 52), R=(176, 32, 24), e=(124, 20, 18), E=(84, 14, 16), K=(62, 66, 78))
-# The rod is the golem's pale iron. It was tried in a dark iron for three rounds, so as to be quiet when the whole pole is drawn full bright
-# at night; the user went back to this and has the drawing dim the rod under the ring instead (2026-11-10).
+# The rod is the golem's pale iron. To keep it quiet when the whole pole is drawn full bright at night, the drawing dims the rod under
+# the ring, rather than the rod being a dark iron (2026-11-10).
 # Top row first, the lit half's letter and then the shaded half's: the red ring, and plain iron down to a foot in shade. The six rows over
 # it are left clear, as a torch's tile is over its flame.
 POLE_SHAFT = ["h.", ".,", ".,", ".,", ".,", ".,", ",s", "sS"]
 # The ring's two rows and the top's tone: dull a step under the item's icon, glowing a step over it.
 POLE_RING = {"": (["Re", "eE"], "R"), "_lit": (["gG", "Gr"], "g")}
 # The item's icon is the pole standing, seen front on, as beta's torches show in a slot: the dull side's middle two columns where they are
-# on the tile, and nothing round them (the user's ask, 2026-11-10; it leaned as a stick does before).
+# on the tile, and nothing round them (until 2026-11-10 it leaned, as a stick does).
 
 
 def pole():
@@ -451,10 +448,9 @@ def pole():
     icon.save(ASSETS / "item/boundary_pole.png")
 
 
-# The Golem Core's icon: a ball of iron the size of beta's snowball with a small diamond set in it. It was a picture of its recipe (a diamond
-# in gold with redstone corners) until the user asked for something plainer that needn't show what it's made of; of the candidates they chose
-# this one, without a seam round it (2026-11-10). The diamond is beta's diamond a little quieter, in a setting of the iron's shade, and its
-# shaded corner is kept light at their ask.
+# The Golem Core's icon: a ball of iron the size of beta's snowball with a small diamond set in it. Plain, with no picture of what it's made
+# of (it was its recipe: a diamond in gold with redstone corners), and no seam round it (2026-11-10). The diamond is beta's diamond a little quieter, in a setting of the iron's shade, and its
+# shaded corner is kept light.
 CORE_TONES = dict(TONES, c=(150, 236, 220), C=(74, 208, 186), q=(56, 180, 160))
 CORE = """
 ________________

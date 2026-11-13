@@ -13,7 +13,7 @@ import org.studioquire.oldfaithful.core.api.Tools;
  * from. What it can't reach or mustn't touch is left as it is: a tree on the pillar of earth it stands on, lava behind its wall, a spire too tall to reach the top of. So it peels the
  * land from the top in layers, and leaves a flat yard at its floor with a cut face at the edge of its area.
  * <p>
- * In a pattern a watcher can follow (the user, 2026-11-10, after nearest-first read as wandering): a layer at a time from the top down, and within a layer in rows, back and forth
+ * In a pattern a watcher can follow (nearest-first read as wandering): a layer at a time from the top down, and within a layer in rows, back and forth
  * across its area as a lawn is mown, from the corner nearest its post, a row finished before the next and a layer before the one below. What it can't take or reach is skipped and the
  * row carries on.
  * <p>

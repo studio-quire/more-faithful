@@ -15,7 +15,7 @@ import org.studioquire.oldfaithful.core.api.BlockShapes;
 import org.studioquire.oldfaithful.core.api.Chunks;
 
 /**
- * A thin iron pole banded with redstone, standing on the ground (the user's change, 2026-11-10, from the first build's cobblestone stake: the golem's own kit of iron and redstone). Four
+ * A thin iron pole banded with redstone, standing on the ground (in place of the first build's cobblestone stake: the golem's own kit of iron and redstone). Four
  * at a rectangle's corners mark the space a golem works in: what's inside, the poles' own rows left out. Each chunk keeps where its poles are ({@link Golems#poles}), added as one is
  * placed and taken off as it goes, so a golem finds them without reading the land.
  * <p>

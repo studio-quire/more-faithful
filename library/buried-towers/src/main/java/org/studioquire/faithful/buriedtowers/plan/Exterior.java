@@ -22,7 +22,7 @@ abstract class Exterior {
 
 	/**
 	 * The path's top at a cell {@code out} from the wall (1 the first outside it): paving the first three to five out, chosen per tower, with the ground's own top, grass or in the desert sand,
-	 * coming through more of it the further out, until it's all ground and the path has faded into it (the user, 2026-11-07). {@code paving} is what the path is laid in. Draws only from its own
+	 * coming through more of it the further out, until it's all ground and the path has faded into it. {@code paving} is what the path is laid in. Draws only from its own
 	 * random, so nothing else about the tower moves.
 	 */
 	static int pathTop(Tower t, Random path, int length, int out, int paving) {

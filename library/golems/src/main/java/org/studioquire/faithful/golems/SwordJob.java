@@ -158,7 +158,7 @@ final class SwordJob extends Job {
 		return 20;
 	}
 
-	/** Out of work, it walks its rounds of its area (the user, 2026-11-10), poles' or the square round its post. */
+	/** Out of work, it walks its rounds of its area, poles' or the square round its post. */
 	@Override
 	protected boolean patrols() {
 		return true;

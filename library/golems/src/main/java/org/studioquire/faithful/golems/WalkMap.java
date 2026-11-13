@@ -145,7 +145,7 @@ final class WalkMap {
 	/**
 	 * As {@link #pathTo}, with the grid's corners taken out wherever it can walk straight: from each place on the way, on to the furthest one further on, at the same height, that a
 	 * body as wide as a golem's can walk to in a straight line over nodes of the last search, and the first leg from where it stands. So a following golem goes across open ground as
-	 * a wolf does, rather than along the grid in an L or a staircase of quarter turns (the user found its following odd, 2026-11-10). A step up or down stays a place of its own.
+	 * a wolf does, rather than along the grid in an L or a staircase of quarter turns (which made its following look odd). A step up or down stays a place of its own.
 	 */
 	Path straightPathTo(int node, double fromX, double fromZ) {
 		int n = Math.max(1, steps[node]) + 1;

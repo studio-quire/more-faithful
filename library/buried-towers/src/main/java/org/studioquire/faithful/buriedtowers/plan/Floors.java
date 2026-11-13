@@ -1329,7 +1329,7 @@ final class Floors {
 		/**
 		 * Veins by beta's own rule for what lies at this depth, a few times as thick as the ground outside, the mine being here for a reason; and gravel, as beta's rock has.
 		 * <p>
-		 * No lapis lazuli (the user, 2026-11-12). Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
+		 * No lapis lazuli, since 2026-11-12. Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
 		 * made before and some after: so the vein's place in the drawing stays. {@link #NO_ORE} makes every draw that vein made and lays nothing, and the cells it would have taken are kept from
 		 * the gravel after it, which only takes stone and never took those. Every other cell of every tower then comes out as it always did.
 		 */
@@ -1719,7 +1719,7 @@ final class Floors {
 				boolean clear = Math.hypot(cu - mid, cv) > moat + 1.5 && (Math.abs(cv) > 1 || cu < mid);
 				if (clear) f.pier(cu, cv, cu, cv, top, f.pal.pillar);
 			}
-			// The strongroom: obsidian all round, floor and ceiling too (user, 2026-11-07), the one place in the tower digging takes real effort, under a stone lid stepping in to a dome with the post on it,
+			// The strongroom: obsidian all round, floor and ceiling too, the one place in the tower digging takes real effort, under a stone lid stepping in to a dome with the post on it,
 			// and an iron door you need the lever for.
 			int rt = f.y + 3;
 			for (int u = -room - 2; u <= room + 2; u++) {
@@ -1749,7 +1749,7 @@ final class Floors {
 			f.chestAt(mid, f.y + 1, 0, NORTH, "vault-best");
 			int[][] spots = {{-room, 1}, {-room, -1}, {1, room}};
 			for (int i = 0; i < spots.length; i++) f.chestAt(mid + spots[i][0], f.y, spots[i][1], spots[i][0] == -room ? WEST : SOUTH, "vault");
-			// The guards: creepers in the hall, standing past the moat, to either side of the way to the bridge, and zombies behind the door (the user's call, 2026-11-09).
+			// The guards: creepers in the hall, standing past the moat, to either side of the way to the bridge, and zombies behind the door.
 			int s = r.nextBoolean() ? 1 : -1, front = mid + room + 5;
 			f.spawnerAt(front, f.y, s * (2 + r.nextInt(3)), "Creeper");
 			f.spawnerAt(front + 1 + r.nextInt(Math.max(1, half - front - 1)), f.y, -s * (2 + r.nextInt(3)), f.t.monster(r, 1));

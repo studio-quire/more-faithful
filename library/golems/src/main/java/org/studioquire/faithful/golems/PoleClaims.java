@@ -18,7 +18,7 @@ import org.studioquire.oldfaithful.core.api.Chunks;
 import org.studioquire.oldfaithful.core.api.Ticks;
 
 /**
- * Which boundary poles golems are using, so a pole in use glows and gives a lit redstone torch's light (the user's ask, 2026-11-10): each golem's rectangle by its own number,
+ * Which boundary poles golems are using, so a pole in use glows and gives a lit redstone torch's light: each golem's rectangle by its own number,
  * kept with the world in beta's data folder as maps are ({@code data/golems_poles.dat}, the Nether's {@code golems_poles_-1.dat}), so a golem whose chunk isn't loaded still
  * holds its poles. A pole is in use while some golem's rectangle has a corner in its column, at any height, as {@link BoundaryPole#rectangleAround} found the rectangle: a
  * golem that has lost a pole still works the rectangle it was handed its tool in, so the others stay lit and a pole put back there lights. A golem holds its rectangle from

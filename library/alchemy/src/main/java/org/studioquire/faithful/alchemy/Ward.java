@@ -6,7 +6,7 @@ import org.studioquire.oldfaithful.core.api.Codec;
 import org.studioquire.oldfaithful.core.api.Mod;
 
 /**
- * The Ward Potion: a set of armour in a bottle (the user's framing, 2026-11-09). Drinking one fills the whole armour bar with blue, as putting on a whole set fills it; hits drain the blue as
+ * The Ward Potion: a set of armour in a bottle. Drinking one fills the whole armour bar with blue, as putting on a whole set fills it; hits drain the blue as
  * beta's bar drops while a set wears out; it's worn over the player's own armour, which takes no wear until the blue is gone and then shows again as it was. A potion's size is how tough the set
  * is, as leather and diamond fill the same bar and differ in how long they last.
  * <p>

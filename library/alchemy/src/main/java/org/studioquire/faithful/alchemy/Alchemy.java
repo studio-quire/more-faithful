@@ -24,7 +24,7 @@ import org.studioquire.oldfaithful.core.api.Ticks;
 public final class Alchemy implements FaithfulMod {
 	/**
 	 * What one, two and three of a gilded thing are worth, by family: hearts healed, minutes of haste or feather, and how tough a ward's set is, in damage it takes before it's gone. The strongest
-	 * health fills the bar (the user, 2026-11-09), so the third one's extra is what it wastes when less was needed. Every ward fills the armour bar (the user, 2026-11-09), and its toughness is set so
+	 * health fills the bar, so the third one's extra is what it wastes when less was needed. Every ward fills the armour bar, and its toughness is set so
 	 * that, worn alone against a zombie's hits on Normal (5 a hit), it lasts 3, 5 or 9 hits and saves about 4, 6 and 10 hearts, near what the health potions heal.
 	 */
 	public static final int[] HEARTS = {3, 6, 10}, MINUTES = {4, 8, 12}, WARD = {12, 25, 45};

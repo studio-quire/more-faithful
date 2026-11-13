@@ -36,7 +36,7 @@ abstract class WolfEntityMixin extends AnimalEntity implements Hunt.Holder {
 	/** What the feeding in progress is, between beta asking whether it's meat and its heal, in the same call. */
 	@Unique
 	private FoodItem wolfpacks$fed;
-	/** The click in progress held something this wolf eats, so it isn't the owner's sit or stand (the user's call, 2026-11-10). */
+	/** The click in progress held something this wolf eats, so it isn't the owner's sit or stand. */
 	@Unique
 	private boolean wolfpacks$feeding;
 

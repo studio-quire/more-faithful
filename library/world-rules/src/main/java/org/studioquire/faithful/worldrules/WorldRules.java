@@ -40,7 +40,7 @@ public final class WorldRules implements FaithfulMod {
 	public static BoolRule appleDrops;
 	public static ChoiceRule fallingBonus;
 	public static BoolRule bowsWearOut;
-	/** On by default, where the others start as beta: worlds that already exist take it too (the user, 2026-11-10). */
+	/** On by default, where the others start as beta: worlds that already exist take it too. */
 	public static BoolRule pickupReach;
 
 	/** Whether a bow wears in this world: the rule here, or as the server said. Asked for the bow's most damage at every turn, so off before the rule exists, as beta's. */

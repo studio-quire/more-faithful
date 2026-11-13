@@ -13,7 +13,7 @@ import net.minecraft.world.chunk.Chunk;
 import org.studioquire.oldfaithful.core.api.Chunks;
 
 /**
- * A jack-o'-lantern frightens a creeper that can see its lit face (the user's rule, 2026-11-10): the creeper's eyes on the face's side of the block, in front
+ * A jack-o'-lantern frightens a creeper that can see its lit face: the creeper's eyes on the face's side of the block, in front
  * of the face's plane, within {@link #REACH} of the lantern's middle, with nothing between its eyes and the middle of the face by beta's own sight, the
  * ray a monster uses to see a player. So glass, leaves and fences hide it as they hide a player, and water doesn't.
  *

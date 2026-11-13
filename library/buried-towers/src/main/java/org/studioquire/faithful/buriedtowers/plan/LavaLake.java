@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * Near the bottom, where the diggers broke into lava and it came up over the floor: a lake of it a cell deep, a ragged shore along the wall, a causeway across, and a crust of obsidian here and there
- * where water once ran onto it. The floor's walked a cell up, on the shore and the causeway, as the flooded hall's is. Lava lights it all, so nothing spawns: a breather (the user, 2026-11-08). The lava
+ * where water once ran onto it. The floor's walked a cell up, on the shore and the causeway, as the flooded hall's is. Lava lights it all, so nothing spawns: a breather. The lava
  * goes in after the ways, round them, built up a cell as a kerb wherever it would meet open air at its own level, so it's still and stays put; only stairs or a ladder come in or go out, and a ladder
  * here stands on a post of stone rather than a log, which lava would set alight. No chest: beta's lava lights fire beside anything of wood, a chest's wood
  * included, a few cells off, and everything here is that near it.

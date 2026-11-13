@@ -31,12 +31,12 @@ import org.studioquire.faithful.wolfpacks.mixin.PlayerEntityAccessor;
  * what the call was about first among equals, then the nearest. While the fight lasts (a wolf of theirs holds an enemy, or did within {@link #LINGER}), a
  * free wolf takes the next the same way, so the pack works through a group. A wolf that can't get to its enemy lets it go.
  *
- * <p>Guarding (its own rule, the user's ask after their first play, 2026-11-10) starts a fight beta's call wouldn't: a mob within {@link #GUARD} blocks
+ * <p>Guarding (its own rule) starts a fight beta's call wouldn't: a mob within {@link #GUARD} blocks
  * of the player that has noticed them (after them or one of their wolves: beta's own target, so a spider at peace by day, a calm pig zombie or a zombie
  * that hasn't seen them doesn't count), or, at any range the packs reach, a mob that has shot at them and is still after them (a skeleton's arrow, hit or
  * miss: beta's call already answers one that hits). Anything else coming is left until it's that close, or until the call. Free, standing wolves within the call's reach respond; a sitting one stays seated.
  *
- * <p>Wolves Fight Creepers (its own rule, the user's call the same day) lifts beta's exception for creepers everywhere: the call, guarding and the spread.
+ * <p>Wolves Fight Creepers (its own rule) lifts beta's exception for creepers everywhere: the call, guarding and the spread.
  *
  * <p>What's left as beta: a wolf that's hit turns on what hit it.
  *

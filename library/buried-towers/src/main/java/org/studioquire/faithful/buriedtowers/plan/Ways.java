@@ -14,7 +14,7 @@ final class Ways {
 
 	/**
 	 * The ways that could join these two floors, best first, for the first that fits to take it. About half are plain ways, stairs or now and then a ladder, and half one of the others, each kind
-	 * once in a tower, in any order (the user, 2026-11-07: a tower with a good few ladders and stairs is the one to make typical, the others the occasional surprise). Stairs can always be built
+	 * once in a tower, in any order (so a good few ladders and stairs are typical, and the others an occasional surprise). Stairs can always be built
 	 * again, in a different stone; a ladder never straight after another, and at most two. If nothing finds room, a ladder is the smallest thing there is.
 	 */
 	static List<Way> options(Random r, Floor up, Floor low, List<String> used, boolean ladderAllowed) {
@@ -242,7 +242,7 @@ final class Ways {
 		}
 
 		/**
-		 * Where the floor was patched with gravel or gave way to it, rough rather than square (the user, 2026-11-07): three to seven cells of the pool's own three square, so all of it comes down
+		 * Where the floor was patched with gravel or gave way to it, rough rather than square: three to seven cells of the pool's own three square, so all of it comes down
 		 * into the water, and joined side to side, so digging any of it brings the lot.
 		 */
 		private List<int[]> patch() {
@@ -386,7 +386,7 @@ final class Ways {
 		}
 	}
 
-	/** A ladder up a post, through an open hole in the floor above (no trapdoor, the user's call, 2026-11-07). */
+	/** A ladder up a post, through an open hole in the floor above (no trapdoor). */
 	static final class Ladder extends Way {
 		Ladder(Floor up, Floor low) {
 			super("ladder", up, low);
@@ -618,7 +618,7 @@ final class Ways {
 	}
 
 	/**
-	 * Loose gravel clinging round a post in a stairwell, a block a step, over a pool (the user, 2026-11-08: gravel stuck to a wall or a pillar makes sense as a place, a pressure plate that drops it
+	 * Loose gravel clinging round a post in a stairwell, a block a step, over a pool (gravel stuck to a wall or a pillar makes sense as a place, a pressure plate that drops it
 	 * doesn't). Walking down it changes nothing, but by beta's own rules a step that's told of a change beside it falls: a torch put on it, a block broken next to it. Every step has the post or the
 	 * well's wall beside it, the steps a turn apart are four apart, so dropping with one costs at most a half-heart, and the last drop is into the pool, with a way out of the well over it.
 	 */

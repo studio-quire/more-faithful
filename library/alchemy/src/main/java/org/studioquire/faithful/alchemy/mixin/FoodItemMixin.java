@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.studioquire.faithful.alchemy.Ward;
 
 /**
- * The golden apple's ward, a Strong Ward Potion's, beside its full heal (the user, 2026-11-09). A mixin because eating is {@code FoodItem.use} and nothing hears of it. Eaten as beta eats it, whatever the bar and the
+ * The golden apple's ward, a Strong Ward Potion's, beside its full heal. A mixin because eating is {@code FoodItem.use} and nothing hears of it. Eaten as beta eats it, whatever the bar and the
  * blue (it tops the blue up to the toughest as a potion does), so nothing about when it goes changes; its heal stays beta's, or Hearty Food's, which heals anything of a whole bar at once.
  */
 @Mixin(FoodItem.class)

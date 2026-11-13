@@ -6,8 +6,8 @@ import org.studioquire.oldfaithful.core.api.Mod;
 import org.studioquire.oldfaithful.core.api.Ticks;
 
 /**
- * The user's design, 2026-11-10, and their calls after first playing it the same day: a pack that spreads out over a fight, guards its owner and fights
- * creepers like any monster, feeding ({@link WolfFood}), which is what keeping a pack costs, and sitting wolves that keep watch over a place
+ * A pack that spreads out over a fight, guards its owner and fights
+ * creepers like any monster; feeding ({@link WolfFood}), which is what keeping a pack costs; and sitting wolves that keep watch over a place
  * ({@link Watch}). All run where the world runs.
  */
 public final class WolfPacks implements FaithfulMod {

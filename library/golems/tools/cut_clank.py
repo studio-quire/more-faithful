@@ -1,7 +1,6 @@
 """The golem's clank: the latch at the end of the door sound launchers give beta, a later recording under beta's name
-(beta's own is what Pure Faithful's hardening fetches in its place, BetaSounds), without the swing that leads in (the user, 2026-11-10, who
-heard the whole door in every golem sound and asked for its second half). A small transformative use of Mojang's
-recording, shipped as the mod's own file (the user's call, the same day, as with Alchemy's recoloured rose).
+(beta's own is what Pure Faithful's hardening fetches in its place, BetaSounds), without the swing that leads in: the door sound's second half, so no golem sound is a whole door. A
+small transformative use of Mojang's recording, shipped as the mod's own file, as with Alchemy's recoloured rose.
 
     python library/golems/tools/cut_clank.py <door_close.ogg>
 

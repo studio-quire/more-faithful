@@ -766,7 +766,7 @@ final class SimpleFloors {
 		/**
 		 * Beta's own ores for this depth, a few times as thick as the ground outside, the mine being here for them, and gravel, as beta's rock has.
 		 * <p>
-		 * No lapis lazuli (the user, 2026-11-12). Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
+		 * No lapis lazuli, since 2026-11-12. Towers drawn until then had a vein of it in one deep floor in five, and a tower is drawn again from its seed for every chunk of it, some perhaps
 		 * made before and some after: so the vein's place in the drawing stays. {@link Floors#NO_ORE} makes every draw that vein made and lays nothing, leaving the rock, which the gravel after it
 		 * takes or doesn't as it always did. Every other cell of every tower then comes out as it always did.
 		 */
@@ -895,7 +895,7 @@ final class SimpleFloors {
 		void draw(Floor f) {
 			int wall = front(f), back = wall - 4, rt = f.y + 3, ditch = moat(f);
 			Mat lid = f.pal.wall;
-			// The strongroom: obsidian all round, floor and ceiling too (user, 2026-11-07), the one place in the tower digging takes real effort, three across inside; the lid's edge over its walls plain.
+			// The strongroom: obsidian all round, floor and ceiling too, the one place in the tower digging takes real effort, three across inside; the lid's edge over its walls plain.
 			for (int u = back; u <= wall; u++) {
 				for (int v = -2; v <= 2; v++) {
 					boolean inside = u > back && u < wall && Math.abs(v) <= 1;

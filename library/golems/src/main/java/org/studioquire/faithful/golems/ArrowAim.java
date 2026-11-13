@@ -1,7 +1,7 @@
 package org.studioquire.faithful.golems;
 
 /**
- * An archer golem's arrow aimed to hit as often as a beta skeleton's standing in its place (the user, 2026-11-10: about beta's efficiency, from somewhere other than over the head). Still
+ * An archer golem's arrow aimed to hit as often as a beta skeleton's standing in its place: about beta's efficiency, from somewhere other than over the head. Still
  * Faithful's {@code SkeletonAim} maths, mirrored, since the library can't lean on that mod: a golem's arrow starts at its own eye, not 1.4 over a skeleton's head, so aimed beta's way it
  * climbs or drops more steeply than a skeleton's, and from a perch it hit about 9 points more often (66% against 57% at 4 down, `library/golems/tools/archer_arrows.py`). So it's aimed to cross the
  * target's distance at the height the skeleton's arrow would, unspread, and its spread is scaled by how much quicker or slower across it is, so it has spread as widely by then.

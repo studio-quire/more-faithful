@@ -9,9 +9,9 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * A small sealed room in the rock between two floors, holding a chest and nothing else (user, 2026-11-07). The way between those floors, always a ladder or stairs, runs {@link Tower#GAP} longer than
+ * A small sealed room in the rock between two floors, holding a chest and nothing else. The way between those floors, always a ladder or stairs, runs {@link Tower#GAP} longer than
  * any other, past plain wall: that length is the only clue, and the room lies beside it, one block in, at the height you pass it. Two high on a floor of its style's stone, the chest on that floor
- * against the far wall. Monsters may appear in it, as in any dark pocket of beta's; what it never has is a spawner (user, 2026-11-08). Cut last of all, after the guards, into rock nothing else draws on, and only where everything
+ * against the far wall. Monsters may appear in it, as in any dark pocket of beta's; what it never has is a spawner. Cut last of all, after the guards, into rock nothing else draws on, and only where everything
  * round it is plain building stuff inside the tower: so no air, water, light or cave reaches it, and in a simple tower it never backs onto the one-thick outer wall.
  */
 final class HiddenRoom {

@@ -7,6 +7,21 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.9.1 (2026-11-13)
+
+On the Faithful Library 0.9.1 and Still Faithful 0.8.1, on Old Faithful 0.2.8 and Pure Faithful 0.1.6.
+
+- **Golems**: a pickaxe golem levels ground with a lupin on it or beside it too, as it does ground under other flowers
+  and grass; 0.9.0's left those blocks standing.
+- When your mods don't match a server's, the screen saying which mods don't match, with **Match This Server's Mods**,
+  stays up. Until now the server's answer could replace it at once with beta's plain "Disconnected by Server" screen,
+  which says only that the mods don't match.
+- Still Faithful 0.8.1 and Old Faithful 0.2.8 change nothing you'd notice in the pack or its server package, whose
+  Faithful Core and Faithful Settings already go together.
+- **Updating**: as before, copy your worlds and `.minecraft/config` from the old instance. From 0.9.0, your preset and
+  the mods you switched on or off beyond it come with `config`; from 0.8.0 or before, the new instance starts on High
+  with every mod on (0.9.0's entry has the rest).
+
 ## 0.9.0 (2026-11-13)
 
 On the Faithful Library 0.9.0 and Still Faithful 0.8.0, on Old Faithful 0.2.7 and Pure Faithful 0.1.6.

@@ -6,6 +6,21 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.9.1 (2026-11-13)
+
+Faithful Settings is Old Faithful 0.2.8's.
+
+- **Golems**: a pickaxe golem levels ground with a lupin on it or beside it too, as it does ground under other flowers
+  and grass; 0.9.0's left those blocks standing.
+- **Faithful Core**: when your mods don't match a server's, the screen saying which mods don't match stays up (in More
+  Faithful, with Match This Server's Mods). Until now the server's answer could replace it at once with beta's plain
+  "Disconnected by Server" screen, which says only that the mods don't match.
+- **Faithful Settings** from Old Faithful 0.2.8, the one in this release, won't start beside a Faithful Core older than
+  0.9.0: the game stops at launch with Fabric Loader's message that the two are incompatible, where Old Faithful
+  0.2.7's Settings started and the game stopped later, when a server refused you over mods. A server with the pair
+  stops at launch too. Take the core from 0.9.0 on with it. In a pack from before More Faithful 0.9.0, keep the pack's
+  own Settings, which has the mods' switches, beside the new core (the README's Installing).
+
 ## 0.9.0 (2026-11-13)
 
 Faithful Settings is Old Faithful 0.2.7's.

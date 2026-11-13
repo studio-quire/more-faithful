@@ -3,8 +3,8 @@ package org.studioquire.faithful.buriedtowers.plan;
 import static org.studioquire.faithful.buriedtowers.plan.Blocks.*;
 
 /**
- * A rare prize: a frame of obsidian someone built down here and never lit, whole, so flint and steel would open it. Nothing of the Nether comes with it (the user, 2026-11-06), and its obsidian is
- * fine to take (2026-11-08). The order's towers have it most, and the deeper half.
+ * A rare prize: a frame of obsidian someone built down here and never lit, whole, so flint and steel would open it. Nothing of the Nether comes with it, and its obsidian is
+ * fine to take. The order's towers have it most, and the deeper half.
  */
 final class PortalRoom {
 	static final FloorKind SIMPLE = new Simple(), COMPLEX = new Complex();
@@ -59,7 +59,7 @@ final class PortalRoom {
 		return -1;
 	}
 
-	/** Plain: the frame against the wall, a chest and what time's done. Corners too: a built room's frame is whole, and without them it looked unfinished (user, 2026-11-08). */
+	/** Plain: the frame against the wall, a chest and what time's done. Corners too: a built room's frame is whole, and without them it looked unfinished. */
 	private static final class Simple extends FloorKind {
 		Simple() {
 			super("portal frame", Size.MEDIUM, 6, 7, 0.45, 0.95);

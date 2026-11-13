@@ -187,8 +187,8 @@ More Faithful 0.9.0, keep its own `oldfaithful-settings` in `.minecraft/mods`: t
 release's has none, as they're More Faithful's own now (beside the older one, this core's refusal screen just doesn't
 offer Match This Server's Mods).
 
-Wherever you take this release's `oldfaithful-settings`, take its `faithful-core` too: an older core beside it stops the
-game when a server refuses you over mods.
+Wherever you take this release's `oldfaithful-settings`, take its `faithful-core` too: this Settings won't run beside a
+core older than 0.9.0, and the game or server stops at launch with a message that the two are incompatible.
 
 ## Servers
 

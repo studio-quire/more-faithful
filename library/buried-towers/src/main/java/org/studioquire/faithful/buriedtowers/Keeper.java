@@ -34,7 +34,7 @@ final class Keeper {
 	static final int REGION = 24;
 	/**
 	 * How far a site keeps from its square's edges, so towers in neighbouring squares stand at least twice this apart, and how many places in the square are tried for land that suits. At
-	 * {@code REACH + 1} and three tries, as first, 2% of towers had a neighbour within 100 blocks and 23% within 200 (user, 2026-11-07: two close together should be very rare); now none can be nearer
+	 * {@code REACH + 1} and three tries, as first, 2% of towers had a neighbour within 100 blocks and 23% within 200 (two close together should be very rare); now none can be nearer
 	 * than 224 and the median is about 320, with the fifth try keeping as many squares with a tower as before (measured over three seeds, `buriedTowersTest -Ptowers.mode=spacing`).
 	 */
 	private static final int TRIES = 5;

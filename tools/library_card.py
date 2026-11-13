@@ -1,9 +1,8 @@
 """The site's cards for the Faithful Library and More Faithful: seals over a frame, pixel-sharp, drawn plain (--plain). More
 Faithful's has its own seal alone (148,148 --seals morefaithful --plain) until it has a picture of its own, which
 tools/cover_card.py makes as the editions' are; the library's has the two packs' seals side by side. Without --plain each
-seal sits in a smooth glow of its own hue, as the library's card had its editions' seals through 0.4.0; nothing uses it now
-(More Faithful's had a gold one for an hour; the user: no glow, 2026-11-10). A seal is a name in prism/release/icons/final/
-or the path of a PNG.
+seal sits in a smooth glow of its own hue, as the library's card had its editions' seals through 0.4.0; nothing uses it now.
+A seal is a name in prism/release/icons/final/ or the path of a PNG.
 
     python tools/library_card.py <frame.png> <out.png> [x1,y1,x2,y2] [--seals a,b] [--plain]   at those centres, or CENTRES
     python tools/library_card.py colours [seal ...]                                             the glows' colours, for the link preview's CSS

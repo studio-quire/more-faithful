@@ -24,7 +24,7 @@ import org.studioquire.oldfaithful.core.api.Sounds;
  */
 final class HoeJob extends Job {
 	/**
-	 * Uses of its hoe a crop reaped (the user's call, 2026-11-09: the hoe wears from harvesting, one a crop). A player reaps by hand and a hoe wears only from tilling, so 0 here would
+	 * Uses of its hoe a crop reaped (the hoe wears from harvesting, one a crop). A player reaps by hand and a hoe wears only from tilling, so 0 here would
 	 * be that rule exactly, and the farm would cost nothing to run. Tilling wears one, as a player's.
 	 */
 	static final int WEAR_PER_HARVEST = 1;

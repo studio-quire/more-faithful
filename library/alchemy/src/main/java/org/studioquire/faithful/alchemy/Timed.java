@@ -16,7 +16,7 @@ import org.studioquire.oldfaithful.core.api.Server;
  * not while they're away or the game is paused, and kept over a relog; gone at death, as the end of a life ends what was drunk in it. A second drink adds its time, up to the longest potion's.
  * <p>
  * A client hears {@link #shown}, the rows of liquid left in its bottle in the inventory, two minutes a row, which is enough for its own walking and mining too; and {@link #order}, where its bottle
- * stands in the row: they stand in the order they were drunk (the user, 2026-11-09), a top-up keeping its place.
+ * stands in the row: they stand in the order they were drunk, a top-up keeping its place.
  */
 public final class Timed {
 	public static final int TICKS_A_MINUTE = 1200;

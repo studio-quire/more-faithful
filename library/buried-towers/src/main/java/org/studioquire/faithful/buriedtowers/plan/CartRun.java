@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * A haulage shaft cut in the rock beside the tower, outside its wall, with a track down it skipping two or three floors (the user's way down, agreed 2026-11-08). At the top a doorway through the
+ * A haulage shaft cut in the rock beside the tower, outside its wall, with a track down it skipping two or three floors. At the top a doorway through the
  * wall onto a short station: a brake (a powered rail left unpowered) holds a cart put on it, and a lever on the landing beside it lets it go, pushing it off the buffer behind; the cart itself is in a
  * chest by the doorway. The track runs in two lanes along the wall, one against it and one beyond, down in switchbacks: slopes along each lane and two flat corners at each end, as beta's carts take
  * corners only flat. At the foot a brake against a buffer stops it beside a doorway into the room below; from there the ordinary stairs and ladders lead back up to the floors skipped. Each of those
@@ -20,7 +20,7 @@ import java.util.Random;
  */
 final class CartRun extends Way {
 	/**
-	 * How often a tower that has room for one has a cart run: never, since the user turned it off (2026-11-08), as holes already carry the price it was for (a player who drops past floors without
+	 * How often a tower that has room for one has a cart run: never, since it was turned off (2026-11-08), as holes already carry the price it was for (a player who drops past floors without
 	 * clearing their spawners leaves them working overhead). Was 0.35; the rest is kept for when it comes back.
 	 */
 	static final double ODDS = 0;

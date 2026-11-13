@@ -11,7 +11,7 @@ import org.studioquire.oldfaithful.core.api.Worldgen;
 /**
  * What's in a chest, by what the chest is for and how deep it lies. Beta's items only, nothing from the Nether, and nothing a player couldn't have put there. Near the top, plenty of everyday things:
  * food, coal, string, seeds, bones, flint, arrows, paper, now and then a saddle or a few ingots, so going in a little way pays. Gear and the rare valuables lie deeper, the chests getting fuller with
- * depth; the vault is the best of it without being a hoard: no blocks of metal, a handful of diamonds, and only rarely a diamond tool or piece of armour (user, 2026-11-07). Cocoa beans are among the
+ * depth; the vault is the best of it without being a hoard: no blocks of metal, a handful of diamonds, and only rarely a diamond tool or piece of armour. Cocoa beans are among the
  * food in the kitchens, stores and granaries, found about as readily as in beta's dungeons, whose chests were its only cocoa: some in about two towers in three, as in two dungeons in three.
  */
 public final class Loot {
@@ -216,7 +216,7 @@ public final class Loot {
 				fill(chest, r, 8, e(0.8, item(Item.DIAMOND, 1, 2)), e(2, item(Item.GOLD_INGOT, 2, 5)), e(2, item(Item.IRON_INGOT, 2, 6)), e(1.5, item(Item.REDSTONE, 4, 12)), e(0.5, one(Item.GOLDEN_APPLE)),
 						e(0.3, one(Item.RECORD_THIRTEEN)), e(0.3, one(Item.RECORD_CAT)), e(0.5, one(Item.SADDLE)), e(0.12, worn(Item.DIAMOND_PICKAXE)), e(0.08, worn(Item.DIAMOND_CHESTPLATE)),
 						e(0.6, worn(Item.IRON_SWORD)));
-				// And always a few more, so no vault comes out lean (user, 2026-11-07): about 4.9 a vault in all, never fewer than 2.
+				// And always a few more, so no vault comes out lean: about 4.9 a vault in all, never fewer than 2.
 				sure(chest, r, new ItemStack(Item.DIAMOND, 2 + r.nextInt(2)));
 				break;
 			default:

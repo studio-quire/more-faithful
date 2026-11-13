@@ -14,7 +14,7 @@ import org.studioquire.oldfaithful.core.api.Worldgen;
 public final class BuriedTowers implements FaithfulMod {
 	/** On each chunk in a site's square: {@code Keeper}'s record of what it knows about the tower there. */
 	static Attachment<Chunk, Integer> mark;
-	/** Simple, crude as beta's dungeons and smaller, or complex, as the towers were first built: chosen with the world (the user, 2026-11-07). */
+	/** Simple, crude as beta's dungeons and smaller, or complex, as the towers were first built: chosen with the world. */
 	static ChoiceRule style;
 
 	private static boolean warmed;

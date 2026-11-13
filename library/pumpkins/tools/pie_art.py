@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[3]
 TEXTURE = ROOT / 'library/pumpkins/src/main/resources/assets/pumpkins/textures/item/pumpkin_pie.png'
 CLIENT = ROOT / 'local/cache/minecraft/b1.7.3-client.jar'
-CHOSEN = 'l5b'  # the user's pick, 2026-11-11
+CHOSEN = 'l5b'  # the one written to the texture, 2026-11-11
 
 CRUST = {
     'o': '#4a2c0c',  # outline
@@ -115,7 +115,7 @@ CANDIDATES = {
     ], {**CRUST, **FILL}),
 }
 
-# A second round (Claude Fable 5.2, 2026-11-11), after the user found the first four shaded too much beside beta's food: beta
+# A second round (Claude Fable 5.2, 2026-11-11), the first four being shaded too much beside beta's food: beta
 # fills a shape with two close tones speckled, not light falling across it (its bread and cookie), and outlines in a dark shade
 # of the thing's own colour, sometimes only underneath. These differ from each other in view, outline and what marks them as pie.
 FLAT = {
@@ -260,8 +260,8 @@ CANDIDATES.update({
         "................",
     ], FLAT),
 })
-# A third round (Claude Fable 5.2, the same day): the user found the second overcorrected, wanted no spots in the filling, and
-# asked for a middle between the two. One lighter patch where the light lands and one darker edge away from it, in whole areas.
+# A third round (Claude Fable 5.2, the same day): the second overcorrected, so a middle between the two, with no spots in the
+# filling. One lighter patch where the light lands and one darker edge away from it, in whole areas.
 SOFT = {
     'o': '#4a2a0e', 'p': '#7a4a1c',
     'C': '#ecc37e', 'c': '#d6a45a', 'k': '#b3803c', 'd': '#8f6228',
@@ -365,7 +365,7 @@ CANDIDATES.update({
         "................",
     ], SOFT),
 })
-# The user's pick is L, with a slightly darker line over the top (2026-11-11): one more row, so the lit rim keeps its place
+# L, with a slightly darker line over the top (2026-11-11): one more row, so the lit rim keeps its place
 # inside the line. L2's line is a step under the crust's shade, L3's a step darker again; M's is the full outline.
 L_LINED = [
     "................",
@@ -389,7 +389,7 @@ CANDIDATES.update({
     'l2': (L_LINED, {**SOFT, 'q': '#a5722f'}),
     'l3': (L_LINED, {**SOFT, 'q': '#8a5c22'}),
 })
-# Then the user asked for M with a larger bottom, and variants of M. M2 has the lit front lip L has and one more row of
+# Then M with a larger bottom, and variants of M. M2 has the lit front lip L has and one more row of
 # crust wall under it; the rest are M2 changed in one way each.
 M_DEEP = [
     "................",
@@ -430,7 +430,7 @@ CANDIDATES.update({
     'm7': (rows(M_DEEP, {10: "tLLLlllllllllmmt", 11: ".ttLlllllllmmtt.", 12: "...ttllllmmtt...", 13: ".....tttttt....."}),
            {**SOFT, 't': '#5f6464', 'L': '#d8d8d8', 'l': '#a8a8a8', 'm': '#787878'}),
 })
-# The user's pick (2026-11-11): L2, its outline darkening by steps from the top line to the line underneath, since the pie is
+# L4 (2026-11-11): L2 with its outline darkening by steps from the top line to the line underneath, since the pie is
 # one material all the way down (the cake's outline changes at once because the icing ends there).
 STEPS = {5: ('q', 'r'), 6: ('q', 'r'), 7: ('q', 's'), 8: ('q', 's'), 9: ('o', 'u'), 10: ('o', 'u')}
 CANDIDATES['l4'] = ([row.replace(*STEPS[y]) if y in STEPS else row for y, row in enumerate(L_LINED)],
@@ -439,7 +439,7 @@ CANDIDATES['l4'] = ([row.replace(*STEPS[y]) if y in STEPS else row for y, row in
 BLANK = "................"
 CANDIDATES['m2a'] = (M_DEEP[:6] + M_DEEP[7:] + [BLANK], SOFT)
 CANDIDATES['m2b'] = (M_DEEP[:10] + M_DEEP[11:] + [BLANK], SOFT)
-# L4 with the outline losing saturation as it nears the top, by three amounts (the user's ask): each step's colour keeps its
+# L4 with the outline losing saturation as it nears the top, by three amounts: each step's colour keeps its
 # hue and brightness and takes this share of its saturation, top step first.
 def paler(hex_colour, share):
     import colorsys
@@ -451,7 +451,7 @@ def paler(hex_colour, share):
 L4_GRID, L4_PALETTE = CANDIDATES['l4']
 for key, shares in (('l5', (0.75, 0.85, 0.95, 1.0)), ('l6', (0.55, 0.7, 0.85, 1.0)), ('l7', (0.35, 0.55, 0.75, 0.95))):
     CANDIDATES[key] = (L4_GRID, {**L4_PALETTE, **{step: paler(L4_PALETTE[step], share) for step, share in zip('qrsu', shares)}})
-# L5 with a less dark shade band at the bottom (the user's ask; which band wasn't said, so each and both): L5A the crust's
+# L5 with a less dark shade band at the bottom, in three variants: L5A the crust's
 # band under the lip, L5B the filling's shaded edge, L5C both. Each is halfway to the tone above it.
 L5_PALETTE = CANDIDATES['l5'][1]
 CANDIDATES['l5a'] = (L4_GRID, {**L5_PALETTE, 'k': '#c4924b'})

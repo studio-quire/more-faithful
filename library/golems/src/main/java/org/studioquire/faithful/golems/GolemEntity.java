@@ -40,7 +40,7 @@ public class GolemEntity extends MobEntity {
 	public static final int MEND = 10;
 	/** Slots of what it carries, past its tool. */
 	public static final int SLOTS = 9;
-	/** Its box: a player's (the user, 2026-11-09), its arms drawn outside it as on every beta biped. */
+	/** Its box: a player's, its arms drawn outside it as on every beta biped. */
 	public static final float WIDTH = 0.6F, HEIGHT = 1.8F;
 	/** Where it looks and reaches from: a player's eye. */
 	public static final float EYE = 1.62F;
@@ -48,11 +48,11 @@ public class GolemEntity extends MobEntity {
 	public static final float REACH = 4.0F;
 	/**
 	 * How near it walks up to its work, as a person would: it stands within this of what it works on wherever it can, and uses the rest of its reach only where it can't get closer
-	 * (the user, 2026-11-09, after first having a reach of 2 for everything).
+	 * (the first build had a reach of 2 for everything).
 	 */
 	public static final float CLOSE = 2.0F;
 	/**
-	 * Its clank: the latch at the end of the door sound launchers give beta (a later recording under beta's name), without the swing that leads in (the user, 2026-11-10, who heard the whole door in all its sounds), the mod's own short
+	 * Its clank: the latch at the end of the door sound launchers give beta (a later recording under beta's name), without the swing that leads in (no golem sound is a whole door), the mod's own short
 	 * clip cut by {@code library/golems/tools/cut_clank.py}. Hurt, handed a tool or relieved of it, mended, a spare taken.
 	 */
 	static final String CLANK = "golems.clank";
@@ -140,7 +140,7 @@ public class GolemEntity extends MobEntity {
 	}
 
 	/**
-	 * Iron is tough: whatever hurts it (blows, arrows, blasts, falls, lava) takes half (the user, 2026-11-10), always, with nothing to wear or mend. The odd half carries over to the
+	 * Iron is tough: whatever hurts it (blows, arrows, blasts, falls, lava) takes half, always, with nothing to wear or mend. The odd half carries over to the
 	 * next hurt as beta's armour carries what it rounds away for a player ({@code PlayerEntity.applyDamage}), so a zombie's 5 is two and a half a blow over a fight.
 	 */
 	@Override
@@ -275,7 +275,7 @@ public class GolemEntity extends MobEntity {
 		super.tickLiving();
 		width = bodyWidth;
 		// Off a path, beta's mob runs its idle look: a glance at the nearest player within 8 blocks now and then, a slow turn otherwise. A golem at work keeps its eyes on its work
-		// (the user, 2026-11-10, who saw them turn to face them after each piece): between pieces it holds the gaze it had, on the piece just done; it looks at its next piece as it starts
+		// (not turning to face a player after each piece): between pieces it holds the gaze it had, on the piece just done; it looks at its next piece as it starts
 		// on it, along its way as it walks, at what it steps into; waiting with no work, it holds its heading and looks level. With no job, staying or following, beta's look stands: a glance
 		// at its owner then is a mob's.
 		if (worker != null && (!onPath || !hasPath())) {
@@ -308,7 +308,7 @@ public class GolemEntity extends MobEntity {
 	}
 
 	/**
-	 * Its footsteps are beta's for any mob (the user, 2026-11-10, after the first build's one stone step everywhere): the step of what it walks on, a fence's under a fence post and snow's
+	 * Its footsteps are beta's for any mob (the first build had one stone step everywhere): the step of what it walks on, a fence's under a fence post and snow's
 	 * on a snow layer, nothing in water, at a sixth of the block's volume, one every 1 2/3 blocks walked. Beta's own stepping also tramples farmland, which a golem never does, so it
 	 * keeps this count of its own; and it's heard on a server, where beta's own step for a mob isn't sent.
 	 */

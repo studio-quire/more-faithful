@@ -37,7 +37,7 @@ final class GolemRenderer extends UndeadEntityRenderer {
 	}
 
 	/**
-	 * A bow held as a bow (the user, 2026-11-10), as Still Faithful holds a player's and a skeleton's ({@code BowPose}): on beta's held-tool path, upright in the fist, shifted so the fist
+	 * A bow held as a bow, as Still Faithful holds a player's and a skeleton's ({@code BowPose}): on beta's held-tool path, upright in the fist, shifted so the fist
 	 * closes on its middle and turned a little in, where beta lays any item that isn't a tool out flat, across the face of a golem drawing it. Always: a golem has no beta look to keep.
 	 */
 	@Override

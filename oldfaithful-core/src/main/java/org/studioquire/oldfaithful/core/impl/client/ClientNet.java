@@ -61,13 +61,24 @@ public final class ClientNet implements CoreNet.Side {
 
 	/** The hello of this connection has been heard. */
 	private static volatile boolean helloHeard;
+	/**
+	 * The connection this game turned down, whose server answers the refusal by disconnecting it. That answer can come in
+	 * while the hello's tick is still reading packets, and beta's handler would put its own screen over ours.
+	 */
+	private static ClientNetworkHandler refused;
 
 	public static void connected(ClientNetworkHandler newHandler) {
 		handler = newHandler;
+		refused = null;
 		helloHeard = false;
 		Wire.serverContent = false;
 		SERVER_NUMBERS.clear();
 		NUMBERS.clear();
+	}
+
+	/** Whether this connection is one the game turned down, so its end leaves the refusal on the screen. */
+	public static boolean refused(ClientNetworkHandler h) {
+		return h != null && h == refused;
 	}
 
 	public static void disconnected() {
@@ -112,6 +123,7 @@ public final class ClientNet implements CoreNet.Side {
 		reply.accepted = matches;
 		// The section stays and says nothing: no server reads it, and a client-only mod is no business of a server's.
 		if (!matches) {
+			refused = client;
 			client.sendPacketAndDisconnect(new ChannelPacket(0, reply.encode(), false));
 			List<String> log = new ArrayList<>();
 			List<String> lines = sameProtocol ? Hello.differences(hello.mods, Core.mods(), MismatchScreen::modName, log)

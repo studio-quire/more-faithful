@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 import org.studioquire.faithful.alchemy.Timed;
 
 /**
- * The timed potions in the inventory screen (Claude Fable 5.2's prototype D, the user's pick, 2026-11-09): each running one's bottle, draining a row of liquid every two minutes, set on the panel
- * beside the figure's box, under the crafting grid. They stand in a row in the order they were drunk, from the box out; with none running nothing is drawn, no shape or inset (the user's word).
+ * The timed potions in the inventory screen (Claude Fable 5.2's prototype D, 2026-11-09): each running one's bottle, draining a row of liquid every two minutes, set on the panel
+ * beside the figure's box, under the crafting grid. They stand in a row in the order they were drunk, from the box out; with none running nothing is drawn, no shape or inset.
  * <p>
  * The row has room for seven at full spacing before the panel's edge, past the crafting grid's result; more close up, and past about nine overlap a little, the later over the earlier, so any
  * number fits. Each bottle is the plain potion's sprite, drained in {@code textures/gui/timers.png}, a row of six there for each timed potion in {@link Timed#all()}'s order.

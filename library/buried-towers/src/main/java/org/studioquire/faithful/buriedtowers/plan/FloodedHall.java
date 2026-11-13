@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * A hall the water's got into: it stands knee deep over the floor, two deep where the boards have gone, round whatever's left standing in it. Nothing solid is ever over its surface, so whatever
- * swims can always come up (the user's rule, 2026-11-07). The water goes in after the ways are drawn, filling round them: where it would meet open air at its own level, a ways' landing or the
+ * swims can always come up. The water goes in after the ways are drawn, filling round them: where it would meet open air at its own level, a ways' landing or the
  * mouth of a shaft, the floor is built up a block instead, as a kerb, so it's still and stays where it is. The floor's walked a block up, on what's built up, with the water below that, and only
  * stairs or a ladder come down into it or leave it, as nothing could be dropped into water that shallow.
  */

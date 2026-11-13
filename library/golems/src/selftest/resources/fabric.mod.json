@@ -10,6 +10,7 @@
   },
   "depends": {
     "golems": "*",
-    "explosive-arrows": "*"
+    "explosive-arrows": "*",
+    "blue-flowers": "*"
   }
 }

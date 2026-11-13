@@ -19,7 +19,7 @@ public final class EffectsHud {
 	private static final int SIZE = 9, SPACING = 8, HALF = 4, INNER_HALF_X = 5, BAR_RIGHT = 91;
 	/**
 	 * The tint over beta's grey armour sprite: the ward potion's cerulean, as near as multiplying grey comes. A tint only darkens, and blue is already whole, so brighter means more red and
-	 * green (it was 0.3, 0.75: the user asked for a little brighter, 2026-11-09), which also pales it toward the grey it has to stay apart from. Brighter than this without paling would take
+	 * green (it was 0.3, 0.75, a little too dark, until 2026-11-09), which also pales it toward the grey it has to stay apart from. Brighter than this without paling would take
 	 * a second, additive draw of the sprite.
 	 */
 	private static final float BLUE_R = 0.45F, BLUE_G = 0.88F, BLUE_B = 1.0F;

@@ -18,24 +18,24 @@ import org.studioquire.oldfaithful.core.api.Arrows;
 import org.studioquire.oldfaithful.core.api.Sounds;
 
 /**
- * The bow: an archer. It shoots the hostiles in its area, and anything fighting it, as beta's skeleton shoots a player (the user's measure, 2026-11-10, as the sword's is a zombie's): under
+ * The bow: an archer. It shoots the hostiles in its area, and anything fighting it, as beta's skeleton shoots a player (the skeleton its yardstick, as the zombie is the sword's): under
  * 10 blocks off, an arrow every {@link #SHOOT_EVERY} ticks at most, aimed as a skeleton aims and as wild, and only at what it can see. Every hostile, creepers and ghasts too; what's after
- * someone first. Out of work it walks its rounds of its area, as the sword does (the user, 2026-11-10).
+ * someone first. Out of work it walks its rounds of its area, as the sword does.
  * <p>
- * It moves in a fight (the user, 2026-11-10, in place of the first build's sentry that never left its post, the rate to balance it): as a skeleton it walks at what it's after until it can
+ * It moves in a fight (in place of the first build's sentry that never left its post; its rate is what balances it): as a skeleton it walks at what it's after until it can
  * shoot it, then stands and shoots; and better than a skeleton, it steps back from one that comes nearer than {@link #NEAREST} (a creeper {@link #CREEPER_NEAREST}, past its blast),
  * shooting as it goes, wherever there's somewhere safe to step back to. Cornered (a wall, a drop, a tower top) it stands and shoots. Where it goes to shoot from is the nearest place in
  * the ring from {@code NEAREST} to {@link #FURTHEST} round its target with a clear shot.
  * <p>
  * It looses only when its arrow, flying true, would strike its target (or another hostile) before anything else: a wall, its owner, another golem, a sheep. A skeleton's wildness then
  * sends some astray, and a stray hits whatever it meets, as beta's arrows do. It shoots what it carries, a few of each kind it takes from its chest, the first it carries at anything,
- * as a player's bow takes the first arrows it finds (the user, 2026-11-10). Missed arrows are gone: it never goes to gather them, and beta lets no one pick up an arrow that a
+ * as a player's bow takes the first arrows it finds. Missed arrows are gone: it never goes to gather them, and beta lets no one pick up an arrow that a
  * player didn't shoot.
  */
 final class BowJob extends Job {
 	/** A skeleton's reach: under 10 blocks from where it stands to where the target stands. */
 	static final double RANGE = 10.0;
-	/** Its rate, the lever to balance it by (the user, 2026-11-10): an arrow, then this many ticks before the next. 30 is a skeleton's. */
+	/** Its rate, the lever to balance it by: an arrow, then this many ticks before the next. 30 is a skeleton's. */
 	static final int SHOOT_EVERY = 30;
 	/** What it uses: {@link #SHOOT_EVERY}, but for a survey trying others ({@code ArcherRun}). */
 	static int shootEvery = SHOOT_EVERY;
@@ -95,7 +95,7 @@ final class BowJob extends Job {
 		return dx * dx + dy * dy + dz * dz < far * far;
 	}
 
-	/** Every hostile: the sword's foes, and the creepers and ghasts it leaves alone (the user, 2026-11-10). */
+	/** Every hostile: the sword's foes, and the creepers and ghasts it leaves alone. */
 	static boolean foe(LivingEntity e) {
 		return e instanceof CreeperEntity || e instanceof GhastEntity || SwordJob.foe(e);
 	}
@@ -155,8 +155,8 @@ final class BowJob extends Job {
 	}
 
 	/**
-	 * A tick of a fight, which is one piece: its eyes on where it aims, an arrow when it may and its line is clear, the first as soon as it has one, as a skeleton's (the user,
-	 * 2026-11-10: no half-second draw). The arrow is beta's own entity for the kind it takes ({@link Arrows}), from its eye as beta's bow places one, not from over its head as a
+	 * A tick of a fight, which is one piece: its eyes on where it aims, an arrow when it may and its line is clear, the first as soon as it has one, as a skeleton's (no
+	 * half-second draw). The arrow is beta's own entity for the kind it takes ({@link Arrows}), from its eye as beta's bow places one, not from over its head as a
 	 * skeleton's starts, flown as a skeleton's.
 	 */
 	@Override
@@ -267,7 +267,7 @@ final class BowJob extends Job {
 	}
 
 	/**
-	 * The arrows it shoots next: the first it carries, whatever their kind, at whatever it shoots (the user, 2026-11-10: Explosive Arrows needn't be kept for creepers), as a player's
+	 * The arrows it shoots next: the first it carries, whatever their kind, at whatever it shoots (Explosive Arrows needn't be kept for creepers), as a player's
 	 * bow takes the first arrows it finds. Its slots fill from its chest in the chest's order, top left first, so the player chooses by where in the chest they put each kind.
 	 */
 	private int arrowSlot(LivingEntity target) {

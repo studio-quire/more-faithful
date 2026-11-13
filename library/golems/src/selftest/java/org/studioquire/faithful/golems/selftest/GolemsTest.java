@@ -757,10 +757,12 @@ public final class GolemsTest extends WorldTest {
 
 	/**
 	 * A little hill to level, inside the inner poles, with what it must leave about it: a puddle walled in by ground, ground over lava, a block a floor torch stands by, a tree's
-	 * earth, cobble, a spire too tall to reach the top of, and ground on the poles' line and outside it.
+	 * earth, cobble, a spire too tall to reach the top of, and ground on the poles' line and outside it. Blue Flowers' lupins on its top and beside it, a mod's plant it knows
+	 * nothing of, come away with the ground they stand on.
 	 */
 	private void levelling() {
 		int[] hill = {0};
+		Block lupin = Names.block("blue-flowers:blue_flower");
 		then(() -> {
 			// The work east of the player and two blocks off, past where a player picks things up; what's to be left, to the west. A ring of glass round the player, two high, so
 			// nothing a block drops can roll to them: they'd pick it up before the golem could (a cobblestone once did, 2026-11-09).
@@ -784,6 +786,10 @@ public final class GolemsTest extends WorldTest {
 			}
 			set(3, 2, 3, Block.GRASS_BLOCK);
 			hill[0]++;
+			check("Blue Flowers is here for it", lupin != null);
+			// One on the grass at the top, one on the dirt beside it.
+			set(3, 3, 3, lupin);
+			set(4, 2, 3, lupin);
 			set(-4, 0, 2, Block.WATER);
 			// The plot is wherever the spawn was, snow included, where beta's chunk tick freezes still water open to the sky; frozen, the puddle's walls were
 			// ordinary ground and taken (2026-11-10). A block at the top of the world over it keeps it water.
@@ -848,6 +854,7 @@ public final class GolemsTest extends WorldTest {
 				for (int k = 2; k <= 5; k++) level &= block(i, 0, k) == 0 && block(i, 1, k) == 0 && block(i, 2, k) == 0;
 			}
 			check("the hill is gone, down to the floor", level);
+			check("and the lupins came away with the ground under them", block(3, 3, 3) == 0 && block(4, 2, 3) == 0);
 			boolean floor = true;
 			for (int i = -5; i <= 5; i++) {
 				for (int k = -5; k <= 5; k++) if (!(i == -4 && k == -1)) floor &= block(i, -1, k) == Block.STONE.id;
@@ -866,8 +873,8 @@ public final class GolemsTest extends WorldTest {
 			note("the furthest it worked from: " + golem.furthest);
 			check("its head held still between pieces and waiting, never turning to the player, over " + idleTicks[0] + " ticks" + (turned[0] > 0 ? ": turned " + turned[0] + " times, first " + turnedAt[0] : ""), turned[0] == 0 && idleTicks[0] > 100);
 			check("it walked up to every block of the hill, never reaching from further than " + GolemEntity.CLOSE + (golem.stretched > 0 ? ": " + golem.stretched + " times, the last " + golem.lastStretch : ""), golem.stretched == 0 && golem.furthest <= GolemEntity.CLOSE);
-			int cobble = inChest(null, Block.COBBLESTONE.id), dirt = inChest(null, Block.DIRT.id);
-			note("in the chest: " + cobble + " cobblestone, " + dirt + " dirt, of " + hill[0] + " blocks");
+			int cobble = inChest(null, Block.COBBLESTONE.id), dirt = inChest(null, Block.DIRT.id), lupins = lupin == null ? 0 : inChest(null, lupin.id);
+			note("in the chest: " + cobble + " cobblestone, " + dirt + " dirt, of " + hill[0] + " blocks, and " + lupins + " lupins");
 			StringBuilder lying = new StringBuilder();
 			for (Object o : world.collectEntitiesByClass(ItemEntity.class, Box.createCached(x - 9, y - 2, z - 9, x + 10, y + 8, z + 10))) {
 				ItemEntity item = (ItemEntity) o;
@@ -875,7 +882,7 @@ public final class GolemsTest extends WorldTest {
 			}
 			note("lying on the plot:" + (lying.length() == 0 ? " nothing" : lying.toString()) + "; its gathers left " + java.util.Arrays.toString(golem.leftLying)
 					+ " (nowhere in touch to stand, no way there, gone out of touch, not got into in its steps, out of time)");
-			check("all it took is in the chest", cobble == 16 && dirt == 5);
+			check("all it took is in the chest", cobble == 16 && dirt == 5 && lupins == 2);
 			check("and it's back at its post", Math.abs(golem.x - (x - 2.5)) < 1.6 && Math.abs(golem.z - (z - 2.5)) < 1.6);
 			for (int i = -1; i <= 1; i++) {
 				for (int k = -1; k <= 1; k++) {

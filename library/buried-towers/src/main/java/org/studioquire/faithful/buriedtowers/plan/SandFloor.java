@@ -4,8 +4,8 @@ import static org.studioquire.faithful.buriedtowers.plan.Blocks.*;
 
 /**
  * A room the sand has drifted into, over a floor that was raised three over an undercroft, and where the middle of that floor has gone the sand has caked over the hole and held. Walking on it
- * changes nothing; anything that tells a cell of it something's changed beside it, a torch put on it say, brings it down by beta's own rules, and the rest of the crust after it (no plate: the user,
- * 2026-11-08, things make sense as a place). Whoever's on it drops three with it, onto what fell, which does them no harm: a step at the edge of the hole climbs back out. In the undercroft, under
+ * changes nothing; anything that tells a cell of it something's changed beside it, a torch put on it say, brings it down by beta's own rules, and the rest of the crust after it (no pressure plate sets it off:
+ * everything in a tower should make sense as a place). Whoever's on it drops three with it, onto what fell, which does them no harm: a step at the edge of the hole climbs back out. In the undercroft, under
  * the solid floor at the hole's edge where nothing can fall on it, a chest that was lost when the floor went. Sand lies over the solid floor too, so nothing shows where the hole is.
  */
 final class SandFloor {

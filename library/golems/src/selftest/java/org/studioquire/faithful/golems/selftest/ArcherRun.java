@@ -32,7 +32,7 @@ import org.studioquire.faithful.golems.GolemEntity;
 import org.studioquire.faithful.harness.test.server.ServerMove;
 
 /**
- * The archer against what it shoots, many times over, for numbers to balance it by (the user's lever, its rate, 2026-11-10): only when a {@code golems/archer.properties} is found in a
+ * The archer against what it shoots, many times over, for numbers to balance it by (its rate is the lever): only when a {@code golems/archer.properties} is found in a
  * folder above the game's. In a walled arena roofed with glowstone east of the plot (lit to 9 on the floor: nothing spawns, nothing burns, and a spider stays hostile under 0.5 of full
  * brightness), a fresh golem with a bow and 32 arrows at the middle, and a foe that has seen it set down {@code distance} off, a different way each trial. A trial ends when the foe is
  * killed, a creeper goes off, the golem goes down, or after {@code maxTicks}. Modes: {@code ground}, as built (stepping back); {@code stand}, never stepping back, as the first build's

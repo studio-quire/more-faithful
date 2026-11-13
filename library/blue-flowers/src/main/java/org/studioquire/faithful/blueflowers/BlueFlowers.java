@@ -21,7 +21,7 @@ import org.studioquire.oldfaithful.core.api.Recipes;
 import org.studioquire.oldfaithful.core.api.Worldgen;
 
 /**
- * The lupin, a third flower, and the blue dye in lapis lazuli's place (the user, 2026-11-12): in patches in new terrain, as beta's dandelions grow, and from bonemeal on grass anywhere, as beta's two
+ * The lupin, a third flower, and the blue dye in lapis lazuli's place: in patches in new terrain, as beta's dandelions grow, and from bonemeal on grass anywhere, as beta's two
  * flowers come. With this mod on there's no lapis lazuli in a world at all, ore or block: no ore is laid in new land ({@code mixin.LapisVeinMixin}), the block has no recipe either way, and what
  * a world holds from before goes as it's read: ore to stone and blocks to blue wool where they stand ({@link #lapisGoes}), and the same for the stacks of them in anything saved
  * ({@code mixin.ItemStackMixin}). The dye itself is untouched: it's the lupin's now.
@@ -60,8 +60,8 @@ public final class BlueFlowers implements FaithfulMod {
 	}
 
 	/**
-	 * Lapis lazuli in a chunk that has just joined the world: ore becomes the stone it was laid in (the user, 2026-11-12: there is no flower ore) and a block becomes blue wool (the user, the same
-	 * day: lapis goes entirely; wool, as a placed block was built with for its colour), for good: the chunk is saved so. Heard where the world runs, before the chunk has gone to anyone, at every
+	 * Lapis lazuli in a chunk that has just joined the world: ore becomes the stone it was laid in (there is no flower ore) and a block becomes blue wool (lapis goes
+	 * entirely; wool, as a placed block was built with for its colour), for good: the chunk is saved so. Heard where the world runs, before the chunk has gone to anyone, at every
 	 * height and in every dimension, so none is left standing wherever it came from. Every chunk is looked through at every load, a new one too, since a mark for "done" would be mod data in every
 	 * chunk of a world, which otherwise holds none where no lupin grows; it's a read of each cell, which doesn't show in the time new land takes to make (5,184 chunks on the real server with and
 	 * without it, 2026-11-12). All four blocks weigh the same to light, so the game's own write changes nothing else: the light it asks to be looked at again comes out as it was.

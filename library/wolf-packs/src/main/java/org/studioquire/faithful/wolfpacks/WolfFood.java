@@ -11,7 +11,7 @@ import org.studioquire.oldfaithful.core.api.Codec;
 import org.studioquire.oldfaithful.core.api.Mod;
 
 /**
- * What tamed wolves eat and what it heals them (the user's design, 2026-11-10), where the world runs. Beta feeds a tamed wolf any meat, which in beta is
+ * What tamed wolves eat and what it heals them, where the world runs. Beta feeds a tamed wolf any meat, which in beta is
  * only pork, for a raw porkchop's worth whatever it was, and not at full health. Here fish too, raw or cooked, each for its own worth as it heals a player;
  * with Hearty Food loaded, as Hearty Food heals a player: half as much again, half a heart a second, never more pending than the wolf is missing, and not
  * eaten with a full bar on its way (Hearty Food's cake rule, beta's rule at full health stretched to fit).

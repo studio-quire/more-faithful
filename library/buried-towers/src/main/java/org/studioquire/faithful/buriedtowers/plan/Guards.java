@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * The monsters, once a tower's drawn. Nothing in it gives light but lava and the sky: the player brings their own (user, 2026-11-07). Beta lets a monster appear, from a spawner or by itself, only
+ * The monsters, once a tower's drawn. Nothing in it gives light but lava and the sky: the player brings their own. Beta lets a monster appear, from a spawner or by itself, only
  * where the light is at most a random 0 to 7 ({@code MonsterEntity.canSpawn}), and a spawner tries cells up to four across and one up or down from itself. So the light is worked out by beta's rule,
  * each spawner a floor drew stays if enough of the cells round it are dark, is moved to the best dark place on its floor if not, or goes if the floor has none (a foundry is all lit by its lava);
  * then deeper floors get more, of harder kinds, and now and then one stands by a hole down, pouring into the pool below. On a floor something's taken over (the spider nest) they're all of its kind,
- * as many as any floor at the depth gets (the user, 2026-11-08, after two more there was too many).
+ * as many as any floor at the depth gets, and no more.
  */
 final class Guards {
 	/** A spawner that can use this much of the cells it tries, weighted as it picks them, spawns about as often as it can: when no try works it tries again next tick. */
@@ -270,7 +270,7 @@ final class Guards {
 
 	/**
 	 * Beside a floor's chute into a cart run's shaft, against the wall: about half of what it tries is in the shaft beyond, in the dark, and what appears there falls onto the track or beside it
-	 * while a rider goes by (the user, 2026-11-08: the price of the shortcut). Always, where there's room.
+	 * while a rider goes by: the price of the shortcut. Always, where there's room.
 	 */
 	private int[] byChute(Floor f, List<int[]> kept, int[] chute) {
 		int x0 = chute[1], y = chute[2], z0 = chute[3], in = chute[4], along = in + 1 & 3;

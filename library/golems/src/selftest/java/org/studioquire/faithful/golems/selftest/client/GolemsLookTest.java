@@ -206,7 +206,7 @@ public final class GolemsLookTest extends ClientTest {
 		});
 		view("look-pole-night", 1.2, 2.4, 0.35, 40);
 		view("look-pole-night-far", 2.2, 5.5, 0.2, 20);
-		// A golem's four poles at night with lit redstone torches two blocks from two of them, as the user had them (2026-11-10, the near poles drawn darker): every lit pole
+		// A golem's four poles at night with lit redstone torches two blocks from two of them, as in the world where the near poles were drawn darker (2026-11-10): every lit pole
 		// should look the same, smooth lighting on and off.
 		then(() -> {
 			for (int i = -2; i <= 2; i++) mc.world.setBlock(fx + i, fy, fz - 1, 0);
