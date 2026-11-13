@@ -2,12 +2,12 @@
 
 **beta 1.7.3 with more in it**
 
-Minecraft beta 1.7.3 with more in it, where you still do everything yourself. More Faithful is
+Minecraft beta 1.7.3 with more in it. More Faithful is
 [Still Faithful](https://github.com/studio-quire/still-faithful) (beta with polish, on
 [Old Faithful](https://github.com/studio-quire/old-faithful) and [Pure Faithful](https://github.com/studio-quire/pure-faithful))
-with the [Faithful Library](https://github.com/studio-quire/faithful-library)'s mods on, in single player and on servers,
-each with its own switch: with every one off it plays exactly as Still Faithful. Open source, from
-[Studio Quire](https://studioquire.org/).
+with the [Faithful Library](https://github.com/studio-quire/faithful-library)'s mods, in single player and on servers.
+Pick a preset, from a few comforts to every mod, then switch single mods on or off as you like: with every one off it
+plays exactly as Still Faithful. Open source, from [Studio Quire](https://studioquire.org/).
 
 It's all mods, not a modified game: your launcher downloads Minecraft itself from Mojang, with your own account. For
 Windows now.
@@ -15,6 +15,21 @@ Windows now.
 Through 0.4.0 this pack was the Faithful Library's own, called Still Faithful with the Faithful Library. The library's pack
 on Old Faithful has gone; for the mods without Still Faithful's changes, see
 [Without Still Faithful's changes](#without-still-faithfuls-changes).
+
+## Presets
+
+Which mods are on is one choice for the whole game, at the top of **Options > More Faithful... > Mods...**, where
+**Preset** steps through them a click at a time:
+
+- **Simple**: World Rules, Item Repair, Wild Saplings, Wolf Packs, Snipping, Plain F3 and No Toasts: beta with a few comforts and
+  nothing new to make.
+- **Grounded**: every mod but Alchemy and Golems: new things to make and find, and you still do it all yourself.
+- **High**: every mod, Alchemy's potions and the Golems who work for you included. A new install starts on High.
+
+Each mod's page still has its own **Enabled** switch, so you can add a mod to a preset or take one out; the button then
+reads **Preset: Custom**, and choosing a preset again puts it back as it comes. Like the switches, a preset takes effect
+the next time you launch. Your preset and the mods you've turned on or off beyond it are kept in
+`.minecraft/config/faithful-preset.properties`, so they come with `config` into a later version (Updating, below).
 
 ## The mods
 
@@ -144,6 +159,30 @@ on Old Faithful has gone; for the mods without Still Faithful's changes, see
   in a world where World Rules' Bows Wear Out is on. A
   world rule, Repair Bonus, adds a twentieth of a new one's durability on top, as later versions did; it's off to start
   with, so mending only puts together what you had, and there's nothing to gain by saving worn things for it.
+- **Golems** (in High): iron workers. A Golem Core (a diamond with four gold ingots in a plus and four redstone in the
+  corners) used on the top of two stacked iron blocks makes one. Right-click one you haven't put to work with an empty
+  hand and it follows you; again and it stays. Hand it a pickaxe, an axe, a hoe, a sword or a bow and it works where it
+  stands, at half your pace, its tool wearing as yours would, and a hoe a use for each wheat it reaps too: a **pickaxe**
+  levels the land down to where it stands, a layer at a time from the top and in rows back and forth like mowing a lawn,
+  leaving what holds back water or lava. The land to it is stone, dirt, grass, sand, sandstone, gravel, clay,
+  netherrack, soul sand and ore, wherever they came from, so it takes down what you've built of them too: keep that out
+  of its area (cobblestone, planks and other built blocks it leaves). An **axe** fells trees from the top down and
+  plants a sapling where each stood; a **hoe** reaps ripe wheat, sows the field again and tills back what was trampled,
+  but breaks no new ground; a **sword** fights the monsters that come, creepers apart; a **bow** shoots any monster as a
+  skeleton shoots, creepers too, keeping 4 to 8 blocks off (6 from a creeper) and stepping back from what comes closer.
+  An archer's arrows come from its chest, the first it carries shot first, Explosive Arrows as well; with none there it
+  waits at its post. A guard walks its rounds when there's nothing to fight. With room behind it an archer kills most
+  creepers before they reach it, and backed against a wall it can't; on a perch at least four blocks high it's out of
+  their reach, as long as its foot is kept clear with a fence or a ditch a few blocks out, or a creeper can stand under
+  it out of its sight. A golem works inside four Boundary Poles round it, or 16 blocks each way without them. Redstone
+  over an iron ingot makes four; set them out within 48 blocks of it before you hand it its tool, as that's when it
+  looks for them. They glow while a golem works inside them. It carries what it gathers to a chest within 8 blocks,
+  keeping the seeds or saplings it will need. From that chest it takes a spare tool when its own breaks, seeds, saplings
+  or arrows when it's short, and iron ingots to mend itself: it shows cracks as it's hurt, and once a whole ingot's
+  worth is gone it walks over and uses one, as you would. Being iron, it takes half the harm a player would on Normal,
+  so a guard with an iron sword uses about an ingot for every two zombies. An ingot from your hand mends it too, and an
+  empty hand takes its tool back, and it puts down what it carried. Twenty hearts. Killed, it drops its core, its tool
+  and what it carried, not the iron.
 - **Plain F3**: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - **No Toasts**: no achievement or tutorial pop-ups. Achievements are still earned.
@@ -169,8 +208,8 @@ You need a Minecraft account that owns the game, and [Prism Launcher](https://pr
 1. Download **MoreFaithful-&lt;version&gt;.zip** from [the latest release](https://github.com/studio-quire/more-faithful/releases).
 2. In Prism Launcher: **Add Instance > Import**, choose the zip (or paste the download link), **OK**.
 3. Launch it. Prism downloads beta 1.7.3 and its sounds from Mojang, and, if you let it, a Java 21 runtime.
-4. In the game: **Options > More Faithful... > Mods...** (**Still Faithful...** when every mod is off). Each mod's page
-   has an **Enabled** switch, which takes effect the next time you launch.
+4. In the game: **Options > More Faithful... > Mods...** (**Still Faithful...** when every mod is off). **Preset** at
+   the top chooses a preset, and each mod's page has an **Enabled** switch; both take effect the next time you launch.
 
 Everything else is inside the zip, and nothing comes from us. Besides Mojang (your login, skins and sounds) and the
 servers you join, the game reaches one other place: on its first start it fetches beta's own bow and door sounds
@@ -178,20 +217,24 @@ servers you join, the game reaches one other place: on its first start it fetche
 from doing so, before you first launch it set `resources.download=false` in
 `.minecraft/config/purefaithful-hardening.properties`, creating the file if it isn't there.
 
-All the mods start on. Faithful Core comes on by itself when any mod is on, and goes off when none is. The jars are in
-`.minecraft/mods-library`, and the switches are kept in `.minecraft/mods-library/selection.txt`. With every mod off the
-game is Still Faithful, and the title screen and Options say so; `pack.properties` in that folder is what tells it it's
-More Faithful, and holds the rules the pack chose for new worlds.
+A new install starts on High, every mod on. Faithful Core comes on by itself when any mod is on, and goes off when none
+is. The jars are in `.minecraft/mods-library`, and the list of what's on is `.minecraft/mods-library/selection.txt`,
+which the game keeps to your preset and switches: change them in the Mods menu rather than in that file. With every mod
+off the game is Still Faithful, and the title screen and Options say so; `pack.properties` in that folder is what tells
+it it's More Faithful, and holds its presets and the rules it chose for new worlds. The presets and switches are More
+Faithful's own small mod, `morefaithful-presets` in `.minecraft/mods`.
 
 ### Updating
 
 Import the new zip as a new instance, then copy your worlds from the old instance's `.minecraft/saves` into the new
-one's, and `.minecraft/config` to keep your settings. Leave the new instance's `.minecraft/mods-library/selection.txt`
-as it comes, rather than copying your old one over it: it has every mod on, including any that's new to the pack
-(Feather Lure, new in 0.7.0, Pumpkins and Snipping, new in 0.8.0). If you'd switched mods off, switch them off again in **Options > More Faithful... >
-Mods...**, and restart the game before you open a world, as a switch takes effect at the next start. If you'd added a
-mod yourself (Wary Creepers, say), copy its jar into the new `.minecraft/mods-library` and add its line to the new
-`selection.txt` again. Your worlds open as they are and keep their rules, but for Pickup Reach, new in 0.7.0, which
+one's, and `.minecraft/config` to keep your settings, your preset and the mods you'd turned on or off beyond it. The new
+instance comes on High, every mod on; at its first start the game sets its mods back to your preset and switches and,
+if that changes anything, the title screen asks you to restart once before you open a world. A mod that's new to the pack is on if your preset
+has it. If you'd added a mod yourself (Wary Creepers, say), copy its jar into the new `.minecraft/mods-library` too,
+before the first start if you can, and it comes back on with the rest. **From 0.8.0 or before**, which kept no preset, the new instance is on High with
+every mod on, Golems among them: choose your preset in **Options > More Faithful... > Mods...**, switch off any mods you
+don't want, and restart the game before you open a world, as both take effect at the next start. If you'd added a mod
+yourself, copy its jar into the new `.minecraft/mods-library` and switch it on there. Your worlds open as they are and keep their rules, but for Pickup Reach, new in 0.7.0, which
 comes on in them too; Pumpkins Spread, new in 0.8.0, is off in them, and on in new worlds. From 0.7.1 or before, Blue
 Flowers turns the lapis lazuli ore in your worlds to stone and their Lapis Lazuli Blocks to blue wool, for good, as you
 play them: before you copy a world across, break the blocks you've stored down into lapis lazuli in the old instance,
@@ -204,11 +247,12 @@ or, to keep beta's lapis lazuli, switch Blue Flowers off and restart the game, a
 The same, from the library's pack on Still Faithful (through 0.4.0) or from More Faithful 0.5.0. New worlds then
 start with [More Faithful's rules](#the-mods), except any rule you'd set for new worlds yourself in the old instance,
 which stays as you set it. What's changed since those packs (Wary Creepers out of the pack, no Day Length rule, sitting
-wolves keeping watch, Feather Lure, Pickup Reach, lupins in lapis lazuli's place, Pumpkins, Snipping) is in the changelog. A world from the
+wolves keeping watch, Feather Lure, Pickup Reach, lupins in lapis lazuli's place, Pumpkins, Snipping, Golems and the presets) is in the changelog. A world from the
 pack on Old Faithful gets Still Faithful's changes here, each of which can be switched off (below). That pack's own
 instance keeps working too: to update its mods, replace each jar in its `.minecraft/mods-library`, `faithful-core`
 included, with the new one from the [Faithful Library's release](https://github.com/studio-quire/faithful-library/releases)
-under the old name (`alchemy-0.8.0.jar` becomes `alchemy.jar`).
+under the old name (`alchemy-0.8.0.jar` becomes `alchemy.jar`), and keep its own `oldfaithful-settings` in `.minecraft/mods`:
+the mods' switches are in it, and a newer one has none, as they're More Faithful's own now.
 
 ### Without Still Faithful's changes
 
@@ -220,11 +264,11 @@ them on their own, with how to install them.
 
 ## Servers
 
-`MoreFaithful-server-<version>.zip` is Still Faithful's server package with the library's server-side mods on in
-`mods/`, as in the pack. So as it comes it refuses a player without Water Bottles, Alchemy, Blue Flowers, Explosive
-Arrows, Feather Lure, Pumpkins and Buried Towers. Move out of `mods/` the jars you don't want, before the first start; `faithful-core` and
-`oldfaithful-settings` stay while any library mod does. With them all out it's Still Faithful's own server. The README
-inside says more.
+`MoreFaithful-server-<version>.zip` is Still Faithful's server package with every server-side mod of the pack's on in
+`mods/`, as in the High preset. So as it comes it refuses a player without Water Bottles, Alchemy, Blue Flowers,
+Explosive Arrows, Feather Lure, Pumpkins, Golems and Buried Towers. Move out of `mods/` the jars you don't want, before
+the first start; the README inside lists the jars each preset has. `faithful-core` and `oldfaithful-settings` stay
+while any library mod does. With them all out it's Still Faithful's own server.
 
 - **World Rules** runs where the world runs, so a server can use it with any client, vanilla beta 1.7.3 too. A server with
   it is the same to a player who hasn't got it, except that under Bows Wear Out their bow wears out with no bar to show
@@ -245,9 +289,10 @@ inside says more.
   player without it snips with shears there all the same, with no swing or sound to show it, and plants snipped by
   anyone stay snipped for everyone. With it on a server without it, nothing is snipped there, though shears on a
   plant swing and sound every time.
-- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure**, **Pumpkins** and **Buried Towers** need every player to have them: the first six add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
+- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure**, **Pumpkins**, **Golems** and **Buried Towers** need every player to have them: the first seven add blocks, items or creatures, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
-  on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
+  on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch (their preset
+  then reads Custom). A client with
   them can join a server without them, where they can't be made and no towers are built. With Blue Flowers on, a
   server without it still has lapis lazuli as in beta, and your game shows it under Lupin Blue's name and picture.
 - On a server, Pumpkins Spread is the world's rule: `/rule spreading true` for ops and the console turns it on in a
@@ -280,6 +325,8 @@ original game too. What you lose, plainly:
 - **Explosive Arrows**: its arrows don't survive. Carried, in that world they become plain arrows, for good, and any in
   flight are gone.
 - **Feather Lure**: its rods don't survive. In that world they become plain fishing rods, as good as new, for good.
+- **Golems**: its golems don't survive, nor do the tools and things they carry: they're gone from a chunk when it's next
+  saved. Cores become diamonds, for good. Boundary Poles show as fences and come back with the mod.
 - **Pumpkins**: its pies don't survive. In that world they become pumpkins, for good. Pumpkins stop spreading, and
   the ones that grew stay, as beta's own. Its rule stays in the world's file and comes back with the mod.
 - **Snipping**: snipped plants grow again, as in beta. Which plants were snipped waits in the world while any library
@@ -313,10 +360,11 @@ and its server package into `local/release/more-faithful-<version>/`; [docs/buil
 ## Credits and licence
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
-Alchemy's Ward, Haste and Feather Potions, designed Wolf Packs with Shoalstone and wrote its sitting wolves' watch,
-wrote the lupins in lapis lazuli's place, added to Shoalstone's designs for Pumpkins and Snipping, and drew the arrow's
-head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin pie, More Faithful's seal and, to
-Shoalstone's shape, Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and
+Alchemy's Ward, Haste and Feather Potions, designed Wolf Packs and how golems go about their work with Shoalstone,
+wrote Wolf Packs' sitting wolves' watch and the lupins in lapis lazuli's place, added to Shoalstone's designs for
+Pumpkins and Snipping, and drew the arrow's head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin
+pie, the golem, its cracks, the Golem Core and the Boundary Pole, More Faithful's seal and, to Shoalstone's shape,
+Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and
 play-testing: Shoalstone.
 
 The code is under the [MIT licence](LICENSE). The pack builds on Fabric Loader, Mixin, ASM, Babric's mappings, LWJGL, SDL

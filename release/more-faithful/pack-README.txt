@@ -12,18 +12,27 @@ Blocks to blue wool, for good. Before you open one, break stored blocks down int
 to keep beta's lapis lazuli, switch Blue Flowers off in Options > @NAME@... > Mods... and restart the game (the world's
 bluebells then become roses).
 
-@NAME@ is beta with more in it, where you still do everything yourself: @EDITION_NAME@'s own pack with
-mods from the Faithful Library @LIBRARY_VERSION@ in .minecraft/mods-library, all on. Underneath is
+@NAME@ is beta with more in it: @EDITION_NAME@'s own pack with mods from the Faithful Library
+@LIBRARY_VERSION@ in .minecraft/mods-library, in presets. Underneath is
 @EDITION_LINE@.
 Through 0.4.0 this pack was called Still Faithful with the Faithful Library.
 
+Presets: which mods are on is one choice for the whole game, at the top of Options > @NAME@... > Mods..., where Preset
+steps through them a click at a time:
+@PRESETS@
+Each mod's page still has its own Enabled switch, so you can add a mod to a preset or take one out; the button then
+reads Preset: Custom, and choosing a preset again puts it back as it comes. A preset and a switch take effect the next
+time you launch. Your preset and the mods you turned on or off beyond it are kept in
+.minecraft/config/faithful-preset.properties, so they come with config into a later version: at the new version's
+first start the game sets its mods to them and, if that changes anything, asks you to restart once.
+
 Turning a mod off or on: in the game, Options > @NAME@... > Mods... lists them (Options > Still Faithful... > Mods...
-when every mod is off). Each has a page with an Enabled
-switch, which takes effect the next time you launch. Faithful Core, which the mods build on, comes on by itself when any
-mod is on and goes off when none is. With all of them off the pack plays exactly as @EDITION_NAME@ does, and goes by
-its name on the title screen and in Options: none of the library's code is loaded, and nothing new goes over the
-network. The switches are kept in .minecraft/mods-library/selection.txt, and pack.properties beside it is what tells
-the game it's @NAME@.
+when every mod is off). Faithful Core, which the mods build on, comes on by itself when any mod is on and goes off when
+none is. With all of them off the pack plays exactly as @EDITION_NAME@ does, and goes by its name on the title screen
+and in Options: none of the library's code is loaded, and nothing new goes over the network. What's on is listed in
+.minecraft/mods-library/selection.txt, which the game keeps to your preset and switches, so change them in the Mods
+menu rather than there; pack.properties beside it is what tells the game it's @NAME@, with its presets. The presets
+and switches are @NAME@'s own small mod, morefaithful-presets in .minecraft/mods.
 
 The mods:
 - World Rules: rules for each world, on its page in Mods... and on Create World's World Rules... page: Mobs Break Blocks,
@@ -117,6 +126,19 @@ The mods:
 - Item Repair: two worn tools, weapons or pieces of armour of the same kind in the crafting grid make one, with what
   was left of both, up to as good as new, as in later versions. A world rule, Repair Bonus, off to start with, adds a
   twentieth of a new one's durability on top.
+- Golems: iron workers. A Golem Core (a diamond with four gold ingots in a plus and four redstone in the corners) used
+  on the top of two stacked iron blocks makes one. Before you put it to work, an empty hand has it follow you or stay.
+  Hand it a pickaxe, an axe, a hoe, a sword or a bow and it works where it stands, at half your pace, its tool wearing
+  as yours would (and a hoe a use for each wheat it reaps): a pickaxe levels the land down to where it stands (what
+  you've built of stone, sandstone or dirt too, though not cobblestone or planks); an axe fells trees and replants
+  them; a hoe keeps a wheat field; a sword fights the monsters that come (creepers apart); and a bow shoots them as a
+  skeleton does, creepers too, from 4 to 8 blocks off, with arrows from its chest. An archer wants room behind it, or
+  a perch at least four blocks high with its foot kept clear by a fence or a ditch a few blocks out. It works inside
+  four Boundary Poles round it (redstone over an iron ingot makes four; set them out within 48 blocks of it before you
+  hand it its tool), or 16 blocks round where it stands without them, and carries what it gathers to a chest within 8
+  blocks, from which it also takes spare tools, seeds, saplings, arrows and iron ingots to mend itself as its cracks
+  show. An ingot from your hand mends it too, and an empty hand takes its tool back and has it put down what it
+  carried. Killed, it drops its core, its tool and what it carried, not the iron.
 - Plain F3: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - No Toasts: no achievement or tutorial pop-ups. Achievements are still earned.
@@ -128,7 +150,7 @@ mend on a server with it, and nothing is mended on one without it. Wild Saplings
 client gets its trees on a server with it, and on one without it saplings grow as in beta. Wolf Packs runs where the
 world runs too: on a server with it every player's wolves spread out, guard them, keep watch sitting, fight creepers
 and eat fish, and on one without it they're beta's. Snipping runs where the world runs too: any player's shears snip
-on a server with it, and on one without it nothing is snipped, though shears still swing and sound. Plain F3 and No Toasts are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins or Buried Towers needs every player
+on a server with it, and on one without it nothing is snipped, though shears still swing and sound. Plain F3 and No Toasts are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers needs every player
 to have it: anyone else is refused with a message saying so. If you have any library mod on, the refusal screen's Match
 This Server's Mods turns on what that server needs, for your next launch; with none on, it's Options > Still Faithful...
 > Mods..., as above.
@@ -154,6 +176,8 @@ Turning a mod off or removing it:
 - Feather Lure's don't either: lured rods become plain fishing rods, as good as new, for good.
 - Pumpkins' don't either: pies become pumpkins for good. The pumpkins that grew stay, and its rule waits in the
   world's file.
+- Golems' don't either: golems, and the tools and things they carry, are gone from a chunk when it's next saved, and
+  cores become diamonds, for good. Boundary Poles show as fences and come back with the mod.
 - If other library mods are still on, a screen tells you before such a world opens, and offers to make a backup. If that
   was the last mod on, Faithful Core goes too and nothing warns you, so back up first: copy the world's folder from
   .minecraft/saves. With the core gone, the library's data in a chunk goes when that chunk is next saved.
@@ -164,10 +188,11 @@ original game and in every edition, as if the mods had been removed.
 If something goes wrong, the game's log is .minecraft/logs/purefaithful/latest.log.
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
-Alchemy's Ward, Haste and Feather Potions, designed Wolf Packs with Shoalstone and wrote its sitting wolves' watch,
-wrote the lupins in lapis lazuli's place, added to Shoalstone's designs for Pumpkins and Snipping, and drew the arrow's
-head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin pie, More Faithful's seal and, to
-Shoalstone's shape, Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and play-testing: Shoalstone.
+Alchemy's Ward, Haste and Feather Potions, designed Wolf Packs and how golems go about their work with Shoalstone,
+wrote Wolf Packs' sitting wolves' watch and the lupins in lapis lazuli's place, added to Shoalstone's designs for
+Pumpkins and Snipping, and drew the arrow's head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin
+pie, the golem, its cracks, the Golem Core and the Boundary Pole, More Faithful's seal and, to Shoalstone's shape,
+Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and play-testing: Shoalstone.
 Open source under the MIT licence. Software by others included here, and its licences: THIRD-PARTY-NOTICES.txt,
 licenses/ and sources/.
 @HOMEPAGE@

@@ -4,7 +4,7 @@
 
 Writes library/blue-flowers' textures/block/blue_flower.png (the id keeps its first name) and textures/item/lupin_blue.png.
 --sheet FILE also writes an enlarged sheet of both beside beta's rose, dandelion and a few of its dyes, read from
-local/decomp for the sheet only. Alchemy's golden lupin is drawn over this outline in tools/alchemy_art.py.
+the game jar in local/cache for the sheet only. Alchemy's golden lupin is drawn over this outline in tools/alchemy_art.py.
 
 Both are the user's picks (2026-11-12). The lupin is the first sketch made of one, kept through four rounds of other candidates
 (not kept here: five shapes in six shadings; spires scattered with single light and dark pixels, which they found speckled;
@@ -20,12 +20,14 @@ pixel and a little lighter up and left.
 Claude Fable 5.2, 2026-11-12.
 """
 import argparse
+import io
 import os
+import zipfile
 
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RESOURCES = os.path.join(ROOT, "local", "decomp", "b1.7.3-resources")
+JAR = os.path.join(ROOT, "local", "cache", "minecraft", "b1.7.3-client.jar")
 TEXTURES = os.path.join(ROOT, "library", "blue-flowers", "src", "main", "resources", "assets", "blue-flowers", "textures")
 
 # l, b and B the head's three blues, T its top right dark pixel; g and G beta's two stem greens.
@@ -104,8 +106,9 @@ def tile(img, i):
 
 
 def sheet(path, scale=10):
-    terrain = Image.open(os.path.join(RESOURCES, "terrain.png")).convert("RGBA")
-    items = Image.open(os.path.join(RESOURCES, "gui", "items.png")).convert("RGBA")
+    jar = zipfile.ZipFile(JAR)
+    terrain = Image.open(io.BytesIO(jar.read("terrain.png"))).convert("RGBA")
+    items = Image.open(io.BytesIO(jar.read("gui/items.png"))).convert("RGBA")
     try:
         f = ImageFont.truetype("segoeui.ttf", 15)
     except OSError:

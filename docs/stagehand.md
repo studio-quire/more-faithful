@@ -13,7 +13,7 @@ It finds the game by itself: the Prism instance with Stagehand in it, the latest
 
 ## Installing
 
-The game must be closed. In an instance from More Faithful, copy `stagehand-<v>.jar` to `.minecraft/mods-library/stagehand.jar` and add the line `mods-library/stagehand.jar` to `.minecraft/mods-library/selection.txt`; it then has a switch in the Mods menu like the rest. In any other instance, it goes in `.minecraft/mods` with `faithful-core` and `oldfaithful-settings`. On a server, in `mods/` with those two. Clients need nothing: it adds no content and says nothing on the network. Its core must be of the same library version or later.
+The game must be closed. In an instance from More Faithful, copy `stagehand-<v>.jar` to `.minecraft/mods-library/stagehand.jar`; it then has a switch in the Mods menu like the rest, off until you turn it on there (a line added to `selection.txt` by hand is undone at the next start, as the game keeps the list to the preset and switches). In any other instance, it goes in `.minecraft/mods` with `faithful-core` and `oldfaithful-settings`. On a server, in `mods/` with those two. Clients need nothing: it adds no content and says nothing on the network. Its core must be of the same library version or later.
 
 `./gw :library:stagehand:remapJar` builds it in `library/stagehand/build/libs/`; `./gw prismMoreStagehandInstance` builds a whole test pack with it on, More Faithful's dev pack as `local/prism/MoreFaithful-dev-stagehand.zip`, to import in Prism.
 

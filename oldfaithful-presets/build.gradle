@@ -1,0 +1,7 @@
+plugins { id 'oldfaithful.mod' }
+
+// More Faithful's own jar (docs/release.md > More Faithful's presets): which of the pack's library mods load, from the settings'
+// Mods menu. In the pack's mods/ beside the editions' jars, so it's there with every library mod off.
+dependencies {
+    compileOnly project(':oldfaithful-settings')
+}

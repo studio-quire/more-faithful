@@ -6,6 +6,26 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.9.0 (2026-11-13)
+
+Faithful Settings is Old Faithful 0.2.7's.
+
+- **Golems**, a new mod: iron workers you make from two iron blocks and a Golem Core. Hand one a pickaxe, an axe, a hoe,
+  a sword or a bow and it levels the land (what you've built of stone, sandstone or dirt too), fells and replants trees,
+  keeps a wheat field, fights monsters with a sword or shoots them with a bow, creepers too, at half your pace, inside
+  four Boundary Poles or 16 blocks round where it stands, carrying what it gathers to a chest nearby. A guard walks its
+  rounds when there's nothing to fight. Boundary Poles glow while a golem works inside them. Its chest also gives it
+  spare tools, seeds, saplings and arrows, and iron ingots to mend itself with when its cracks show. It adds an item, a
+  block and a creature, so a server running it needs every player to have it.
+- **Faithful Settings** (Old Faithful's, beside the library's mods) no longer has the switches for the jars in
+  `.minecraft/mods-library`: they're [More Faithful](https://github.com/studio-quire/more-faithful)'s own now, in its
+  pack, with its new presets. With the jars on their own nothing else changes, but take `faithful-core` 0.9.0 with it:
+  an older core beside this Settings stops the game when a server refuses you over mods. In a pack from before More
+  Faithful 0.9.0, keep the pack's own Settings, which has the switches (the README's Installing).
+- A jar you add to a More Faithful instance by hand (Wary Creepers, say) is switched on in the Mods menu, where it shows
+  once it's in `.minecraft/mods-library`, rather than by a line added to `selection.txt`, which the game now keeps to the
+  preset and switches you chose.
+
 ## 0.8.0 (2026-11-12)
 
 Faithful Settings is Old Faithful 0.2.6's, as in 0.7.1.

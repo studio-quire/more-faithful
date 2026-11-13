@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "golems",
+  "version": "${version}",
+  "name": "Golems",
+  "description": "Iron golems that work for you, at half your pace, with the tool you hand them. They level ground, fell and replant trees, keep a wheat field, and fight with a sword or shoot with a bow. A Golem Core on two stacked iron blocks makes one. It works inside four Boundary Poles or 16 blocks round where it was handed its tool, carries what it gathers to a chest nearby, and takes spare tools, seeds, saplings, arrows and iron to mend itself from that chest.",
+  "authors": ["Claude Opus 5.5 (Anthropic's AI), at Studio Quire"],
+  "contributors": ["Claude Fable 5.2 (Anthropic's AI), at Studio Quire (design of how golems work, and art)", "Shoalstone (idea, design and direction)"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "https://github.com/${repo}",
+    "issues": "https://github.com/${repo}/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:mod": ["org.studioquire.faithful.golems.Golems"],
+    "faithful:client": ["org.studioquire.faithful.golems.client.GolemsClient"]
+  },
+  "mixins": ["golems.mixins.json"],
+  "depends": {
+    "faithful-core": "*"
+  },
+  "custom": {
+    "faithful": {"content": true, "network": 1}
+  }
+}

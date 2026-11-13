@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.golems.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": ["MinecraftMixin"],
+  "injectors": {"defaultRequire": 1}
+}

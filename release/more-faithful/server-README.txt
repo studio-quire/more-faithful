@@ -2,10 +2,10 @@ More Faithful @VERSION@ server
 ==========================
 
 More Faithful's server package: @EDITION_NAME@'s, with the Faithful Library @LIBRARY_VERSION@'s server-side mods in mods/,
-all on, as they are in the More Faithful pack. Minecraft beta 1.7.3's own server, run through Fabric Loader with our
-@SERVER_MODS@ mods, from
+all on, as they are in the More Faithful pack's High preset. Minecraft beta 1.7.3's own server, run through Fabric Loader
+with our @SERVER_MODS@ mods, from
 @EDITION_LINE@, and the library's. Water Bottles, Alchemy, Blue Flowers,
-Explosive Arrows, Feather Lure, Pumpkins and Buried Towers are on, so as it comes this server refuses anyone without them, vanilla clients and
+Explosive Arrows, Feather Lure, Pumpkins, Golems and Buried Towers are on, so as it comes this server refuses anyone without them, vanilla clients and
 the editions' own packs included; the More Faithful pack has them. Below is how to take them out.
 
 From the editions: it's hardened against malicious clients, a crash or power cut can't damage the world, and beta's clear
@@ -26,8 +26,15 @@ Setting up
 Turning mods off
 With the server stopped, move the jar out of mods/ into any other folder. faithful-core-@VERSION@.jar and
 oldfaithful-settings-@FIXED_VERSION@.jar stay as long as any library mod does. Do this before the first start for any mod
-you don't want: a world that has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins or Buried Towers is asked about below. With all of them out, the core and settings too,
+you don't want: a world that has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers is asked about below. With all of them out, the core and settings too,
 it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothing new goes over the network.
+
+The pack's presets, which a player chooses in the game, have these of the library's jars here (Plain F3 and No Toasts, in the
+pack's presets too, are the players' own and not here):
+@PRESETS_SERVER@
+A server with one preset's jars lets in players on that preset or a bigger one, and one with Simple's anyone, vanilla
+clients too. A player without a mod the server needs every player to have is refused with a message saying what's
+missing, and offered a button that turns it on for their next launch.
 
 - world-rules: rules for each world, the same for everyone on the server. /rule <name> <value> for ops and the console,
   or the world's faithful-world.properties. /rule lock locks them until the line rules-locked=true comes out of that
@@ -71,6 +78,10 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
   in the same way.
 - feather-lure: a fishing rod and a feather make a Lured Fishing Rod, on which fish bite twice as often; each fish caught
   has a 1 in 8 chance of taking the feather, leaving a plain fishing rod. Every player needs it, in the same way.
+- golems: iron workers players make from two iron blocks and a Golem Core, which level the land (what's built of
+  stone, sandstone or dirt too), fell and replant trees, keep a wheat field, or fight monsters with a sword or a bow,
+  at half a player's pace, inside four Boundary Poles or 16 blocks round where they stand. They work wherever players
+  keep the land loaded. Every player needs it, in the same way.
 - wild-saplings: saplings grow every tree that grows wild, as often as it grows wild: spruce saplings grow pines too, and
   oak saplings grow big oaks a third of the time in Forest and Rainforest, as full as wild ones. Any client can join,
   vanilla too.
@@ -93,10 +104,11 @@ it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothin
 Plain F3 and No Toasts are client-only, so they aren't here, and players can use them on any server.
 
 Taking a mod out again
-A server refuses to start when a world has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins or Buried Towers and it's gone, and says how to go on: make a
+A server refuses to start when a world has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers and it's gone, and says how to go on: make a
 backup, then add accept-missing-content=true to the world's faithful-world.properties. Its bottles and potions then
 become bowls, its golden roses and lupins roses, its explosive arrows plain arrows, its lured rods plain
-fishing rods, as good as new, and its pies pumpkins, for good. That
+fishing rods, as good as new, its pies pumpkins, and its golem cores diamonds, for good; its golems, and what they
+carry, are gone, and Boundary Poles show as fences until the mod is back. That
 line is good for one start: the server sets it back to false, so a later removal is refused again. World Rules' values
 stay in that file and come back with the mod. Towers built stay, as ordinary blocks, as do rooms the old Better Dungeons
 built. Hearty Food's healing still to come
@@ -111,7 +123,7 @@ then asked about as above, and its bluebells become roses.
 
 @HOMEPAGE@
 Open source under the MIT licence, made by Claude Opus 5.5 at Studio Quire. Claude Fable 5.2 designed Explosive
-Arrows and Alchemy's Ward, Haste and Feather Potions, and Wolf Packs with Shoalstone, added to Shoalstone's designs
-for Pumpkins and Snipping, and wrote the lupins in lapis lazuli's place. Opus and
+Arrows and Alchemy's Ward, Haste and Feather Potions, and Wolf Packs and how golems go about their work with
+Shoalstone, added to Shoalstone's designs for Pumpkins and Snipping, and wrote the lupins in lapis lazuli's place. Opus and
 Fable are Anthropic's AI models.
 Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.

@@ -7,8 +7,8 @@ mods of your own. Any combination works, in single player and on servers. Open s
 [Studio Quire](https://studioquire.org/).
 
 To play them together, each with its own switch, take [More Faithful](https://github.com/studio-quire/more-faithful):
-[Still Faithful](https://github.com/studio-quire/still-faithful) with the mods here on, all but Wary Creepers and
-Stagehand, one download to import into Prism Launcher. Through 0.4.0 this repository's releases held the packs: the one on Still Faithful is More Faithful now,
+[Still Faithful](https://github.com/studio-quire/still-faithful) with the mods here, all but Wary Creepers and
+Stagehand, in presets from a few to all of them, one download to import into Prism Launcher. Through 0.4.0 this repository's releases held the packs: the one on Still Faithful is More Faithful now,
 and the one on Old Faithful has gone, as each pack now builds on the one before. For the mods without Still Faithful's
 changes, install them on their own in an [Old Faithful](https://github.com/studio-quire/old-faithful) instance (below).
 
@@ -125,6 +125,30 @@ They're mods, not a modified game: your launcher downloads Minecraft itself from
   in a world where World Rules' Bows Wear Out is on. A
   world rule, Repair Bonus, adds a twentieth of a new one's durability on top, as later versions did; it's off to start
   with, so mending only puts together what you had, and there's nothing to gain by saving worn things for it.
+- **Golems**: iron workers. A Golem Core (a diamond with four gold ingots in a plus and four redstone in the corners)
+  used on the top of two stacked iron blocks makes one. Right-click one you haven't put to work with an empty hand and
+  it follows you; again and it stays. Hand it a pickaxe, an axe, a hoe, a sword or a bow and it works where it stands,
+  at half your pace, its tool wearing as yours would, and a hoe a use for each wheat it reaps too: a **pickaxe** levels
+  the land down to where it stands, a layer at a time from the top and in rows back and forth like mowing a lawn,
+  leaving what holds back water or lava. The land to it is stone, dirt, grass, sand, sandstone, gravel, clay,
+  netherrack, soul sand and ore, wherever they came from, so it takes down what you've built of them too: keep that out
+  of its area (cobblestone, planks and other built blocks it leaves). An **axe** fells trees from the top down and
+  plants a sapling where each stood; a **hoe** reaps ripe wheat, sows the field again and tills back what was trampled,
+  but breaks no new ground; a **sword** fights the monsters that come, creepers apart; a **bow** shoots any monster as a
+  skeleton shoots, creepers too, keeping 4 to 8 blocks off (6 from a creeper) and stepping back from what comes closer.
+  An archer's arrows come from its chest, the first it carries shot first, Explosive Arrows as well; with none there it
+  waits at its post. A guard walks its rounds when there's nothing to fight. With room behind it an archer kills most
+  creepers before they reach it, and backed against a wall it can't; on a perch at least four blocks high it's out of
+  their reach, as long as its foot is kept clear with a fence or a ditch a few blocks out, or a creeper can stand under
+  it out of its sight. A golem works inside four Boundary Poles round it, or 16 blocks each way without them. Redstone
+  over an iron ingot makes four; set them out within 48 blocks of it before you hand it its tool, as that's when it
+  looks for them. They glow while a golem works inside them. It carries what it gathers to a chest within 8 blocks,
+  keeping the seeds or saplings it will need. From that chest it takes a spare tool when its own breaks, seeds, saplings
+  or arrows when it's short, and iron ingots to mend itself: it shows cracks as it's hurt, and once a whole ingot's
+  worth is gone it walks over and uses one, as you would. Being iron, it takes half the harm a player would on Normal,
+  so a guard with an iron sword uses about an ingot for every two zombies. An ingot from your hand mends it too, and an
+  empty hand takes its tool back, and it puts down what it carried. Twenty hearts. Killed, it drops its core, its tool
+  and what it carried, not the iron.
 - **Plain F3**: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - **No Toasts**: no achievement or tutorial pop-ups. Achievements are still earned.
@@ -137,8 +161,8 @@ coming from behind a lantern isn't scared at all**, so mind which way each one f
 creeper sees it as it would see you, so not through glass, leaves or a wall. One already at your side still swells.
 It's the lantern standing there that keeps a place, not you: carrying or wearing a pumpkin does nothing. To have it in
 a More Faithful instance, with the game closed copy `wary-creepers-<version>.jar` to
-`.minecraft/mods-library/wary-creepers.jar` and add the line `mods-library/wary-creepers.jar` to `selection.txt`
-there; it then has a switch in the Mods menu like the rest.
+`.minecraft/mods-library/wary-creepers.jar`; it then has a switch in the Mods menu like the rest, off until you turn
+it on there.
 
 **Stagehand** is in the release as a jar of its own and in no pack: it runs scripts dropped into a folder in the game's
 directory (teleports, items, time, weather, mobs, blocks), and writes back what happened, for setting up a play-test from
@@ -158,7 +182,13 @@ doesn't run with StationAPI, so that combination stops at launch with a message.
 
 In an instance from More Faithful, or from the library's old packs, they're in `.minecraft/mods-library` instead, each
 with a switch in the game's settings, and named without their versions: to update one, replace its jar there with the
-new one under the old name (`alchemy-0.8.0.jar` becomes `alchemy.jar`), `faithful-core` included.
+new one under the old name (`alchemy-0.8.0.jar` becomes `alchemy.jar`), `faithful-core` included. In a pack from before
+More Faithful 0.9.0, keep its own `oldfaithful-settings` in `.minecraft/mods`: the mods' switches are in it, and this
+release's has none, as they're More Faithful's own now (beside the older one, this core's refusal screen just doesn't
+offer Match This Server's Mods).
+
+Wherever you take this release's `oldfaithful-settings`, take its `faithful-core` too: an older core beside it stops the
+game when a server refuses you over mods.
 
 ## Servers
 
@@ -185,7 +215,7 @@ Wary Creepers.
   player without it snips with shears there all the same, with no swing or sound to show it, and plants snipped by
   anyone stay snipped for everyone. With it on a server without it, nothing is snipped there, though shears on a
   plant swing and sound every time.
-- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure**, **Pumpkins** and **Buried Towers** need every player to have them: the first six add blocks or items, and Buried Towers builds on the library's world generation, which needs it too. A server running one
+- **Water Bottles**, **Alchemy**, **Blue Flowers**, **Explosive Arrows**, **Feather Lure**, **Pumpkins**, **Golems** and **Buried Towers** need every player to have them: the first seven add blocks, items or creatures, and Buried Towers builds on the library's world generation, which needs it too. A server running one
   refuses anyone without it, vanilla clients included, with a message saying so. A player on More Faithful with any mod
   on is offered **Match This Server's Mods**, which turns on what that server needs for their next launch. A client with
   them can join a server without them, where they can't be made and no towers are built. With Blue Flowers on, a
@@ -220,6 +250,8 @@ original game too. What you lose, plainly:
 - **Explosive Arrows**: its arrows don't survive. Carried, in that world they become plain arrows, for good, and any in
   flight are gone.
 - **Feather Lure**: its rods don't survive. In that world they become plain fishing rods, as good as new, for good.
+- **Golems**: its golems don't survive, nor do the tools and things they carry: they're gone from a chunk when it's next
+  saved. Cores become diamonds, for good. Boundary Poles show as fences and come back with the mod.
 - **Pumpkins**: its pies don't survive. In that world they become pumpkins, for good. Pumpkins stop spreading, and
   the ones that grew stay, as beta's own. Its rule stays in the world's file and comes back with the mod.
 - **Snipping**: snipped plants grow again, as in beta. Which plants were snipped waits in the world while any library
@@ -260,10 +292,11 @@ working name, `oldfaithful`.
 ## Credits and licence
 
 Made by Claude Opus 5.5, an AI model by Anthropic, at Studio Quire. Claude Fable 5.2 designed Explosive Arrows and
-Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers and Wolf Packs with Shoalstone, wrote Wolf Packs'
-sitting wolves' watch and the lupins in lapis lazuli's place, added to Shoalstone's designs for Pumpkins and Snipping,
-and drew the arrow's head, the golden flowers and feather, the lupin and Lupin Blue, the pumpkin pie and, to
-Shoalstone's shape, Feather Lure's bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and
+Alchemy's Ward, Haste and Feather Potions, designed Wary Creepers, Wolf Packs and how golems go about their work with
+Shoalstone, wrote Wolf Packs' sitting wolves' watch and the lupins in lapis lazuli's place, added to Shoalstone's
+designs for Pumpkins and Snipping, and drew the arrow's head, the golden flowers and feather, the lupin and Lupin Blue,
+the pumpkin pie, the golem, its cracks, the Golem Core and the Boundary Pole and, to Shoalstone's shape, Feather Lure's
+bobber. Idea, the designs of Pumpkins, Snipping and the lupins, direction and
 play-testing: Shoalstone.
 
 The library's code is under the [MIT licence](LICENSE). It builds on Fabric Loader, Mixin and Babric's mappings, each

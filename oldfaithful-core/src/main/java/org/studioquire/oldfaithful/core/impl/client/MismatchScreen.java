@@ -8,12 +8,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import org.studioquire.oldfaithful.core.impl.Hello;
-import org.studioquire.oldfaithful.settings.LibrarySelection;
+import org.studioquire.oldfaithful.options.settings.ModList;
 
 /**
- * Why a server was refused, in beta's look: what must match and doesn't, by the mods' names (ids and versions go to the log). With the library pack,
- * {@code Match This Server's Mods} writes the list for the next
- * launch: only ids come from the server, and only jars already in the folder are switched.
+ * Why a server was refused, in beta's look: what must match and doesn't, by the mods' names (ids and versions go to the log). Where something chooses the
+ * next launch's mods (More Faithful's own jar, through Faithful Settings' {@link ModList}), {@code Match This Server's Mods} has it match the server's: only
+ * ids come from the server, and only jars already in the pack's folder are switched.
  */
 final class MismatchScreen extends Screen {
 	private static final int BACK = 0, USE_SET = 1;
@@ -32,7 +32,8 @@ final class MismatchScreen extends Screen {
 	public void init() {
 		buttons.clear();
 		buttons.add(new ButtonWidget(BACK, width / 2 - 100, height / 6 + 168, "Back to title screen"));
-		if (theirSet != null && !new LibrarySelection(FabricLoader.getInstance().getGameDir()).entries().isEmpty()) {
+		ModList list = modList();
+		if (theirSet != null && list != null && list.any()) {
 			buttons.add(new ButtonWidget(USE_SET, width / 2 - 100, height / 6 + 144, "Match This Server's Mods"));
 		}
 	}
@@ -44,7 +45,9 @@ final class MismatchScreen extends Screen {
 	}
 
 	private void useTheirSet() {
-		LibrarySelection.Change change = new LibrarySelection(FabricLoader.getInstance().getGameDir()).useServerSet(theirSet);
+		ModList list = modList();
+		if (list == null) return;
+		ModList.Matched change = list.match(theirSet);
 		theirSet = null;
 		lines = new ArrayList<>();
 		title = change.saved ? "Saved: restart the game and join again" : "Couldn't save that: " + log() + " says why";
@@ -64,15 +67,22 @@ final class MismatchScreen extends Screen {
 		super.render(mouseX, mouseY, delta);
 	}
 
-	/** A mod's name: the loaded mod's, or a jar's in the library folder, or its id made into words (as for a mod that has none). */
+	/** A mod's name: the loaded mod's, or a jar's the pack could load, or its id made into words (as for a mod that has none). */
 	static String modName(String id) {
-		FabricLoader loader = FabricLoader.getInstance();
-		String loaded = loader.getModContainer(id).map(c -> c.getMetadata().getName()).orElse(id);
+		String loaded = FabricLoader.getInstance().getModContainer(id).map(c -> c.getMetadata().getName()).orElse(id);
 		if (!loaded.equals(id)) return loaded;
-		for (LibrarySelection.Entry e : new LibrarySelection(loader.getGameDir()).entries()) {
-			if (e.id.equals(id)) return e.name;
+		ModList list = modList();
+		String named = list == null ? null : list.name(id);
+		return named != null ? named : Hello.titled(id);
+	}
+
+	/** What chooses the next launch's mods; null without it, as without a pack, or beside a Faithful Settings older than this core, which has no way to ask. */
+	private static ModList modList() {
+		try {
+			return ModList.find();
+		} catch (LinkageError e) {
+			return null;
 		}
-		return Hello.titled(id);
 	}
 
 	/** Where a player finds what's printed: Pure Faithful's hardening keeps the game's output in a file of its own. */

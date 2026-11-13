@@ -7,6 +7,37 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.9.0 (2026-11-13)
+
+On the Faithful Library 0.9.0 and Still Faithful 0.8.0, on Old Faithful 0.2.7 and Pure Faithful 0.1.6.
+
+- **Presets**: which mods are on is now one choice for the whole game, at the top of **Options > More Faithful... >
+  Mods...**, where **Preset** steps through them a click at a time: **Simple** (World Rules, Item Repair, Wild
+  Saplings, Wolf Packs, Snipping, Plain F3 and No Toasts: beta with a few comforts and nothing new to make), **Grounded** (every
+  mod but Alchemy and Golems) and **High** (every mod), which a new install starts on. Each mod still has its own
+  switch: turning one on or off makes the preset **Custom**, and choosing a preset again puts it back as it comes. Like
+  the switches, a preset takes effect the next time you launch.
+- **Golems**, new in the pack, in High: iron workers you make from two iron blocks and a Golem Core. Hand one a pickaxe,
+  an axe, a hoe, a sword or a bow and it levels the land (what you've built of stone, sandstone or dirt too), fells and
+  replants trees, keeps a wheat field, or fights monsters, at half your pace, inside four Boundary Poles or 16 blocks
+  round where it stands, carrying what it gathers to a chest nearby, from which it also takes spare tools and iron to
+  mend itself. They were first meant for a pack of their own above this one, High Faithful; that pack is this one's High
+  preset now. The server package has it on, and refuses players without it.
+- From Still Faithful 0.8.0, **Obsidian**: it mines as in 1.0, 9.4 seconds with a diamond pickaxe instead of 15, and
+  250 seconds instead of 50 without one; Diamond Only, in its settings, keeps beta's 50. Still Faithful's changelog has
+  the detail.
+- From Old Faithful 0.2.7, through Still Faithful: pickaxes mine redstone ore fast. Old Faithful's changelog has the
+  detail.
+- **Updating**: copy your worlds and `.minecraft/config` from the old instance, as before. From this version on,
+  `config` carries your preset and the mods you turned on or off beyond it: at the new version's first start the game
+  sets its mods to them and, if that changes anything, the title screen asks you to restart once. From 0.8.0, which kept no preset, the new
+  instance starts on High with every mod on, Golems among them: choose your preset in the Mods menu, switch off what you
+  don't want, and restart the game before you open a world. A mod you added yourself (Wary Creepers, say) is switched
+  on in the Mods menu once its jar is in `.minecraft/mods-library`, rather than by a line in `selection.txt`, which the
+  game now keeps to your preset and switches. On a server: players need this version, as it refuses anyone without
+  Golems; to run it without them, move `golems` out of `mods/` before the first start. The server README lists the
+  jars each preset has.
+
 ## 0.8.0 (2026-11-12)
 
 On the Faithful Library 0.8.0 and Still Faithful 0.7.1, on Old Faithful 0.2.6 and Pure Faithful 0.1.6.

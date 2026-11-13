@@ -8,10 +8,16 @@
 // server package into local/release/more-faithful-<v>/, each with SHA256SUMS.txt. Nothing here publishes anything. As the
 // editions do, each ships on released parts, checked byte for byte, and a release folder never changes silently.
 //
-// A content pack is Still Faithful's pack with its library jars in .minecraft/mods-library/ and all of them on its list, each
-// with a switch in the settings' Mods menu (docs/library-authoring.md > Settings); with every switch off it plays as Still
-// Faithful. Its server package is Still Faithful's with every server-side jar in mods/, so it matches the pack; an owner takes
-// out what they don't want.
+// A content pack is Still Faithful's pack with its library jars in .minecraft/mods-library/ and its default preset's on its list,
+// each with a switch in the settings' Mods menu (docs/library-authoring.md > Settings); with every switch off it plays as Still
+// Faithful. The switches, the presets and the list's upkeep are More Faithful's own jar (oldfaithful-presets, public id
+// morefaithful-presets), in the pack's .minecraft/mods/ beside the editions' jars, so it's loaded with every library mod off; it's in
+// no other release. Its server package is Still Faithful's with every server-side jar in mods/; an owner takes out what they don't want.
+//
+// A pack can offer presets, one for the whole game: release/<its name>/presets.properties, read below. Their lines go into its
+// pack.properties, from which the settings' Mods menu offers them; which one an install uses, and the mods it turned on or off
+// beyond it, are kept in the install's config/faithful-preset.properties, which updaters carry over (oldfaithful-presets'
+// LibrarySelection).
 //
 // A pack can start its new worlds with rules of its own: the lines of release/<its name>/starting-rules.properties go into its
 // pack.properties, the file that names it, in the pack's .minecraft/mods-library/ and at the top of its server package. That
@@ -23,18 +29,16 @@
 
 if (findProject(':oldfaithful-core') == null || !releaseEditions.containsKey('still')) return
 
-// Each content pack's own mods, up the ladder; its words are <key>_release_* and <key>_edition_version in gradle.properties,
-// its texts in release/<its name>/. A new mod of the library goes in one on purpose; one that's a jar in the library's release
-// and nothing more says library_jar_only=true (it's in no pack or server package), a test-only one library_test=true, and one
-// kept here in no pack and no release library_internal=true (below).
+// Each content pack's own mods, up the ladder (More Faithful alone since 2026-11-13, when High Faithful became its presets); its
+// words are <key>_release_* and <key>_edition_version in gradle.properties, its texts in release/<its name>/. A new mod of the
+// library goes in one on purpose, and into the pack's presets by their rules (presets.properties); one that's a jar in the
+// library's release and nothing more says library_jar_only=true (it's in no pack or server package), a test-only one
+// library_test=true, and one kept here in no pack and no release library_internal=true (below).
 def packMods = [
-    more: ['alchemy', 'blue-flowers', 'buried-towers', 'explosive-arrows', 'feather-lure', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'pumpkins', 'snipping', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
+    more: ['alchemy', 'blue-flowers', 'buried-towers', 'explosive-arrows', 'feather-lure', 'golems', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'pumpkins', 'snipping', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
 ]
 def libraryMods = packMods.values().flatten()
-// A pack that isn't out yet says <key>_unreleased=true: it builds and tests as any pack, and the library's release leaves out
-// the mods only it carries, since a jar there is published.
-def unreleasedPacks = packMods.keySet().findAll { findProperty("${it}_unreleased")?.toString() == 'true' }
-def releasedMods = packMods.findAll { !(it.key in unreleasedPacks) }.values().flatten()
+def releasedMods = libraryMods
 def libraryProjects = subprojects.findAll { it.path.startsWith(':library:') && it.file('build.gradle').isFile() && it.file('gradle.properties').isFile() }
 def libraryJarOnly = libraryProjects.findAll { it.file('gradle.properties').text.contains('library_jar_only=true') }*.name
 // A mod being tried in a pack's dev builds before it's out says library_unreleased=true: it's in its pack's dev instances and the
@@ -66,6 +70,8 @@ def testBuild = project.hasProperty('release.test')
 def coreJar = { project(':oldfaithful-core').tasks.named('remapJar') }
 def libraryJars = { List<String> mods -> [coreJar()] + mods.collect { project(":library:${it}").tasks.named('remapJar') } }
 def settingsJar = { project(':oldfaithful-settings').tasks.named('remapJar') }
+// A content pack's own jar: the choice of its library mods (presets and switches), in its mods/.
+def presetsMod = 'oldfaithful-presets'
 def modJars = { List<String> mods -> mods.collect { project(":${it}").tasks.named('remapJar') } }
 def componentJar = { project(':oldfaithful-lwjgl').tasks.named('bakeLwjgl').flatMap { it.output } }
 // Named without their versions in a pack: the list a launch reads has to stay right when a pack update replaces a jar.
@@ -73,16 +79,81 @@ def unversioned = { String name -> name.replaceFirst(/-\d.*\.jar$/, '.jar') }
 def modInfo = { String mod -> new groovy.json.JsonSlurper().parse(file("library/${mod}/src/main/resources/fabric.mod.json")) }
 // Plain F3 and No Toasts are client-only, so a server package has no use for them.
 def serverSide = { List<String> mods -> mods.findAll { modInfo(it).environment != 'client' } }
-// -Plibrary.with's mods and the library mods they need, which a launch would otherwise refuse.
-def withMods = { ->
+// A mod and the library mods it depends on, near or far.
+def withNeeds = { String mod ->
     def out = new LinkedHashSet<String>()
-    def todo = new ArrayList<String>(libraryWith)
+    def todo = [mod]
     while (todo) {
         def n = todo.remove(0)
         if (out.add(n)) todo.addAll((modInfo(n).depends ?: [:]).keySet().findAll { d -> libraryProjects.any { it.name == d } })
     }
-    out as List<String>
-}()
+    out
+}
+// -Plibrary.with's mods and the library mods they need, which a launch would otherwise refuse.
+def withMods = libraryWith.collectMany { withNeeds(it) as List }.unique() as List<String>
+
+// A pack's presets from release/<its name>/presets.properties (its comment says what each line is), each list expanded to the
+// pack's mods by id and checked: only the pack's mods, and what each of them needs. [order: [ids], first: id, presets: [id: [name:,
+// hint:, mods:]]], or null for a pack without the file.
+def readPresets = { String folder, List<String> mods ->
+    def f = file("release/${folder}/presets.properties")
+    if (!f.isFile()) return null
+    def p = new Properties()
+    f.withReader('UTF-8') { p.load(it) }
+    def split = { String line -> (line ?: '').split(',').collect { it.trim() }.findAll { it } }
+    def order = split(p.getProperty('presets'))
+    if (!order) throw new GradleException("${f}: no presets= line")
+    def presets = [:]
+    order.each { id ->
+        def spec = p.getProperty("preset.${id}.mods")?.trim()
+        def name = p.getProperty("preset.${id}.name")?.trim(), hint = p.getProperty("preset.${id}.hint")?.trim()
+        if (!spec || !name || !hint) throw new GradleException("${f}: preset ${id} needs a name, a hint and its mods")
+        def but = spec.startsWith('all but ') ? split(spec.substring('all but '.length())) : []
+        def named = spec == 'all' ? [] : but ?: split(spec)
+        def strangers = named.findAll { !(it in mods) }
+        if (strangers) throw new GradleException("${f}: preset ${id} names mods the pack hasn't: ${strangers}")
+        def list = spec == 'all' ? new ArrayList(mods) : but ? mods - but : named
+        def unmet = list.collectMany { m -> withNeeds(m).findAll { !(it in list) }.collect { "${m} needs ${it}".toString() } }
+        if (unmet) throw new GradleException("${f}: preset ${id} lacks what its mods need: ${unmet}")
+        presets[id] = [name: name, hint: hint, mods: list.sort()]
+    }
+    def first = p.getProperty('preset.default')?.trim()
+    if (!(first in order)) throw new GradleException("${f}: preset.default names no preset: ${first}")
+    [order: order, first: first, presets: presets]
+}
+// The presets' lines in the pack's own file, under its name; the dev packs' have the dev packs' extra mods in every preset.
+def presetLines = { Map presets, List<String> extra ->
+    if (!presets) return ''
+    def lines = ['',
+        "# Its presets, one for the whole game, chosen at the top of the settings' Mods menu: in the order a click steps through them,",
+        "# what a fresh install starts on, and each one's words and mods. Which one this game uses, and the mods turned on or off",
+        "# beyond it, are the game's own, in config/faithful-preset.properties."]
+    lines << "presets=${presets.order.join(',')}".toString()
+    lines << "preset.default=${presets.first}".toString()
+    presets.order.each { id ->
+        def pr = presets.presets[id]
+        lines << "preset.${id}.name=${pr.name}".toString()
+        lines << "preset.${id}.hint=${pr.hint}".toString()
+        lines << "preset.${id}.mods=${(pr.mods + extra).unique().sort().join(',')}".toString()
+    }
+    lines.join('\n') + '\n'
+}
+// What the READMEs say each preset has: its mods by name, every mod but some, or every mod; for a server package, the jars in mods/.
+def presetsText = { Map presets, List<String> mods, boolean server ->
+    if (!presets) return ''
+    def shown = server ? mods.findAll { modInfo(it).environment != 'client' } : mods
+    def word = { String m -> server ? m : modInfo(m).name }
+    def names = { List<String> l -> l.size() < 3 ? l.join(' and ') : l[0..-2].join(', ') + ' and ' + l[-1] }
+    presets.order.collect { id ->
+        def pr = presets.presets[id]
+        def has = pr.mods.findAll { it in shown }
+        def lacks = shown - has
+        def what = !lacks ? (server ? 'every jar in mods/' : 'every mod') :
+                   lacks.size() <= has.size() ? (server ? 'every jar but ' : 'every mod but ') + names(lacks.collect(word).sort()) :
+                   names(has.collect(word).sort())
+        "- ${pr.name}${id == presets.first ? ' (what a new install starts on)' : ''}: ${what}.".toString()
+    }.join('\n')
+}
 
 def sha256 = { File f -> java.security.MessageDigest.getInstance('SHA-256').digest(f.bytes).encodeHex().toString() }
 def jarFiles = { List jars -> jars.collectEntries { def f = it.get().output.get().asFile; [f.name, f] } }
@@ -153,13 +224,19 @@ packMods.each { String key, List<String> own ->
     // What a release of it carries: the dev instances below have the unreleased ones too, and -Plibrary.with's.
     def shipped = carried - libraryUnreleased
     def devCarried = carried + (withMods - carried)
+    // The pack's presets, if it has them; with none, every mod it ships is on as it comes.
+    def presets = readPresets(folder, shipped)
+    def firstMods = presets ? presets.presets[presets.first].mods : shipped
+    // In every preset of the dev packs: what only they carry, Stagehand too (whose jar only the Stagehand one has), so choosing a
+    // preset there keeps a session's way in.
+    def devExtra = (devCarried - shipped) + ['stagehand']
     def startingRules = file("release/${folder}/starting-rules.properties").isFile() ? "release/${folder}/starting-rules.properties".toString() : below.startingRules
     def ed = [
         startingRules: startingRules,
         name: name, fileName: prop('release_file_name'), tagline: prop('release_tagline'), repo: prop('release_repo'),
         // Its seal: <key>_release_icon names prism/release/icons/final/<icon>-128.png (and the -512 the site's card draws), else Still Faithful's.
         homepage: prop('release_homepage'), version: version, icon: findProperty("${key}_release_icon") ?: still.icon, licenceFolder: folder,
-        mods: still.mods, serverMods: still.serverMods, serverModsText: still.serverModsText, libraryMods: carried,
+        mods: still.mods + [presetsMod], serverMods: still.serverMods, serverModsText: still.serverModsText, libraryMods: carried,
         packReadme: "release/${folder}/pack-README.txt", serverReadme: "release/${folder}/server-README.txt",
         packHeader: "release/${folder}/notices-header-pack.txt", serverHeader: "release/${folder}/notices-header-server.txt",
         extraJvmArgs: ', "-Dfabric.addMods=@mods-library/selection.txt"',
@@ -168,108 +245,107 @@ packMods.each { String key, List<String> own ->
         editionLine: below.is(still) ? stillLine : "${below.name} ${below.version}, on ${stillLine}".toString(),
         libraryVersion: libraryVersion, libraryRepo: library_release_repo,
         openalSources: still.openalSources,
+        // What the pack README and the server README say each preset has (@PRESETS@, @PRESETS_SERVER@).
+        tokens: [PRESETS: presetsText(presets, shipped, false), PRESETS_SERVER: presetsText(presets, shipped, true)],
         out: "local/release/${folder}-${version}".toString()]
-    // A pack that isn't out (<key>_unreleased=true) is its dev packs alone: it has no place among the release's editions, whose
-    // notices and licences want its texts in release/<its name>/, and no release tasks or pack test until it has them.
-    def released = !(key in unreleasedPacks)
-    if (released) releaseEditions[key] = ed
+    releaseEditions[key] = ed
 
-    // Every mod on, and the core they need. Generated, so a mod added to the pack is on the list too.
     // What tells the game it's this pack, not the library's jars put in by hand: while any of its mods is on, Faithful Core reads it
-    // and names the pack on the title screen, in Options and on the settings screen (the core's Pack). And what the pack starts
-    // its new worlds with, which the server package's copy is for (the core's PackFile and Rules).
+    // and names the pack on the title screen, in Options and on the settings screen (the core's Pack). What the pack starts its new
+    // worlds with, which the server package's copy is for (the core's PackFile and Rules). And its presets, which the pack's own
+    // oldfaithful-presets offers in the Mods menu (its LibrarySelection).
+    def packText = { List<String> extra ->
+        def rules = startingRules ? '\n' + project.file(startingRules).getText('UTF-8').readLines().join('\n') + '\n' : ''
+        "# This is ${name}: while any of its mods is on, the game says so on the title screen and in Options.\n".toString() +
+                "name=${name}\nversion=${version}\n" + presetLines(presets, extra) + rules
+    }
     def marker = tasks.register("${key}PackFile") {
         def file = layout.buildDirectory.file("library-pack/${key}/pack.properties")
-        inputs.property('name', name)
-        inputs.property('version', version)
-        if (startingRules) inputs.file(startingRules)
+        inputs.property('text', packText([]))
         outputs.file(file)
-        doLast {
-            def rules = startingRules ? '\n' + project.file(startingRules).getText('UTF-8').readLines().join('\n') + '\n' : ''
-            file.get().asFile.setText("# This is ${name}: while any of its mods is on, the game says so on the title screen and in Options.\n" +
-                    "name=${name}\nversion=${version}\n" + rules, 'UTF-8')
-        }
+        doLast { file.get().asFile.setText(packText([]), 'UTF-8') }
     }
-    // The dev instances' copy, with the pack's starts for the rules of mods not out yet, each from its own folder.
+    // The dev instances' copy: their presets with devExtra in each, and the pack's starts for the rules of mods not out yet, each
+    // from its own folder.
     def devRules = devCarried.findAll { it in libraryUnreleased || it in libraryInternal }.collect { file("library/${it}/starting-rules.properties") }.findAll { it.isFile() }
-    def devMarker = !devRules ? marker : tasks.register("${key}DevPackFile") {
+    def devMarker = tasks.register("${key}DevPackFile") {
         def file = layout.buildDirectory.file("library-pack-dev/${key}/pack.properties")
-        dependsOn marker
+        inputs.property('text', packText(devExtra))
         inputs.files(devRules)
         outputs.file(file)
         doLast {
             // The rules alone: a mod's file talks to whoever builds, not to a player reading the pack's.
             def lines = devRules.collectMany { it.getText('UTF-8').readLines().findAll { it.trim() && !it.startsWith('#') } }
-            file.get().asFile.setText(marker.get().outputs.files.singleFile.getText('UTF-8') + lines.join('\n') + '\n', 'UTF-8')
+            file.get().asFile.setText(packText(devExtra) + (lines ? lines.join('\n') + '\n' : ''), 'UTF-8')
         }
     }
-    if (released) {
-        def selection = tasks.register("${key}Selection") {
-            def list = layout.buildDirectory.file("library-selection/${key}/selection.txt")
-            def names = (['faithful-core'] + shipped).sort()
-            inputs.property('names', names)
-            outputs.file(list)
-            doLast { list.get().asFile.setText(names.collect { "mods-library/${it}.jar" }.join('\n') + '\n', 'UTF-8') }
+    // The default preset's mods on, and the core they need.
+    def selection = tasks.register("${key}Selection") {
+        def list = layout.buildDirectory.file("library-selection/${key}/selection.txt")
+        def names = (['faithful-core'] + firstMods).sort()
+        inputs.property('names', names)
+        outputs.file(list)
+        doLast { list.get().asFile.setText(names.collect { "mods-library/${it}.jar" }.join('\n') + '\n', 'UTF-8') }
+    }
+    def outDir = layout.buildDirectory.dir("release/out-${key}")
+    def pack = releasePackTask("releasePack${cap}", ed)
+    pack.configure {
+        libraryJars(shipped).each { jar -> from(jar) { into '.minecraft/mods-library'; rename { unversioned(it) } } }
+        from(selection) { into '.minecraft/mods-library' }
+        from(marker) { into '.minecraft/mods-library' }
+        destinationDirectory = outDir
+    }
+    def server = releaseServerTask("releaseServer${cap}", ed)
+    server.configure {
+        into("${ed.fileName}-server/mods") {
+            from(settingsJar())
+            libraryJars(serverSide(shipped)).each { from(it) }
         }
-        def outDir = layout.buildDirectory.dir("release/out-${key}")
-        def pack = releasePackTask("releasePack${cap}", ed)
-        pack.configure {
-            libraryJars(shipped).each { jar -> from(jar) { into '.minecraft/mods-library'; rename { unversioned(it) } } }
-            from(selection) { into '.minecraft/mods-library' }
-            from(marker) { into '.minecraft/mods-library' }
-            destinationDirectory = outDir
-        }
-        def server = releaseServerTask("releaseServer${cap}", ed)
-        server.configure {
-            into("${ed.fileName}-server/mods") {
-                from(settingsJar())
-                libraryJars(serverSide(shipped)).each { from(it) }
-            }
-            // The pack's own file, beside the start scripts, so a new server world starts as a new world in the pack does.
-            into("${ed.fileName}-server") { from(marker) }
-            destinationDirectory = outDir
-        }
+        // The pack's own file, beside the start scripts, so a new server world starts as a new world in the pack does.
+        into("${ed.fileName}-server") { from(marker) }
+        destinationDirectory = outDir
+    }
 
-        // The pack carries the editions' parts and the library's jars as their releases have them; a missing release stops it too.
-        def partsCheck = tasks.register("release${cap}PartsCheck") {
-            description = "Checks that ${name}'s Pure, Old and Still Faithful parts and its library jars are those of the releases it names."
-            def pureJars = modJars(pure.mods)
-            def fixedJars = modJars(fixed.mods - pure.mods)
-            def stillJars = modJars(still.mods - fixed.mods)
-            def ownJars = libraryJars(shipped)
-            dependsOn pureJars, fixedJars, stillJars, ownJars, componentJar()
-            // Releases it checks against may be made in the same run.
-            mustRunAfter 'release', 'releaseFixed', 'releaseStill', 'releaseLibrary'
-            outputs.upToDateWhen { false }
-            doLast {
-                def problems = []
-                def pureParts = jarFiles(pureJars)
-                pureParts["purefaithful-lwjgl-${pure.version}.jar".toString()] = componentJar().get().asFile
-                compareParts(pure.name, pure.version, pure.out, pureParts, problems)
-                compareParts(fixed.name, fixed.version, fixed.out, jarFiles(fixedJars), problems)
-                compareParts(still.name, still.version, still.out, jarFiles(stillJars), problems)
-                compareParts('the Faithful Library', libraryVersion, libraryOut, jarFiles(ownJars), problems)
-                partsProblems(problems, "${name} must ship on released editions and a released library, so release new versions of them with it (docs/release.md > Versions).")
-            }
-        }
-
-        tasks.register("release${cap}", Sync) {
-            group = 'oldfaithful'
-            description = "Builds ${name}'s pack and server package into ${ed.out}/. Publishes nothing."
-            dependsOn partsCheck
-            from(pack)
-            from(server)
-            into layout.projectDirectory.dir(ed.out + (testBuild ? '-test' : ''))
-            preserve { include 'SHA256SUMS.txt' }
-            if (!testBuild) guardRelease(it, name, version, "${key}_edition_version")
-            doLast { writeSums(destinationDir, "${name} ${version}") }
+    // The pack carries the editions' parts and the library's jars as their releases have them; a missing release stops it too.
+    def partsCheck = tasks.register("release${cap}PartsCheck") {
+        description = "Checks that ${name}'s Pure, Old and Still Faithful parts and its library jars are those of the releases it names."
+        def pureJars = modJars(pure.mods)
+        def fixedJars = modJars(fixed.mods - pure.mods)
+        def stillJars = modJars(still.mods - fixed.mods)
+        def ownJars = libraryJars(shipped)
+        dependsOn pureJars, fixedJars, stillJars, ownJars, componentJar()
+        // Releases it checks against may be made in the same run.
+        mustRunAfter 'release', 'releaseFixed', 'releaseStill', 'releaseLibrary'
+        outputs.upToDateWhen { false }
+        doLast {
+            def problems = []
+            def pureParts = jarFiles(pureJars)
+            pureParts["purefaithful-lwjgl-${pure.version}.jar".toString()] = componentJar().get().asFile
+            compareParts(pure.name, pure.version, pure.out, pureParts, problems)
+            compareParts(fixed.name, fixed.version, fixed.out, jarFiles(fixedJars), problems)
+            compareParts(still.name, still.version, still.out, jarFiles(stillJars), problems)
+            compareParts('the Faithful Library', libraryVersion, libraryOut, jarFiles(ownJars), problems)
+            partsProblems(problems, "${name} must ship on released editions and a released library, so release new versions of them with it (docs/release.md > Versions).")
         }
     }
 
-    // The dev pack to try: Still Faithful's dev instance with the pack's library jars in mods-library/, all on. Its Stagehand
-    // one also has Stagehand, which ships in no pack (docs/stagehand.md): a session's test pack. -Pprism.branch=<name> builds a
-    // branch's beside master's rather than over them, <FileName>-dev-<name>.zip imported as "<Name> (<name>)", so a player can
-    // have both. With -Plibrary.with and no branch, the name is those mods', so such a pack never lands on the plain one.
+    tasks.register("release${cap}", Sync) {
+        group = 'oldfaithful'
+        description = "Builds ${name}'s pack and server package into ${ed.out}/. Publishes nothing."
+        dependsOn partsCheck
+        from(pack)
+        from(server)
+        into layout.projectDirectory.dir(ed.out + (testBuild ? '-test' : ''))
+        preserve { include 'SHA256SUMS.txt' }
+        if (!testBuild) guardRelease(it, name, version, "${key}_edition_version")
+        doLast { writeSums(destinationDir, "${name} ${version}") }
+    }
+
+    // The dev pack to try: Still Faithful's dev instance with the pack's own jar in mods/ and its library jars in mods-library/, its
+    // default preset on (with devExtra). Its Stagehand one also has Stagehand, which ships in no pack (docs/stagehand.md): a session's test pack.
+    // -Pprism.branch=<name> builds a branch's beside master's rather than over them, <FileName>-dev-<name>.zip imported as
+    // "<Name> (<name>)", so a player can have both. With -Plibrary.with and no branch, the name is those mods', so such a pack never
+    // lands on the plain one.
     def branch = findProperty('prism.branch') ?: (libraryWith ? libraryWith.join('+') : null)
     [['', []], ['Stagehand', [project(':library:stagehand')]]].each { String variant, List extras ->
         def zipName = "${ed.fileName}-dev${branch ? '-' + branch : ''}${variant ? '-' + variant.toLowerCase() : ''}.zip".toString()
@@ -280,6 +356,7 @@ packMods.each { String key, List<String> own ->
             def stillDev = tasks.named('prismStillInstance')
             dependsOn stillDev
             def jars = libraryJars(devCarried) + extras.collect { it.tasks.named('remapJar') }
+            def onJars = libraryJars(firstMods + (devCarried - shipped)) + extras.collect { it.tasks.named('remapJar') }
             from({ zipTree(stillDev.get().archiveFile) }) {
                 filesMatching('instance.cfg') {
                     filter { String line ->
@@ -290,12 +367,13 @@ packMods.each { String key, List<String> own ->
                 }
             }
             if (ed.icon != still.icon) from("prism/release/icons/final/${ed.icon}-128.png") { rename { "${ed.icon}.png" } }
+            from(project(":${presetsMod}").tasks.named('remapJar')) { into '.minecraft/mods' }
             from(jars) { into '.minecraft/mods-library'; rename { unversioned(it) } }
             def list = layout.buildDirectory.file("library-selection/prism${cap}${variant}/selection.txt")
             doFirst {
                 def f = list.get().asFile
                 f.parentFile.mkdirs()
-                f.text = jars.collect { "mods-library/${unversioned(it.get().output.get().asFile.name)}" }.join('\n') + '\n'
+                f.text = onJars.collect { "mods-library/${unversioned(it.get().output.get().asFile.name)}" }.join('\n') + '\n'
             }
             from(layout.buildDirectory.dir("library-selection/prism${cap}${variant}")) { into '.minecraft/mods-library' }
             from(devMarker) { into '.minecraft/mods-library' }
@@ -305,8 +383,8 @@ packMods.each { String key, List<String> own ->
         }
     }
 
-    if (released) contentPacks[key] = [name: name, version: version, pack: "releasePack${cap}".toString(), server: "releaseServer${cap}".toString(), mods: shipped,
-                             devMods: devCarried, startingRules: startingRules]
+    contentPacks[key] = [name: name, version: version, pack: "releasePack${cap}".toString(), server: "releaseServer${cap}".toString(), mods: shipped,
+                         devMods: devCarried, startingRules: startingRules, presets: presets]
     below = ed
 }
 

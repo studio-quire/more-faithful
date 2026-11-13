@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "golems-selftest",
+  "version": "1",
+  "name": "Golems self-test (test harness only, not shipped)",
+  "environment": "*",
+  "entrypoints": {
+    "faithful:test": ["org.studioquire.faithful.golems.selftest.GolemsTest"],
+    "faithful:test-client": ["org.studioquire.faithful.golems.selftest.client.GolemsClientTest", "org.studioquire.faithful.golems.selftest.client.GolemsLookTest"]
+  },
+  "depends": {
+    "golems": "*",
+    "explosive-arrows": "*"
+  }
+}
