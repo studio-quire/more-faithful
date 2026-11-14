@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "org.studioquire.faithful.stars.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": ["WorldRendererMixin"],
+  "injectors": {"defaultRequire": 1}
+}

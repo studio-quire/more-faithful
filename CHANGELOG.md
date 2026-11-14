@@ -7,6 +7,41 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.10.0 (2026-11-14)
+
+On the Faithful Library 0.10.0 and Still Faithful 0.9.0, on Old Faithful 0.2.9 and Pure Faithful 0.1.6.
+
+- **Stars**, new in the pack and in every preset: the night sky's stars smaller or larger, dimmer or brighter, fewer
+  or more, or none at all, on its page in **Options > More Faithful... > Mods...**. They start at their smallest, as
+  bright as beta's and twice as many, and Beta on each setting gives beta's sky back. It's yours alone, so the server
+  package hasn't got it, and it works on any server.
+- **Dry Grass**, new in the pack and in every preset: grass in hot, dry land, which beta colours olive, in another
+  shade (Green like grass elsewhere, Spring, Lush, Pale, Sage, Meadow or Golden), and the oak leaves there likewise in
+  a setting of their own, on its page in **Options > More Faithful... > Mods...**. Both start at Sage; Beta on each
+  gives beta's olive back. It's yours alone, so the server package hasn't got it, and it works on any server.
+- From Still Faithful 0.9.0: water is lit smoothly while Smooth Lighting is on (**Smooth
+  Water**, under Polish), where beta lit it a block at a time, so torchlight lay on a pond in squares. Shaded, the
+  default, darkens it a little against a wall or a bank, as it does the ground; Even doesn't. Lava keeps beta's look.
+  Still Faithful's changelog has the detail.
+- From Still Faithful 0.9.0: cactus is lit smoothly while Smooth Lighting is on
+  (**Smooth Cactus**, under Polish), where beta lit it a face at a time, flat beside the smoothly lit ground. Still
+  Faithful's changelog has the detail.
+- From Still Faithful 0.9.0: leaves stay on a tree within 6 blocks of its wood, as in later
+  versions (**Leaf Reach**, under Polish), where beta's 4 let the tops of a big oak's leaf clusters fall once something
+  near them was cut, dropping saplings and apples onto the tree. After a tree is cut down, golems' felling included,
+  its leaves within 6 of another tree's wood now stay up. Still Faithful's changelog has the detail.
+- From Still Faithful 0.9.0: fences join walls and other blocks beside them as in later
+  versions (**Fence Joins**, under Polish), where beta's stood apart from anything but another fence. Still Faithful's
+  changelog has the detail.
+- From Old Faithful 0.2.9, through Still Faithful: leaves far off, at the edge of the land the game has
+  loaded, no longer float on with nothing holding them or fall from a whole tree (**Distant Leaves**, under Fixes).
+  Old Faithful's changelog has the detail.
+- **Updating**: as before, copy your worlds and `.minecraft/config` from the old instance; your preset and the mods
+  you turned on or off beyond it come with `config`. Stars and Dry Grass are in every preset, so they come on whichever
+  yours is: set Stars' Size and Number, and Dry Grass's Grass and Leaves, to Beta for beta's sky and grass, or switch
+  them off in the Mods menu. From 0.8.0
+  or before, the new instance starts on High with every mod on (0.9.0's entry has the rest).
+
 ## 0.9.1 (2026-11-13)
 
 On the Faithful Library 0.9.1 and Still Faithful 0.8.1, on Old Faithful 0.2.8 and Pure Faithful 0.1.6.

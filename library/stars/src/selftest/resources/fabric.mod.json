@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "stars-selftest",
+  "version": "1",
+  "name": "Stars self-test (test harness only, not shipped)",
+  "environment": "client",
+  "entrypoints": {
+    "faithful:test-client": ["org.studioquire.faithful.stars.selftest.client.StarsTest"]
+  },
+  "depends": {
+    "stars": "*"
+  }
+}

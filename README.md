@@ -21,8 +21,8 @@ on Old Faithful has gone; for the mods without Still Faithful's changes, see
 Which mods are on is one choice for the whole game, at the top of **Options > More Faithful... > Mods...**, where
 **Preset** steps through them a click at a time:
 
-- **Simple**: World Rules, Item Repair, Wild Saplings, Wolf Packs, Snipping, Plain F3 and No Toasts: beta with a few comforts and
-  nothing new to make.
+- **Simple**: World Rules, Item Repair, Wild Saplings, Wolf Packs, Snipping, Plain F3, No Toasts, Stars and Dry Grass: beta
+  with a few comforts and nothing new to make.
 - **Grounded**: every mod but Alchemy and Golems: new things to make and find, and you still do it all yourself.
 - **High**: every mod, Alchemy's potions and the Golems who work for you included. A new install starts on High.
 
@@ -186,6 +186,22 @@ the next time you launch. Your preset and the mods you've turned on or off beyon
 - **Plain F3**: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - **No Toasts**: no achievement or tutorial pop-ups. Achievements are still earned.
+- **Stars**: the night sky's stars smaller or larger, dimmer or brighter, fewer or more, or none at all, on the mod's
+  page in the settings: Size from half beta's to twice (Smallest is about the size later versions draw them),
+  Brightness from a quarter of beta's light to four times, which is white, and Number from a quarter as many to four
+  times. They start at their smallest, as bright as beta's and twice as many, and Beta on each setting gives beta's sky
+  back. A change
+  shows at once. Fewer keeps some of beta's stars and More adds others among them, so beta's stay where they are, and
+  the stars still come out at dusk and fade in rain as beta's do. Beta draws the sky only at Far and Normal render
+  distance, so at Short and Tiny there are no stars to change.
+- **Dry Grass**: grass in hot, dry land (savannas and the dry plains beside them), which beta colours olive, in
+  another shade, chosen on the mod's page in the settings: **Green**, like grass elsewhere; **Spring**, **Lush**,
+  **Pale** or **Sage**, that green a little yellower and brighter, deeper, paler, or softer and bluer; **Meadow**, a
+  pale fresh green; or **Golden**, like dry grass in sun. Tall grass and ferns go with it, and the oak leaves there
+  have a setting of their own with the same choices. It follows beta's own temperature and rainfall rather than where
+  one kind of land meets another, so the new colour fades in across the land as beta's olive does. Both start at Sage;
+  Beta on each gives beta's olive back, and a change shows at once. A texture pack's grass and leaf colours are changed the
+  same way.
 
 **Stagehand**, also in the library, isn't in the pack: it runs scripts dropped into a folder in the game's directory
 (teleports, items, time, weather, mobs, blocks), and writes back what happened, for setting up a play-test from outside
@@ -297,11 +313,11 @@ while any library mod does. With them all out it's Still Faithful's own server.
   server without it still has lapis lazuli as in beta, and your game shows it under Lupin Blue's name and picture.
 - On a server, Pumpkins Spread is the world's rule: `/rule spreading true` for ops and the console turns it on in a
   world that has it off.
-- **Plain F3** and **No Toasts** are the player's alone, on any server.
+- **Plain F3**, **No Toasts**, **Stars** and **Dry Grass** are the player's alone, on any server.
 
 With any library mod on, your game tells a server you join that you have the Faithful Library. A server with the library
-sees that, and which of that server's own library mods you have too. It isn't told which other mods you have, Plain F3
-and No Toasts included. A vanilla server ignores it.
+sees that, and which of that server's own library mods you have too. It isn't told which other mods you have, Plain F3,
+No Toasts, Stars and Dry Grass included. A vanilla server ignores it.
 
 Servers running other software (Project Poseidon and other Bukkit-family servers) can't load these mods. A client's mods
 behave there as on a vanilla server.
@@ -337,7 +353,7 @@ original game too. What you lose, plainly:
 - **Wild Saplings**: nothing. Trees it grew stay, and saplings grow as in beta again.
 - **Wolf Packs**: wolves eat as in beta again, and sitting ones only sit. Its rules stay in the world's file, and a wolf's
   healing still to come waits in the save, and both come back with the mod.
-- **Plain F3** and **No Toasts** leave nothing in a world.
+- **Plain F3**, **No Toasts**, **Stars** and **Dry Grass** leave nothing in a world.
 
 While any library mod is on, Faithful Core is loaded and warns you before a world that's seen a removed content mod
 opens: **Make a Backup and Play**, **Play**, **Cancel**. A server refuses to start, and says how to go on, each time. If you turn off

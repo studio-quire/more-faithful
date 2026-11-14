@@ -35,7 +35,7 @@ if (findProject(':oldfaithful-core') == null || !releaseEditions.containsKey('st
 // library's release and nothing more says library_jar_only=true (it's in no pack or server package), a test-only one
 // library_test=true, and one kept here in no pack and no release library_internal=true (below).
 def packMods = [
-    more: ['alchemy', 'blue-flowers', 'buried-towers', 'explosive-arrows', 'feather-lure', 'golems', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'pumpkins', 'snipping', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
+    more: ['alchemy', 'blue-flowers', 'buried-towers', 'dry-grass', 'explosive-arrows', 'feather-lure', 'golems', 'hearty-food', 'item-repair', 'no-toasts', 'plain-f3', 'pumpkins', 'snipping', 'stars', 'water-bottles', 'wild-saplings', 'wolf-packs', 'world-rules'],
 ]
 def libraryMods = packMods.values().flatten()
 def releasedMods = libraryMods
@@ -77,7 +77,7 @@ def componentJar = { project(':oldfaithful-lwjgl').tasks.named('bakeLwjgl').flat
 // Named without their versions in a pack: the list a launch reads has to stay right when a pack update replaces a jar.
 def unversioned = { String name -> name.replaceFirst(/-\d.*\.jar$/, '.jar') }
 def modInfo = { String mod -> new groovy.json.JsonSlurper().parse(file("library/${mod}/src/main/resources/fabric.mod.json")) }
-// Plain F3 and No Toasts are client-only, so a server package has no use for them.
+// Client-only mods (Plain F3, No Toasts, Stars, Dry Grass) are of no use to a server package.
 def serverSide = { List<String> mods -> mods.findAll { modInfo(it).environment != 'client' } }
 // A mod and the library mods it depends on, near or far.
 def withNeeds = { String mod ->
@@ -149,7 +149,7 @@ def presetsText = { Map presets, List<String> mods, boolean server ->
         def has = pr.mods.findAll { it in shown }
         def lacks = shown - has
         def what = !lacks ? (server ? 'every jar in mods/' : 'every mod') :
-                   lacks.size() <= has.size() ? (server ? 'every jar but ' : 'every mod but ') + names(lacks.collect(word).sort()) :
+                   lacks.size() < has.size() ? (server ? 'every jar but ' : 'every mod but ') + names(lacks.collect(word).sort()) :
                    names(has.collect(word).sort())
         "- ${pr.name}${id == presets.first ? ' (what a new install starts on)' : ''}: ${what}.".toString()
     }.join('\n')

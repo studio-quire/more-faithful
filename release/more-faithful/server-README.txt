@@ -29,8 +29,8 @@ oldfaithful-settings-@FIXED_VERSION@.jar stay as long as any library mod does. D
 you don't want: a world that has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers is asked about below. With all of them out, the core and settings too,
 it's the plain @EDITION_NAME@ server: the library's code isn't loaded and nothing new goes over the network.
 
-The pack's presets, which a player chooses in the game, have these of the library's jars here (Plain F3 and No Toasts, in the
-pack's presets too, are the players' own and not here):
+The pack's presets, which a player chooses in the game, have these of the library's jars here (Plain F3, No Toasts, Stars and Dry
+Grass, in the pack's presets too, are the players' own and not here):
 @PRESETS_SERVER@
 A server with one preset's jars lets in players on that preset or a bigger one, and one with Simple's anyone, vanilla
 clients too. A player without a mod the server needs every player to have is refused with a message saying what's
@@ -101,7 +101,7 @@ missing, and offered a button that turns it on for their next launch.
   spread_out, fight_creepers, feeding, guarding and watch, all on. Any client can join, vanilla too, and feed fish; a
   sitting wolf's growl is heard only by players with a Faithful Library mod on.
 
-Plain F3 and No Toasts are client-only, so they aren't here, and players can use them on any server.
+Plain F3, No Toasts, Stars and Dry Grass are client-only, so they aren't here, and players can use them on any server.
 
 Taking a mod out again
 A server refuses to start when a world has seen Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers and it's gone, and says how to go on: make a

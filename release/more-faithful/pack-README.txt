@@ -142,6 +142,16 @@ The mods:
 - Plain F3: the F3 screen keeps its frame rate and memory and loses position, facing and entity counts, and mobs lose
   the numbers beta tags them with through walls, so you find your way without coordinates.
 - No Toasts: no achievement or tutorial pop-ups. Achievements are still earned.
+- Stars: the night sky's stars smaller or larger, dimmer or brighter, fewer or more, or none at all, on its page in
+  Mods...: Size from half beta's to twice, Brightness from a quarter of beta's light to four times (white), Number
+  from a quarter as many to four times. They start at their smallest, as bright as beta's and twice as many, and Beta
+  on each setting gives beta's sky back. A change shows at once. Beta's stars stay where they are, and still come out at dusk and fade
+  in rain. Beta draws the sky only at Far and Normal render distance, so at Short and Tiny there are none.
+- Dry Grass: grass in hot, dry land (savannas and the dry plains beside them), which beta colours olive, in another
+  shade chosen on its page in Mods... (Green like grass elsewhere, Spring, Lush, Pale, Sage, Meadow or Golden); tall
+  grass and ferns go with it, and the oak leaves there have a setting of their own with the same choices. The colour
+  fades in across the land as beta's olive does. Both start at Sage; Beta on each gives beta's olive back, and a change shows
+  at once.
 
 On a server: World Rules runs where the world runs, so a server can use it with any client, vanilla too. Hearty Food does
 too, with food healing over time for everyone there, though only a player who has it too
@@ -150,7 +160,7 @@ mend on a server with it, and nothing is mended on one without it. Wild Saplings
 client gets its trees on a server with it, and on one without it saplings grow as in beta. Wolf Packs runs where the
 world runs too: on a server with it every player's wolves spread out, guard them, keep watch sitting, fight creepers
 and eat fish, and on one without it they're beta's. Snipping runs where the world runs too: any player's shears snip
-on a server with it, and on one without it nothing is snipped, though shears still swing and sound. Plain F3 and No Toasts are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers needs every player
+on a server with it, and on one without it nothing is snipped, though shears still swing and sound. Plain F3, No Toasts, Stars and Dry Grass are yours alone and work anywhere. A server running Water Bottles, Alchemy, Blue Flowers, Explosive Arrows, Feather Lure, Pumpkins, Golems or Buried Towers needs every player
 to have it: anyone else is refused with a message saying so. If you have any library mod on, the refusal screen's Match
 This Server's Mods turns on what that server needs, for your next launch; with none on, it's Options > Still Faithful...
 > Mods..., as above.
@@ -164,7 +174,7 @@ Turning a mod off or removing it:
   already built stay, as ordinary blocks, and new chunks go back to beta's dungeons. Hearty Food's healing still to
   come waits in your save and goes on if the mod returns. Trees Wild Saplings grew stay. Wolf Packs' rules stay in the
   world's file, and wolves eat and sit as in beta. Plants Snipping snipped grow again, and are snipped again if it
-  returns. Plain F3 and No Toasts leave nothing behind.
+  returns. Plain F3, No Toasts, Stars and Dry Grass leave nothing behind.
 - Water Bottles' items don't survive: bottles in that world become bowls for good, the next time you open it. Alchemy
   goes off with it, as it needs it.
 - Alchemy's don't either: golden roses and lupins become roses, golden dandelions dandelions, golden feathers

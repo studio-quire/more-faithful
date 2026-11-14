@@ -6,6 +6,18 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.10.0 (2026-11-14)
+
+Faithful Settings is Old Faithful 0.2.9's, unchanged since 0.2.8's but for its version.
+
+- **Stars**, a new mod: the night sky's stars smaller or larger, dimmer or brighter, fewer or more, or none at all, on
+  its page in the settings. They start at their smallest, as bright as beta's and twice as many, and Beta on each
+  setting gives beta's sky back. It's the player's alone and works on any server.
+- **Dry Grass**, a new mod: grass in hot, dry land, which beta colours olive, in another shade (Green like grass
+  elsewhere, Spring, Lush, Pale, Sage, Meadow or Golden), and the oak leaves there likewise in a setting of their own,
+  on its page in the settings. Both start at Sage; Beta on each gives beta's olive back. It's the player's alone and
+  works on any server.
+
 ## 0.9.1 (2026-11-13)
 
 Faithful Settings is Old Faithful 0.2.8's.
