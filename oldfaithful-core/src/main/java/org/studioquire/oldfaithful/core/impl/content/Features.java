@@ -1,5 +1,6 @@
 package org.studioquire.oldfaithful.core.impl.content;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -23,6 +24,9 @@ public final class Features {
 
 	private static final Map<String, Placed<Worldgen.ChunkFeature>> BUILT = new TreeMap<>();
 	private static final Map<String, Placed<Worldgen.Decoration>> DECORATIONS = new TreeMap<>();
+	/** As {@code Listeners}' five throws: how many failures of a feature are told in full in a session. */
+	private static final int TRACES = 5;
+	private static final Map<String, Integer> FAILURES = new HashMap<>();
 
 	private Features() {
 	}
@@ -81,10 +85,25 @@ public final class Features {
 		SandBlock.fallInstantly = false;
 	}
 
-	/** A chunk with one feature missing beats a server down, and a world losing the chunk. */
-	private static void failed(String feature, int chunkX, int chunkZ, RuntimeException t) {
-		System.out.println("[faithful-core] WARN The feature " + feature + " failed in the chunk at " + chunkX + ", " + chunkZ + ", and was skipped: " + t);
-		t.printStackTrace(System.out);
+	/**
+	 * A chunk with one feature missing beats a server down, and a world losing the chunk. The feature still runs in every chunk after (one that
+	 * fails in some chunks may not in others), but only its first {@link #TRACES} failures are told in full: a feature broken everywhere would
+	 * otherwise print a stack trace for every chunk made. After that, a line at each tenfold count.
+	 */
+	private static synchronized void failed(String feature, int chunkX, int chunkZ, RuntimeException t) {
+		int n = FAILURES.merge(feature, 1, Integer::sum);
+		if (n <= TRACES) {
+			System.out.println("[faithful-core] WARN The feature " + feature + " failed in the chunk at " + chunkX + ", " + chunkZ + ", and was skipped: " + t);
+			t.printStackTrace(System.out);
+			if (n == TRACES) System.out.println("[faithful-core] WARN The feature " + feature + " has failed " + TRACES + " times; from now on its failures are only counted");
+		} else if (tenfold(n)) {
+			System.out.println("[faithful-core] WARN The feature " + feature + " has failed in " + n + " chunks so far, each skipped; the last at " + chunkX + ", " + chunkZ + ": " + t);
+		}
+	}
+
+	private static boolean tenfold(int n) {
+		while (n % 10 == 0) n /= 10;
+		return n == 1;
 	}
 
 	/** A vein: a short wander of small blobs, kept inside what decoration may touch. */

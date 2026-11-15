@@ -7,12 +7,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -236,26 +240,59 @@ public final class LibrarySelection {
 		return notice;
 	}
 
+	/** A jar as last read: its size and time then, and its entry (null for a jar that isn't a mod). */
+	private static final class Read {
+		final long size;
+		final FileTime modified;
+		final Entry entry;
+
+		Read(long size, FileTime modified, Entry entry) {
+			this.size = size;
+			this.modified = modified;
+			this.entry = entry;
+		}
+	}
+
+	/**
+	 * Every jar read so far, by its path. The folder is read afresh at each ask, the refusal screen's included (once for each mod it names, and at
+	 * every resize), and opening every jar each time stalled it; a jar whose size and time haven't changed since is the jar that was read.
+	 */
+	private static final Map<Path, Read> READ = new ConcurrentHashMap<>();
+
 	private static Entry read(Path jar) {
+		BasicFileAttributes seen;
+		try {
+			seen = Files.readAttributes(jar, BasicFileAttributes.class);
+		} catch (IOException e) {
+			seen = null;
+		}
+		Read kept = seen == null ? null : READ.get(jar);
+		if (kept != null && kept.size == seen.size() && kept.modified.equals(seen.lastModifiedTime())) return kept.entry;
 		try (ZipFile zip = new ZipFile(jar.toFile())) {
-			ZipEntry json = zip.getEntry("fabric.mod.json");
-			if (json == null) return null;
-			String text;
-			try (InputStream in = zip.getInputStream(json)) {
-				text = new String(readAll(in), StandardCharsets.UTF_8);
-			}
-			Matcher id = ID.matcher(text), name = NAME.matcher(text), description = DESCRIPTION.matcher(text), depends = DEPENDS.matcher(text);
-			if (!id.find()) return null;
-			Set<String> needs = new LinkedHashSet<>();
-			if (depends.find()) {
-				for (Matcher key = KEY.matcher(depends.group(1)); key.find(); ) needs.add(key.group(1));
-			}
-			return new Entry(id.group(1), name.find() ? name.group(1) : id.group(1), description.find() ? hint(description.group(1) + ".") : "", FOLDER + "/" + jar.getFileName(),
-					needs, MUST_MATCH.matcher(text).find());
+			Entry entry = entry(jar, zip);
+			if (seen != null) READ.put(jar, new Read(seen.size(), seen.lastModifiedTime(), entry));
+			return entry;
 		} catch (IOException e) {
 			System.out.println("[morefaithful-presets] WARN Could not read " + jar + ": " + e);
 			return null;
 		}
+	}
+
+	private static Entry entry(Path jar, ZipFile zip) throws IOException {
+		ZipEntry json = zip.getEntry("fabric.mod.json");
+		if (json == null) return null;
+		String text;
+		try (InputStream in = zip.getInputStream(json)) {
+			text = new String(readAll(in), StandardCharsets.UTF_8);
+		}
+		Matcher id = ID.matcher(text), name = NAME.matcher(text), description = DESCRIPTION.matcher(text), depends = DEPENDS.matcher(text);
+		if (!id.find()) return null;
+		Set<String> needs = new LinkedHashSet<>();
+		if (depends.find()) {
+			for (Matcher key = KEY.matcher(depends.group(1)); key.find(); ) needs.add(key.group(1));
+		}
+		return new Entry(id.group(1), name.find() ? name.group(1) : id.group(1), description.find() ? hint(description.group(1) + ".") : "", FOLDER + "/" + jar.getFileName(),
+				needs, MUST_MATCH.matcher(text).find());
 	}
 
 	/** A mod's first sentence, cut at a word if it would run past the hint's two lines. */

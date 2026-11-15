@@ -62,6 +62,8 @@ final class Keeper {
 			return size() > CACHED;
 		}
 	};
+	/** Sites whose tower threw as it was drawn, with what it threw. */
+	private final Map<Long, RuntimeException> broken = new HashMap<>();
 
 	/** Where a tower would go, once the land's been looked at. */
 	static final class Site {
@@ -151,12 +153,24 @@ final class Keeper {
 		return true;
 	}
 
-	/** The tower of a site, worked out if it isn't kept. */
+	/**
+	 * The tower of a site, worked out if it isn't kept. A drawing that throws would throw the same way again, being a pure function of the
+	 * site, so the throw is kept and thrown again: each chunk and decoration of its square would otherwise draw the whole tower again to fail.
+	 */
 	Tower tower(Site site) {
 		long key = key(site.x, site.z);
 		Tower t = towers.get(key);
 		if (t == null) {
-			t = new Tower(seed, site.x, site.z, site.climate, ground, style(site));
+			RuntimeException failed = broken.get(key);
+			if (failed != null) throw failed;
+			// Outside the catch: the style reads the chunks' marks, which can change, and once read it's kept, so it costs nothing to skip later.
+			Style style = style(site);
+			try {
+				t = new Tower(seed, site.x, site.z, site.climate, ground, style);
+			} catch (RuntimeException e) {
+				broken.put(key, e);
+				throw e;
+			}
 			towers.put(key, t);
 		}
 		return t;
@@ -182,7 +196,8 @@ final class Keeper {
 					there = true;
 				} else {
 					mark = BuriedTowers.mark.saved(world, cx, cz);
-					there = mark != null || Chunks.isSaved(world, cx, cz);
+					// Whether a chunk with no mark is there matters only while nothing has settled the answer: once one has, its second read is skipped.
+					there = mark != null || stands && !standing && Chunks.isSaved(world, cx, cz);
 				}
 				if (mark != null && (mark & MARK_STANDS) != 0) {
 					standing = true;

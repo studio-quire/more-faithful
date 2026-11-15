@@ -256,10 +256,14 @@ final class Worker {
 		List<Target> found = new ArrayList<>();
 		job.findWork(golem.area(), found);
 		if (found.isEmpty()) return null;
+		// All of it passed over for now (a guard's monsters in the caves under its area): there's nowhere to stand to look for, so no search, as nothing after a look that finds
+		// nothing reads one. Not where the search would load land, as one does in single player at the edge of what's loaded (WalkMap.settled).
+		int[] r = region();
+		if (allRefused(found) && WalkMap.settled(world, r[0], r[1], r[2], r[3])) return null;
 		search();
 		WalkMap map = WalkMap.get();
 		double gx = golem.x, gz = golem.z;
-		found.sort((a, b) -> a.rank != b.rank ? Integer.compare(b.rank, a.rank) : Double.compare(flat(a, gx, gz), flat(b, gx, gz)));
+		found = inOrder(found, gx, gz);
 		// Steps to a place to stand are no fewer than the distance to the work, less how far from it it may stand.
 		double slack = job.standAcross() * 1.415 + 1.0;
 		for (int i = 0; i < found.size(); ) {
@@ -287,6 +291,29 @@ final class Worker {
 			i = end;
 		}
 		return null;
+	}
+
+	/**
+	 * Work in the order a look weighs it: the highest rank first, and in a rank the nearest across the land first, two as near as each other in the order they were listed. Ordered by
+	 * rank as plain numbers first, then by distance only within a rank: most looks list each rank once (the leveller's, a rank a block), and only work of one rank needs its distance.
+	 */
+	private static List<Target> inOrder(List<Target> found, double gx, double gz) {
+		int n = found.size();
+		long[] byRank = new long[n];
+		// Highest rank first, then as listed: no two alike.
+		for (int i = 0; i < n; i++) byRank[i] = (long) ~found.get(i).rank << 32 | i;
+		java.util.Arrays.sort(byRank);
+		List<Target> sorted = new ArrayList<>(n);
+		for (int i = 0; i < n; ) {
+			int end = i + 1;
+			while (end < n && byRank[end] >> 32 == byRank[i] >> 32) end++;
+			int from = sorted.size();
+			for (int j = i; j < end; j++) sorted.add(found.get((int) byRank[j]));
+			// A stable sort: as near as each other, as listed.
+			if (end - i > 1) sorted.subList(from, sorted.size()).sort((a, b) -> Double.compare(flat(a, gx, gz), flat(b, gx, gz)));
+			i = end;
+		}
+		return sorted;
 	}
 
 	private static double flat(Target t, double x, double z) {
@@ -318,9 +345,12 @@ final class Worker {
 	/** The places round a target it can walk to, nearest first, and the first it can work the target from: so the rays for sight are only cast until one is found. */
 	private int nearestStand(WalkMap map, Target t, int across, int below, int above, boolean close, int under) {
 		int n = 0;
-		for (int y = t.y - below; y <= t.y + above; y++) {
-			for (int x = t.x - across; x <= t.x + across; x++) {
-				for (int z = t.z - across; z <= t.z + across; z++) {
+		for (int x = t.x - across; x <= t.x + across; x++) {
+			for (int z = t.z - across; z <= t.z + across; z++) {
+				// Only the heights the search reached in this column: the order they're weighed in is the sort's below, whatever order they're found in.
+				int column = map.column(x, z);
+				if (column < 0) continue;
+				for (int y = Math.max(t.y - below, column >> 8), top = Math.min(t.y + above, column & 255); y <= top; y++) {
 					int node = map.node(x, y, z);
 					if (node < 0 || map.steps(node) >= under || !mayStandAt(x, y, z, t)) continue;
 					if (close && job.distance(x + 0.5, y + GolemEntity.EYE, z + 0.5, t) > GolemEntity.CLOSE) continue;
@@ -353,13 +383,15 @@ final class Worker {
 		double[] off = {nearest, furthest};
 		int n = 0, r = (int) Math.ceil(off[1]);
 		double tx = t.centerX(), tz = t.centerZ();
-		for (int y = t.y - 6; y <= t.y + 6; y++) {
-			for (int x = t.x - r; x <= t.x + r; x++) {
-				for (int z = t.z - r; z <= t.z + r; z++) {
+		for (int x = t.x - r; x <= t.x + r; x++) {
+			for (int z = t.z - r; z <= t.z + r; z++) {
+				double dx = x + 0.5 - tx, dz = z + 0.5 - tz, d = Math.sqrt(dx * dx + dz * dz);
+				if (d < off[0] || d > off[1]) continue;
+				int column = map.column(x, z);
+				if (column < 0) continue;
+				for (int y = Math.max(t.y - 6, column >> 8), top = Math.min(t.y + 6, column & 255); y <= top; y++) {
 					int node = map.node(x, y, z);
 					if (node < 0 || map.steps(node) >= under) continue;
-					double dx = x + 0.5 - tx, dz = z + 0.5 - tz, d = Math.sqrt(dx * dx + dz * dz);
-					if (d < off[0] || d > off[1]) continue;
 					if (n == stands.length) stands = java.util.Arrays.copyOf(stands, n * 2);
 					stands[n++] = (long) map.steps(node) << 32 | node;
 				}
@@ -413,12 +445,36 @@ final class Worker {
 		return ++steps <= PICKUP_STEPS;
 	}
 
+	private boolean allRefused(List<Target> found) {
+		for (Target t : found) {
+			if (!refused(t.key())) return false;
+		}
+		return true;
+	}
+
 	/** Everywhere it can walk from where it stands, over its area and a little round it, its post and its chest. */
 	private void search() {
 		int[] r = region();
-		WalkMap.get().search(world, MathHelper.floor(golem.x), golem.feetY(), MathHelper.floor(golem.z), r[0], r[1], r[2], r[3]);
-		reached = WalkMap.get().count();
+		int x = MathHelper.floor(golem.x), y = golem.feetY(), z = MathHelper.floor(golem.z);
+		WalkMap map = WalkMap.get();
+		// Made already this tick from the same cell over the same ground, and still the last made by any golem: made again it would come out the same (searchedAt).
+		if (searchedAt == clock && map.searches() == searchNumber && x == searchedX && y == searchedY && z == searchedZ && java.util.Arrays.equals(r, searchedOver)) return;
+		map.search(world, x, y, z, r[0], r[1], r[2], r[3]);
+		reached = map.count();
+		searchNumber = map.searches();
+		searchedX = x;
+		searchedY = y;
+		searchedZ = z;
+		searchedOver = r;
+		searchedAt = WalkMap.settled(world, r[0], r[1], r[2], r[3]) ? clock : -1;
 	}
+
+	/**
+	 * The tick its last search was made in, while that search would come out the same made again: it read only loaded land with nothing round it to be decorated
+	 * ({@link WalkMap#settled}), so nothing can change what it read but the golem's own work, which is the last thing in a tick of the loop. Else -1. With where it was made from and over.
+	 */
+	private int searchedAt = -1, searchNumber, searchedX, searchedY, searchedZ;
+	private int[] searchedOver;
 
 	/** Places the last search reached, for a test to print. */
 	private int reached;
@@ -516,6 +572,8 @@ final class Worker {
 		}
 		double[] off = job.standOff(target);
 		if (off != null) keepOff(off[0]);
+		// Its work may change what a search reads.
+		searchedAt = -1;
 		if (!job.work(target)) return false;
 		walk.stop();
 		// From the cell it began in: it can drift a few hundredths over a cell's edge as it works (a slide left from its last step), and reach goes by the cell, so measured at the
@@ -1019,9 +1077,17 @@ final class Worker {
 		return false;
 	}
 
+	/**
+	 * When what's no longer passed over is next cleared out: past 512, and then not until there are twice as many as were left. Clearing each time past 512, a look that passed over
+	 * thousands at once (the far side of a river across a big area) went through all of them for each one. What's over and still there reads as not passed over ({@link #refused}), so
+	 * when it goes changes nothing a golem does.
+	 */
+	private int dropOverAt = 512;
+
 	private void refuse(Target t, int ticks) {
-		if (refused.size() > 512) {
+		if (refused.size() > dropOverAt) {
 			for (Iterator<Integer> i = refused.values().iterator(); i.hasNext(); ) if (i.next() <= clock) i.remove();
+			dropOverAt = Math.max(512, 2 * refused.size());
 		}
 		refused.put(t.key(), clock + ticks);
 	}

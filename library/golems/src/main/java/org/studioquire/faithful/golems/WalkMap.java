@@ -30,6 +30,17 @@ final class WalkMap {
 	private int count;
 	private World world;
 	private int minX, minZ, maxX, maxZ;
+	/** Searches made, by any golem: one that's still the last can be told from another made since. */
+	private int searches;
+	/**
+	 * Each column of the rectangle the last search reached: the lowest and highest node in it. A look round a place for somewhere to stand passes over a column the search never reached
+	 * without asking about each cell of it. Kept for rectangles of up to {@link #COLUMNS} columns (all a golem's own); a bigger one says any height might hold one.
+	 */
+	private static final int COLUMNS = 1 << 16;
+	private final int[] columnSearch = new int[COLUMNS];
+	private final byte[] columnLow = new byte[COLUMNS], columnHigh = new byte[COLUMNS];
+	private int depth;
+	private boolean columns;
 
 	private WalkMap() {
 	}
@@ -49,6 +60,13 @@ final class WalkMap {
 		cells.clear();
 		nodes.clear();
 		count = 0;
+		// Never 0, which a column no search has reached holds.
+		if (++searches == 0) {
+			java.util.Arrays.fill(columnSearch, 0);
+			searches = 1;
+		}
+		depth = this.maxZ - minZ + 1;
+		columns = (long) (this.maxX - minX + 1) * depth <= COLUMNS;
 		if (!inside(x, z) || y < 0 || y > 127) return;
 		add(key(x, y, z), -1, 0);
 		for (int head = 0; head < count && count < MAX_NODES; head++) {
@@ -84,6 +102,18 @@ final class WalkMap {
 		steps[count] = n;
 		nodes.put(k, count);
 		count++;
+		if (!columns) return;
+		int c = (k >>> 17) * depth + (k >>> 7 & 1023);
+		byte y = (byte) (k & 127);
+		if (columnSearch[c] != searches) {
+			columnSearch[c] = searches;
+			columnLow[c] = y;
+			columnHigh[c] = y;
+		} else if (y < columnLow[c]) {
+			columnLow[c] = y;
+		} else if (y > columnHigh[c]) {
+			columnHigh[c] = y;
+		}
 	}
 
 	private boolean inside(int x, int z) {
@@ -110,6 +140,34 @@ final class WalkMap {
 	int node(int x, int y, int z) {
 		if (!inside(x, z) || y < 0 || y > 127) return -1;
 		return nodes.get(key(x, y, z));
+	}
+
+	/** The lowest and highest cells the last search reached in this column, as {@code lowest << 8 | highest}, or -1 if it reached none there: no node lies above or below them. */
+	int column(int x, int z) {
+		if (!inside(x, z)) return -1;
+		if (!columns) return 127;
+		int c = (x - minX) * depth + (z - minZ);
+		return columnSearch[c] != searches ? -1 : columnLow[c] << 8 | columnHigh[c];
+	}
+
+	/** Searches made so far, by any golem: the last one's number. */
+	int searches() {
+		return searches;
+	}
+
+	/**
+	 * Whether a search over this rectangle would read only loaded land, and nothing could change in what it reads while a golem's tick goes on but by the golem's own hand: every chunk it
+	 * reads (the rectangle and a column round it, where it looks for lava) loaded, and those and the chunks round them decorated. In single player, reading a chunk that isn't loaded
+	 * loads or makes it there and then, and a chunk being decorated writes into the chunks beside it, so a search that read one, or one made where something read since might have, could
+	 * come out differently made again.
+	 */
+	static boolean settled(World world, int minX, int minZ, int maxX, int maxZ) {
+		for (int cx = ((minX - 1) >> 4) - 1; cx <= ((maxX + 1) >> 4) + 1; cx++) {
+			for (int cz = ((minZ - 1) >> 4) - 1; cz <= ((maxZ + 1) >> 4) + 1; cz++) {
+				if (!world.isPosLoaded(cx << 4, 64, cz << 4) || !world.getChunk(cx, cz).terrainPopulated) return false;
+			}
+		}
+		return true;
 	}
 
 	int steps(int node) {

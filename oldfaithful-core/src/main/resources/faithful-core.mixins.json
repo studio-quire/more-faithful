@@ -60,8 +60,10 @@
     "client.SoundManagerMixin"
   ],
   "server": [
+    "server.ConnectionListenerAccessor",
     "server.EntityTrackerAccessor",
     "server.EntityTrackerEntryMixin",
+    "server.ListenThreadMixin",
     "server.MinecraftServerMixin",
     "server.PlayerManagerMixin",
     "server.ServerCommandHandlerMixin",

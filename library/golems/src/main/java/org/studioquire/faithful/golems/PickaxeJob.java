@@ -39,15 +39,37 @@ final class PickaxeJob extends Job {
 	@Override
 	protected void findWork(Area area, List<Target> found) {
 		int floor = golem.postY();
+		// With the land beside its area loaded, nothing read here can load a chunk (single player's reads do), so nothing is decorated into a column partway down it: each block is read
+		// once, the one above being the last read, in place of twice through bare(). The same reads beside a column, in the same order.
+		boolean once = loaded(area);
 		for (int x = area.minX; x <= area.maxX; x++) {
 			for (int z = area.minZ; z <= area.maxZ; z++) {
 				if (!world.isPosLoaded(x, 64, z)) continue;
-				int order = rowOrder(area, x, z);
-				for (int y = Math.min(world.getTopY(x, z), 126); y >= floor; y--) {
-					if (bare(world, x, y, z) && takes(x, y, z)) found.add(new Target(x, y, z, y * IN_A_LAYER + IN_A_LAYER - 1 - order));
+				int order = rowOrder(area, x, z), top = Math.min(world.getTopY(x, z), 126);
+				int above = once ? world.getBlockId(x, top + 1, z) : 0;
+				for (int y = top; y >= floor; y--) {
+					boolean bare;
+					if (once) {
+						int id = world.getBlockId(x, y, z);
+						bare = Ground.isGround(id) && (above == 0 || Ground.isCover(above)) && bareBelow(world, x, y, z);
+						above = id;
+					} else {
+						bare = bare(world, x, y, z);
+					}
+					if (bare && takes(x, y, z)) found.add(new Target(x, y, z, y * IN_A_LAYER + IN_A_LAYER - 1 - order));
 				}
 			}
 		}
+	}
+
+	/** Every chunk under its area and a column round it loaded. */
+	private boolean loaded(Area area) {
+		for (int cx = (area.minX - 1) >> 4; cx <= (area.maxX + 1) >> 4; cx++) {
+			for (int cz = (area.minZ - 1) >> 4; cz <= (area.maxZ + 1) >> 4; cz++) {
+				if (!world.isPosLoaded(cx << 4, 64, cz << 4)) return false;
+			}
+		}
+		return true;
 	}
 
 	/** Its place in a layer: rows along x, the first on the side of its area nearest its post, each row from the end the last one finished at, starting at the corner nearest the post. */
@@ -68,6 +90,11 @@ final class PickaxeJob extends Job {
 		if (!Ground.isGround(world.getBlockId(x, y, z))) return false;
 		int above = world.getBlockId(x, y + 1, z);
 		if (above != 0 && !Ground.isCover(above)) return false;
+		return bareBelow(world, x, y, z);
+	}
+
+	/** The rest of {@link #bare}, past the block itself and what's on it: below and beside it. */
+	private static boolean bareBelow(World world, int x, int y, int z) {
 		if (Ground.isLiquid(world.getBlockId(x, y - 1, z))) return false;
 		for (int d = 0; d < 4; d++) {
 			int sx = x + (d == 0 ? 1 : d == 1 ? -1 : 0), sz = z + (d == 2 ? 1 : d == 3 ? -1 : 0);

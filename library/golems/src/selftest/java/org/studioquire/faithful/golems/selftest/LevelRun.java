@@ -19,11 +19,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.studioquire.faithful.golems.Area;
 import org.studioquire.faithful.golems.GolemEntity;
 import org.studioquire.faithful.golems.Golems;
 import org.studioquire.faithful.golems.Ground;
@@ -39,20 +42,29 @@ import org.studioquire.oldfaithful.core.api.Chunks;
  * Keys: {@code name}; {@code half}, the area's half width (12); {@code speed} (80); {@code maxTicks} in game ticks (3000: a server-only self-test gives a world test five minutes, which is 6000 ticks at best); {@code dx}, {@code dz} from the server's plot and
  * {@code singleDx}, {@code singleDz} from single player's to start looking for land; {@code pick}, an item id (iron's); {@code noChest}; {@code relief}, how much the land must rise and fall round the site (5; 14 finds hills);
  * {@code atX}, {@code atZ}, a site of its own with no looking: the self-test's world has a fixed seed, so the same land each run, for comparing two builds on the same hill.
+ * {@code wall}, a wall of glass six high across the whole of its area and past it, this far south of the post (north if negative): the land beyond is work it can see and never get
+ * to, as across a river or a cliff. {@code seed}: each run as nearly the same as it can be made: the world's random and the golem's own seeded afresh each golem tick (what its
+ * blocks drop, beta's walking dropping a path), what drops sent off from the seed, no animal or monster about, and the golem ticked by the run alone. With {@code trace=1}, every
+ * change in what it's doing goes into {@code <name>-trace.txt} with the golem tick it came on, for comparing two builds' runs line by line (the size of its last search is left out,
+ * as it says how a look was made and not what it found). Two runs of one build still part after some thousands of golem ticks: grass spreads over what it uncovers by the world's
+ * random ticks, which aren't the same run to run, and a grass block takes longer to dig than dirt. {@code time}, the world's time as the golem starts (14000 is night);
+ * {@code monsters=1}, monsters coming as on Easy, as a test server has none. With {@code pick} another tool's id it's put to that job, for its looks and trace: the checks are the
+ * leveller's.
  */
 public final class LevelRun {
 	public static int siteX, siteY, siteZ;
 	public static GolemEntity golem;
-	/** Half the side of the square looked at and pictured. */
-	private static final int HALF = 40;
+	/** Half the side of the square looked at and pictured: 40, or more round a bigger area. */
+	private int view = 40;
 
 	private final File dir;
 	private final Properties p;
 	private World world;
 	private int ticks, chestX, chestY, chestZ, half, floor;
 	private long golemTicks;
-	private long slowestLook;
-	private int looks;
+	private final java.util.List<Long> looks = new java.util.ArrayList<>(), tickTimes = new java.util.ArrayList<>();
+	private PrintWriter trace;
+	private String traced = "";
 	private int[] liquidBefore;
 	private BitSet floatingBefore, solidBefore;
 	private final BitSet groundBefore = new BitSet();
@@ -98,6 +110,7 @@ public final class LevelRun {
 	void start(GolemsTest test, World world, PlayerEntity player, int x, int y, int z) {
 		this.world = world;
 		half = prop("half", 12);
+		view = Math.max(40, half + 8);
 		siteX = x + prop(onServer() ? "dx" : "singleDx", 60);
 		siteZ = z + prop(onServer() ? "dz" : "singleDz", 0);
 		boolean exact = p.getProperty("atX") != null;
@@ -107,14 +120,15 @@ public final class LevelRun {
 		} else {
 			searchLand();
 		}
-		if (onServer()) ServerMove.load(world, siteX, siteZ, HALF + 8);
+		// And a chunk past every one waited for: a chunk is decorated only once those beside it are there.
+		if (onServer()) ServerMove.load(world, siteX, siteZ, view + 24);
 		// Somewhere to wait: a server kicks a player left in the air.
 		world.setBlock(siteX, 120, siteZ, Block.GLASS.id);
 		move(player, siteX + 0.5, 121.01, siteZ + 0.5);
 		int waitX = siteX, waitZ = siteZ;
 		test.levelLand(() -> {
-			for (int cx = (siteX - HALF) >> 4; cx <= (siteX + HALF) >> 4; cx++) {
-				for (int cz = (siteZ - HALF) >> 4; cz <= (siteZ + HALF) >> 4; cz++) {
+			for (int cx = (siteX - view) >> 4; cx <= (siteX + view) >> 4; cx++) {
+				for (int cz = (siteZ - view) >> 4; cz <= (siteZ + view) >> 4; cz++) {
 					if (!Chunks.isLoaded(world, cx, cz) || !world.getChunkFromPos(cx << 4, cz << 4).terrainPopulated) return false;
 				}
 			}
@@ -140,6 +154,14 @@ public final class LevelRun {
 			int sx = siteX + d[0], sz = siteZ + d[1];
 			world.setBlock(sx, ground(sx, sz), sz, Golems.pole.get().id);
 		}
+		if (p.getProperty("wall") != null) {
+			// Past the area and the margin it walks round it, so there's no way round the end.
+			int wz = siteZ + prop("wall", 0);
+			for (int wx = siteX - half - 8; wx <= siteX + half + 8; wx++) {
+				int gy = ground(wx, wz);
+				for (int h = 0; h < 6; h++) world.setBlock(wx, gy + h, wz, Block.GLASS.id);
+			}
+		}
 		chestX = siteX - 2;
 		chestZ = siteZ - 2;
 		chestY = ground(chestX, chestZ);
@@ -152,11 +174,11 @@ public final class LevelRun {
 		liquidBefore = countLiquids();
 		floatingBefore = floating();
 		solidBefore = new BitSet();
-		for (int i = 0; i <= 2 * HALF; i++) {
-			for (int j = 0; j <= 2 * HALF; j++) {
+		for (int i = 0; i <= 2 * view; i++) {
+			for (int j = 0; j <= 2 * view; j++) {
 				for (int h = 1; h < 127; h++) {
 					if (solid(i, h, j)) solidBefore.set(index(i, h, j));
-					if (Ground.isGround(world.getBlockId(siteX - HALF + i, h, siteZ - HALF + j))) groundBefore.set(index(i, h, j));
+					if (Ground.isGround(world.getBlockId(siteX - view + i, h, siteZ - view + j))) groundBefore.set(index(i, h, j));
 				}
 			}
 		}
@@ -164,6 +186,19 @@ public final class LevelRun {
 			map("before");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+		if (p.getProperty("time") != null) world.setTime(Long.parseLong(property("time", "6000")));
+		if (prop("monsters", 0) != 0) {
+			world.difficulty = 1;
+			world.allowSpawning(true, true);
+		}
+		Long seed = p.getProperty("seed") != null ? Long.valueOf(property("seed", "0")) : null;
+		if (prop("trace", 0) != 0) {
+			try {
+				trace = new PrintWriter(Files.newBufferedWriter(new File(dir, name() + "-trace.txt").toPath(), StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		GolemEntity g = new GolemEntity(world);
 		golem = g;
@@ -175,20 +210,42 @@ public final class LevelRun {
 		player.inventory.main[player.inventory.selectedSlot] = hand;
 		System.out.println("[golems] its area: " + g.area());
 		int speed = prop("speed", 80);
+		java.util.Random own = seed != null ? randomOf(g) : null;
+		if (seed != null) {
+			// The world as nearly the same each run as a test can make it: no monsters coming, and the golem ticked only here, where its randoms are seeded (the world's own
+			// tick of it came after whatever else had used them).
+			world.allowSpawning(false, false);
+			world.entities.remove(g);
+			settleDrops(g, seed);
+		}
 		test.levelSteps(prop("maxTicks", 3000) + 100, () -> {
 			ticks++;
-			// A test server keeps only three chunks round a player, and an entity needs 32 blocks loaded round it to tick at all.
-			if (onServer() && ticks % 20 == 0) ServerMove.load(world, (int) g.x, (int) g.z, 40);
+			// A test server keeps only three chunks round a player, and an entity needs 32 blocks loaded round it to tick at all; a bigger area, all of it.
+			if (onServer() && ticks % 20 == 0) {
+				ServerMove.load(world, (int) g.x, (int) g.z, 40);
+				if (view > 40) ServerMove.load(world, siteX, siteZ, half + 12);
+			}
 			for (int i = 0; i < speed && !g.dead; i++) {
+				if (seed != null) {
+					// Afresh each golem tick: the world ticks between with whatever else is about using the same random, and beta's walking drops a path on the golem's own.
+					world.random.setSeed(seed * 31 + golemTicks);
+					own.setSeed(seed * 17 + golemTicks);
+				}
+				long t0 = System.nanoTime();
 				world.updateEntity(g);
+				tickTimes.add((System.nanoTime() - t0) / 1000);
+				if (seed != null) settleDrops(g, seed);
 				golemTicks++;
 				if (golemTicks % 10 == 0) Lying.hurry(world, g, 6, 10);
 				long look = g.lastLookMicros();
-				if (look > 0) {
-					looks++;
-					slowestLook = Math.max(slowestLook, look);
+				if (look > 0) looks.add(look);
+				if (trace != null) {
+					String now = g.worked + " " + g.status().replaceAll(", its last search reached \\d+ places", "");
+					if (!now.equals(traced)) trace.println(golemTicks + " " + now);
+					traced = now;
 				}
 			}
+			if (seed != null) world.random.setSeed(seed * 37 + golemTicks);
 			for (int i = 0; chest != null && i < chest.size(); i++) {
 				ItemStack s = chest.getStack(i);
 				if (s == null || s.getItem() == pick) continue;
@@ -198,6 +255,66 @@ public final class LevelRun {
 			if (ticks % 100 == 0) System.out.println("[golems] " + g.worked + " blocks after " + ticks + " game ticks, tool " + (g.tool() == null ? "none" : g.tool().getDamage()) + ", carrying " + g.carriedCount() + ", at " + (int) Math.floor(g.x) + " " + g.feetY() + " " + (int) Math.floor(g.z) + ": " + g.status());
 			return g.dead || ticks >= prop("maxTicks", 3000) || g.worked > 0 && g.status().startsWith("WAIT") && g.status().contains("out of work");
 		}, () -> finish(test));
+	}
+
+	private final java.util.Set<Integer> settled = new java.util.HashSet<>();
+
+	/**
+	 * For a seeded run: what dropped this golem tick sent off as beta sends it, but from the seed (beta's item takes its first push from {@code Math.random()}), every thing lying
+	 * about with its own random seeded afresh, which it uses when it's pushed out of a block or floats on lava, and no animal or monster about.
+	 */
+	private void settleDrops(GolemEntity g, long seed) {
+		Area area = g.area();
+		Box box = Box.createCached(area.minX - 16, 0, area.minZ - 16, area.maxX + 17, 128, area.maxZ + 17);
+		java.util.Random r = new java.util.Random(seed * 13 + golemTicks);
+		for (Object o : world.collectEntitiesByClass(net.minecraft.entity.Entity.class, box)) {
+			// Animals and monsters walk by their own randoms, from before the seed and from their first tick: gone, so none of them jostles the golem differently in another run.
+			if (o instanceof net.minecraft.entity.LivingEntity && o != g && !(o instanceof PlayerEntity)) {
+				((net.minecraft.entity.Entity) o).markDead();
+				continue;
+			}
+			if (!(o instanceof ItemEntity)) continue;
+			ItemEntity item = (ItemEntity) o;
+			if (settled.add(item.id)) {
+				item.yaw = r.nextFloat() * 360.0F;
+				item.velocityX = r.nextFloat() * 0.2F - 0.1F;
+				item.velocityY = 0.2F;
+				item.velocityZ = r.nextFloat() * 0.2F - 0.1F;
+			}
+			randomOf(item).setSeed(r.nextLong());
+		}
+	}
+
+	private static java.lang.reflect.Field randomField;
+
+	/** An entity's own random, found by its type: the field's name differs between the names it's built against and those it runs under. */
+	private static java.util.Random randomOf(net.minecraft.entity.Entity e) {
+		try {
+			if (randomField == null) {
+				for (java.lang.reflect.Field f : net.minecraft.entity.Entity.class.getDeclaredFields()) {
+					if (f.getType() != java.util.Random.class || java.lang.reflect.Modifier.isStatic(f.getModifiers())) continue;
+					f.setAccessible(true);
+					randomField = f;
+				}
+			}
+			return (java.util.Random) randomField.get(e);
+		} catch (IllegalAccessException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/** How long each took, in microseconds: the slowest, the median and the 99th percentile in milliseconds, how many over 5 ms, and the time in all. */
+	private static String timings(java.util.List<Long> micros, String what) {
+		long[] sorted = micros.stream().mapToLong(Long::longValue).sorted().toArray();
+		int n = sorted.length;
+		if (n == 0) return "no " + what;
+		long total = 0, over = 0;
+		for (long l : sorted) {
+			total += l;
+			if (l > 5000) over++;
+		}
+		return String.format("%d %s, the slowest %.2f ms, median %.3f, 99th percentile %.2f, %d over 5 ms, %.0f ms in all", n, what, sorted[n - 1] / 1000.0, sorted[n / 2] / 1000.0,
+				sorted[Math.min(n - 1, n * 99 / 100)] / 1000.0, over, total / 1000.0);
 	}
 
 	/** The first cell above the ground, under any tree. */
@@ -277,7 +394,7 @@ public final class LevelRun {
 	}
 
 	private boolean insideArea(int i, int j) {
-		return Math.abs(i - HALF) <= half && Math.abs(j - HALF) <= half;
+		return Math.abs(i - view) <= half && Math.abs(j - view) <= half;
 	}
 
 	private void finish(GolemsTest test) {
@@ -290,28 +407,30 @@ public final class LevelRun {
 			w.println(g.status());
 			w.println("site " + siteX + " " + siteY + " " + siteZ + ", floor " + floor + ", area " + g.area() + ", chest " + chestX + " " + chestY + " " + chestZ);
 			w.println("goods " + kinds);
-			w.printf("looking for work: %d looks, the slowest %.2f ms%n", looks, slowestLook / 1000.0);
+			if (trace != null) trace.close();
+			w.println("looking for work: " + timings(looks, "looks"));
+			w.println("its ticks, whole: " + timings(tickTimes, "ticks"));
 			w.printf("blocks taken from further than %.0f, with nowhere nearer to stand: %d, the furthest from %.2f%n", GolemEntity.CLOSE, g.stretched, g.furthest);
 			int outside = 0, under = 0, flooded = 0, left = 0, higher = 0;
-			int side = 2 * HALF + 1;
+			int side = 2 * view + 1;
 			for (int k = solidBefore.nextSetBit(0); k >= 0; k = solidBefore.nextSetBit(k + 1)) {
 				int h = k % 128, c = k / 128, i = c / side, j = c % side;
 				// Only where a golem could touch: from a little under its floor up, and no further out than it can stand and reach. Deeper down, sand drops into caves and lava
 				// runs whatever it does.
-				if (h < floor - 3 || Math.abs(i - HALF) > half + 6 || Math.abs(j - HALF) > half + 6) continue;
-				int id = world.getBlockId(siteX - HALF + i, h, siteZ - HALF + j);
+				if (h < floor - 3 || Math.abs(i - view) > half + 6 || Math.abs(j - view) > half + 6) continue;
+				int id = world.getBlockId(siteX - view + i, h, siteZ - view + j);
 				boolean gone = !solid(i, h, j);
-				if (gone && id != 0 && Block.BLOCKS[id].material.isFluid() && flooded++ < 8) w.println("  flooded " + (siteX - HALF + i) + " " + h + " " + (siteZ - HALF + j));
+				if (gone && id != 0 && Block.BLOCKS[id].material.isFluid() && flooded++ < 8) w.println("  flooded " + (siteX - view + i) + " " + h + " " + (siteZ - view + j));
 				// Leaves decay, and plants and snow come away with the ground under them: only the land itself counts.
 				if (!gone || !groundBefore.get(k)) continue;
-				if (!insideArea(i, j) && outside++ < 8) w.println("  taken outside its area " + (siteX - HALF + i) + " " + h + " " + (siteZ - HALF + j));
-				if (insideArea(i, j) && h <= floor && under++ < 8) w.println("  taken from under its floor " + (siteX - HALF + i) + " " + h + " " + (siteZ - HALF + j));
+				if (!insideArea(i, j) && outside++ < 8) w.println("  taken outside its area " + (siteX - view + i) + " " + h + " " + (siteZ - view + j));
+				if (insideArea(i, j) && h <= floor && under++ < 8) w.println("  taken from under its floor " + (siteX - view + i) + " " + h + " " + (siteZ - view + j));
 			}
 			for (int i = 0; i < side; i++) {
 				for (int j = 0; j < side; j++) {
 					if (!insideArea(i, j)) continue;
 					for (int h = floor + 1; h < 127; h++) {
-						if (!Ground.isGround(world.getBlockId(siteX - HALF + i, h, siteZ - HALF + j))) continue;
+						if (!Ground.isGround(world.getBlockId(siteX - view + i, h, siteZ - view + j))) continue;
 						left++;
 						if (h > floor + 1) higher++;
 					}
@@ -334,13 +453,13 @@ public final class LevelRun {
 			// Where a golem could have done it, as above: a cave's sand far below hangs or falls by itself.
 			for (int k = after.nextSetBit(0); k >= 0; k = after.nextSetBit(k + 1)) {
 				int h = k % 128, c = k / 128, i = c / side, j = c % side;
-				if (h < floor - 3 || Math.abs(i - HALF) > half + 6 || Math.abs(j - HALF) > half + 6) after.clear(k);
+				if (h < floor - 3 || Math.abs(i - view) > half + 6 || Math.abs(j - view) > half + 6) after.clear(k);
 			}
 			w.println("new floating cells: " + after.cardinality() + ", ground taken outside its area: " + outside + ", from under its floor: " + under);
 			int listed = 0;
 			for (int k = after.nextSetBit(0); k >= 0 && listed < 8; k = after.nextSetBit(k + 1), listed++) {
 				int h = k % 128, c = k / 128;
-				w.println("  floating " + (siteX - HALF + c / side) + " " + h + " " + (siteZ - HALF + c % side));
+				w.println("  floating " + (siteX - view + c / side) + " " + h + " " + (siteZ - view + c % side));
 			}
 			Lying.report(w, world, g, 6);
 			w.flush();
@@ -374,8 +493,8 @@ public final class LevelRun {
 
 	private int[] countLiquids() {
 		int[] n = new int[2];
-		for (int x = siteX - HALF; x <= siteX + HALF; x++) {
-			for (int z = siteZ - HALF; z <= siteZ + HALF; z++) {
+		for (int x = siteX - view; x <= siteX + view; x++) {
+			for (int z = siteZ - view; z <= siteZ + view; z++) {
 				for (int y = 1; y < 127; y++) {
 					int id = world.getBlockId(x, y, z);
 					if (id == 0) continue;
@@ -390,7 +509,7 @@ public final class LevelRun {
 
 	/** Solid cells joined to nothing that reaches the edge of the box or its floor. */
 	private BitSet floating() {
-		int side = 2 * HALF + 1, height = 128;
+		int side = 2 * view + 1, height = 128;
 		BitSet anchored = new BitSet(side * side * height);
 		ArrayDeque<int[]> open = new ArrayDeque<>();
 		int[][] dirs = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}};
@@ -421,7 +540,7 @@ public final class LevelRun {
 				for (int y = 0; y < height; y++) {
 					if (!solid(i, y, j) || anchored.get(index(i, y, j))) continue;
 					// Leaves decay away from their trees, and water freezes, whatever the golem does.
-					int id = world.getBlockId(siteX - HALF + i, y, siteZ - HALF + j);
+					int id = world.getBlockId(siteX - view + i, y, siteZ - view + j);
 					if (id != Block.LEAVES.id && id != Block.ICE.id) loose.set(index(i, y, j));
 				}
 			}
@@ -430,11 +549,11 @@ public final class LevelRun {
 	}
 
 	private int index(int i, int y, int j) {
-		return (i * (2 * HALF + 1) + j) * 128 + y;
+		return (i * (2 * view + 1) + j) * 128 + y;
 	}
 
 	private boolean solid(int i, int y, int j) {
-		int id = world.getBlockId(siteX - HALF + i, y, siteZ - HALF + j);
+		int id = world.getBlockId(siteX - view + i, y, siteZ - view + j);
 		return id != 0 && id != Block.GLASS.id && Block.BLOCKS[id].material.blocksMovement();
 	}
 
@@ -464,12 +583,12 @@ public final class LevelRun {
 
 	/** The land from above: colour by what's on top, shade by the slope to the north-west, darker with depth; and two slices through the site. */
 	private void map(String when) throws IOException {
-		int side = 2 * HALF + 1, scale = 6, slice = 64;
+		int side = 2 * view + 1, scale = 6, slice = 64;
 		BufferedImage image = new BufferedImage(side * scale, side * scale + 2 * slice * scale / 2, BufferedImage.TYPE_INT_RGB);
 		int[][] top = new int[side][side];
 		for (int i = 0; i < side; i++) {
 			for (int j = 0; j < side; j++) {
-				int xw = siteX - HALF + i, zw = siteZ - HALF + j;
+				int xw = siteX - view + i, zw = siteZ - view + j;
 				int y = 127;
 				while (y > 0) {
 					int id = world.getBlockId(xw, y, zw);
@@ -481,14 +600,14 @@ public final class LevelRun {
 		}
 		for (int i = 0; i < side; i++) {
 			for (int j = 0; j < side; j++) {
-				int c = colour(world.getBlockId(siteX - HALF + i, top[i][j], siteZ - HALF + j));
+				int c = colour(world.getBlockId(siteX - view + i, top[i][j], siteZ - view + j));
 				int west = i > 0 ? top[i - 1][j] : top[i][j], north = j > 0 ? top[i][j - 1] : top[i][j];
 				float shade = 1.0F + 0.14F * (top[i][j] - west) + 0.14F * (top[i][j] - north);
 				shade *= Math.max(0.35F, 1.0F - (siteY - top[i][j]) * 0.022F);
 				shade = Math.max(0.2F, Math.min(1.6F, shade));
 				int rgb = Math.min(255, (int) ((c >> 16 & 255) * shade)) << 16 | Math.min(255, (int) ((c >> 8 & 255) * shade)) << 8 | Math.min(255, (int) ((c & 255) * shade));
 				// The area's edge, a line just outside it.
-				boolean edge = (Math.abs(i - HALF) == half + 1 && Math.abs(j - HALF) <= half + 1) || (Math.abs(j - HALF) == half + 1 && Math.abs(i - HALF) <= half + 1);
+				boolean edge = (Math.abs(i - view) == half + 1 && Math.abs(j - view) <= half + 1) || (Math.abs(j - view) == half + 1 && Math.abs(i - view) <= half + 1);
 				if (edge) rgb = (rgb >> 1 & 0x7f7f7f) | 0x800000;
 				for (int u = 0; u < scale; u++) {
 					for (int v = 0; v < scale; v++) image.setRGB(i * scale + u, j * scale + v, rgb);
@@ -500,7 +619,7 @@ public final class LevelRun {
 			for (int i = 0; i < side; i++) {
 				for (int h = 0; h < slice; h++) {
 					int y = siteY + 24 - h;
-					int id = y < 0 ? 0 : k == 0 ? world.getBlockId(siteX - HALF + i, y, siteZ) : world.getBlockId(siteX, y, siteZ - HALF + i);
+					int id = y < 0 ? 0 : k == 0 ? world.getBlockId(siteX - view + i, y, siteZ) : world.getBlockId(siteX, y, siteZ - view + i);
 					int c = id == 0 ? (y == floor ? 0xc0a0a0 : 0xa0c0f0) : colour(id);
 					for (int u = 0; u < scale; u++) {
 						for (int v = 0; v < scale / 2; v++) image.setRGB(i * scale + u, base + k * slice * scale / 2 + h * (scale / 2) + v, c);

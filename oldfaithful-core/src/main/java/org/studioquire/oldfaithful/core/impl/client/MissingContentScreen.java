@@ -34,7 +34,14 @@ public final class MissingContentScreen extends Screen {
 			minecraft.setScreen(parent);
 			return;
 		}
-		if (button.id == 0 && SeenMods.backup(world) == null) return;
+		if (button.id == 0) {
+			minecraft.setScreen(new BackupScreen(this, world, this::accept));
+			return;
+		}
+		accept();
+	}
+
+	private void accept() {
 		SeenMods.accept(world, gone);
 		play.run();
 	}

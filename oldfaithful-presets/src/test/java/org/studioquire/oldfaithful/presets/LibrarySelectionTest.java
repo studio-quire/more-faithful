@@ -321,6 +321,20 @@ class LibrarySelectionTest {
 		assertEquals("preset=small\non=farm\noff=", record(game));
 	}
 
+	/** Jars are read once while they stay as they were (the refusal screen asks often): a jar replaced while the game runs is read again. */
+	@Test
+	void aJarReplacedIsReadAgain(@TempDir Path game) throws IOException {
+		Path folder = Files.createDirectories(game.resolve("mods-library"));
+		Path jar = folder.resolve("farm.jar");
+		jar(jar, "farm");
+		java.nio.file.attribute.FileTime then = Files.getLastModifiedTime(jar);
+		assertEquals("farm", new LibrarySelection(game).entries().get(0).id);
+		assertEquals("farm", new LibrarySelection(game).entries().get(0).id);
+		jar(jar, "farmland");
+		Files.setLastModifiedTime(jar, java.nio.file.attribute.FileTime.fromMillis(then.toMillis() + 2000));
+		assertEquals("farmland", new LibrarySelection(game).entries().get(0).id);
+	}
+
 	@Test
 	void aNameOnlyLikeAModsIsntItsJar(@TempDir Path game) throws IOException {
 		Path folder = Files.createDirectories(game.resolve("mods-library"));

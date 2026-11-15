@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -217,10 +218,12 @@ public final class Rules {
 		}
 		if (fresh && worldValues.isEmpty() && !locked) {
 			Properties own = newWorld.values();
+			Map<String, String> start = new LinkedHashMap<>();
 			for (Declared r : RULES.values()) {
 				String v = starting(r, own);
-				if (!v.equals(r.defaultText)) set(r.id, v);
+				if (!v.equals(r.defaultText)) start.put(r.id, v);
 			}
+			setAll(start);
 		}
 		for (Map.Entry<String, String> e : worldValues.entrySet()) System.out.println("[faithful-core] Rule " + e.getKey() + " = " + e.getValue());
 		if (locked) System.out.println("[faithful-core] This world's rules are locked");
@@ -311,8 +314,16 @@ public final class Rules {
 	}
 
 	private static boolean set(String id, String value) {
-		if (locked || !world.set(key(id), value)) return false;
-		worldValues.put(id, value);
+		return setAll(Collections.singletonMap(id, value));
+	}
+
+	/** Several rules in one write of the world's file, in the map's order. */
+	private static boolean setAll(Map<String, String> values) {
+		if (values.isEmpty()) return true;
+		Map<String, String> lines = new LinkedHashMap<>();
+		for (Map.Entry<String, String> e : values.entrySet()) lines.put(key(e.getKey()), e.getValue());
+		if (locked || !world.set(lines)) return false;
+		worldValues.putAll(values);
 		if (channel != null) sendTo(null);
 		return true;
 	}

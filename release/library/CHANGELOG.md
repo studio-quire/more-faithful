@@ -6,6 +6,28 @@ and each entry named the edition releases the packs were built on. The pack is n
 [More Faithful](https://github.com/studio-quire/more-faithful), with its own changelog. Entries say what a player or
 server owner notices.
 
+## 0.10.1 (2026-11-15)
+
+Faithful Settings is Old Faithful 0.2.10's, unchanged since 0.2.8's but for its version.
+
+- **Faithful Core**: a server that can't start (a world that has seen a content mod that's since been removed, or a
+  library mod failing as it starts) now stops, where it stayed open until someone typed `stop`, with players who
+  joined waiting at Logging in until they timed out. Started from a console window, it closes its port and waits for
+  Enter, so the reason stays on screen.
+- **Faithful Core**: Make a Backup and Play no longer freezes the game while it zips a big world: a screen shows how
+  many MB it has zipped so far, with Cancel, which deletes the unfinished zip and goes back.
+- **Faithful Core**: a world feature that keeps failing logs its first five errors in full and then a count, where it
+  logged one for every chunk.
+- **Buried Towers**: a tower that fails to draw is no longer drawn again for every chunk of its land (no tower is known
+  to fail).
+- **Golems** look for work in less time, and do the same work, in the same order, as before. A golem whose area holds
+  much it can't get to (the far side of a river or a cliff) no longer stalls every 20 seconds, the longer the more it
+  can't reach, as it looks all of it over again; a guard with monsters in the caves under its area no longer works out
+  everywhere it can walk at every look while it can reach none of them; and a golem no longer works out where it can
+  walk all over again in the same tick, straight after a look, for gathering, going home or walking its rounds. On a
+  big area with a wall across it and work on the far side it couldn't reach, a look's median time fell by about a
+  third in our tests, and the slowest one in a hundred by two thirds.
+
 ## 0.10.0 (2026-11-14)
 
 Faithful Settings is Old Faithful 0.2.9's, unchanged since 0.2.8's but for its version.

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
@@ -53,36 +55,66 @@ public final class SeenMods {
 
 	/** Going on without them: the world stops asking about these. */
 	public static void accept(Path world, List<String> gone) {
-		WorldFile file = new WorldFile(world.resolve(WorldFile.NAME));
-		for (String id : gone) file.set(PREFIX + id, "");
+		Map<String, String> lines = new LinkedHashMap<>();
+		for (String id : gone) lines.put(PREFIX + id, "");
+		if (!lines.isEmpty()) new WorldFile(world.resolve(WorldFile.NAME)).set(lines);
 	}
 
-	/** Notes the content mods here; called as a world opens. */
+	/** Notes the content mods here, in one write if any line changed; called as a world opens. */
 	static void note(Path world) {
 		WorldFile file = null;
+		Properties seen = null;
+		Map<String, String> changed = new LinkedHashMap<>();
 		for (ModInfo m : Core.mods()) {
 			if (!m.content) continue;
-			if (file == null) file = new WorldFile(world.resolve(WorldFile.NAME));
+			if (file == null) {
+				file = new WorldFile(world.resolve(WorldFile.NAME));
+				seen = file.values();
+			}
 			String line = m.version + ";data=" + m.network;
-			if (!line.equals(file.values().getProperty(PREFIX + m.id, "").trim())) file.set(PREFIX + m.id, line);
+			if (!line.equals(seen.getProperty(PREFIX + m.id, "").trim())) changed.put(PREFIX + m.id, line);
 		}
+		if (!changed.isEmpty()) file.set(changed);
 	}
 
-	/** A zip of the world beside it; its name, or null if it couldn't be made. */
-	public static String backup(Path world) {
+	/** How a backup's going, for whoever's waiting on it, and whether to give it up. */
+	public interface Progress {
+		/** The bytes of the world's files in the zip so far. */
+		void done(long bytes);
+
+		boolean stopped();
+	}
+
+	/**
+	 * A zip of the world beside it; its name, or null if it couldn't be made, or was stopped (then none is left). Seconds for a big world, so the
+	 * game makes it off its own thread.
+	 */
+	public static String backup(Path world, Progress progress) {
 		String name = world.getFileName() + "-backup-" + new java.text.SimpleDateFormat("yyyyMMdd-HHmmss").format(new java.util.Date()) + ".zip";
 		Path zip = world.resolveSibling(name);
+		boolean stopped = false;
 		try (ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(zip)); java.util.stream.Stream<Path> walk = Files.walk(world)) {
+			long done = 0;
 			for (Path p : (Iterable<Path>) walk::iterator) {
 				if (Files.isDirectory(p)) continue;
+				if (stopped = progress.stopped()) break;
 				out.putNextEntry(new ZipEntry(world.relativize(p).toString().replace('\\', '/')));
-				Files.copy(p, out);
+				done += Files.copy(p, out);
 				out.closeEntry();
+				progress.done(done);
 			}
-			return name;
+			// Stopped during the last file: given up all the same.
+			if (!stopped) stopped = progress.stopped();
 		} catch (IOException e) {
 			System.out.println("[faithful-core] WARN Could not back up " + world + ": " + e);
-			return null;
+			stopped = true;
 		}
+		if (!stopped) return name;
+		try {
+			Files.deleteIfExists(zip);
+		} catch (IOException e) {
+			System.out.println("[faithful-core] WARN Could not remove the unfinished backup " + zip + ": " + e);
+		}
+		return null;
 	}
 }

@@ -38,7 +38,10 @@ public final class Chunks {
 		return world.isPosLoaded(chunkX << 4, 0, chunkZ << 4);
 	}
 
-	/** Whether a chunk has been saved to disk, whether or not it's also in memory, looking at the disk and loading nothing. A chunk made since its last save reads as not saved. */
+	/**
+	 * Whether a chunk has been saved to disk, whether or not it's also in memory, looking at the disk and loading nothing. A chunk made since its last save reads as not saved,
+	 * as does, with Still Faithful, one whose first save is still on its way to the disk.
+	 */
 	public static boolean isSaved(World world, int chunkX, int chunkZ) {
 		return SavedChunks.exists(world, chunkX, chunkZ);
 	}

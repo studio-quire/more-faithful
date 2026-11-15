@@ -169,7 +169,10 @@ public final class Attachment<H, T> {
 		Attachments.set(holder, this, value);
 	}
 
-	/** A chunk's value as last saved, read from the disk with nothing loaded, or null: no such chunk saved, or no value in it. A chunk in memory may have a newer one, so ask there first. */
+	/**
+	 * A chunk's value as last saved, read from the disk with nothing loaded, or null: no such chunk saved, or no value in it. A chunk in memory may have a newer one, so ask there first.
+	 * With Still Faithful, a chunk's save can still be on its way to the disk for a moment after it unloads, and this reads the disk.
+	 */
 	public T saved(World world, int chunkX, int chunkZ) {
 		if (kind != Kind.CHUNK) throw new IllegalArgumentException(id + ": only a chunk's attachment lies on disk by itself");
 		NbtCompound value = SavedChunks.attachment(world, chunkX, chunkZ, id);

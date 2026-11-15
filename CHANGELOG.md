@@ -7,6 +7,27 @@ it's built on, each as those releases have them;
 [Still Faithful's](https://github.com/studio-quire/still-faithful/blob/main/CHANGELOG.md) cover those. Entries say what a
 player or server owner notices.
 
+## 0.10.1 (2026-11-15)
+
+On the Faithful Library 0.10.1 and Still Faithful 0.9.1, on Old Faithful 0.2.10 and Pure Faithful 0.1.7.
+
+- When your mods don't match a server's, the screen saying so stalls less as it opens and at each resize of the
+  window, most on a slow disk: it read every mod's file again for each mod it named, and now reads only those changed
+  since.
+- **Golems** (in High) look for work in less time and do the same work as before: a golem whose area holds much it
+  can't get to no longer stalls every 20 seconds, the longer the more it can't reach, nor a guard with monsters in the
+  caves under its area at every look. The library's changelog has the detail.
+- From the Faithful Library 0.10.1: a server that can't start stops, where it stayed open with joining players stuck
+  at Logging in (from a console window it waits for Enter so you can read why), and Make a Backup and Play no longer
+  freezes the game while it zips a big world. The library's changelog has the detail.
+- From Still Faithful 0.9.1, Old Faithful 0.2.10 and Pure Faithful 0.1.7: smaller stalls gone, in saving chunks while
+  many blocks are waiting to update, in screens waiting on the statistics' background save and in big explosions'
+  particles; saving no longer waits forever if the background saving ever stopped, and an unplugged display no longer
+  brings a crash screen. Their changelogs have the detail.
+- **Updating**: as before, copy your worlds and `.minecraft/config` from the old instance; your preset and the mods
+  you turned on or off beyond it come with `config`. From 0.8.0 or before, the new instance starts on High with every
+  mod on (0.9.0's entry has the rest).
+
 ## 0.10.0 (2026-11-14)
 
 On the Faithful Library 0.10.0 and Still Faithful 0.9.0, on Old Faithful 0.2.9 and Pure Faithful 0.1.6.
